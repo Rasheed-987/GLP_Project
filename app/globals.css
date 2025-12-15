@@ -3,12 +3,21 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  /* Brand palette */
+  --brand-from: #045A86;
+  --brand-to: #019977;
+  /* Brand gradient */
+  --brand-gradient: linear-gradient(90deg, var(--brand-from) 0%, var(--brand-to) 100%);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
+  /* Map brand colors to Tailwind tokens */
+  --color-brand-from: var(--brand-from);
+  --color-brand-to: var(--brand-to);
+  /* Prefer Frutiger Arabic if available */
+  --font-sans: var(--font-frutiger-arabic, var(--font-geist-sans));
   --font-mono: var(--font-geist-mono);
 }
 
@@ -23,4 +32,10 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .bg-brand-gradient {
+    background-image: var(--brand-gradient);
+  }
 }
