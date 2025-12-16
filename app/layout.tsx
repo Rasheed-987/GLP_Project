@@ -1,4 +1,26 @@
 import './globals.css'
+import localFont from 'next/font/local'
+
+const frutiger = localFont({
+  src: [
+    {
+      path: './fonts/FrutigerLTArabic45Light.ttf',
+      weight: '300',
+      style: 'normal',
+    },
+    {
+      path: './fonts/FrutigerLTArabic55Roman.ttf',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: './fonts/FrutigerLTArabic65Bold.ttf',
+      weight: '700',
+      style: 'normal',
+    },
+  ],
+  variable: '--font-frutiger-arabic',
+})
 
 export const metadata = {
   title: 'GLP',
@@ -10,6 +32,7 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+
   return (
     <html>
       <body className="font-sans">{children}</body>
