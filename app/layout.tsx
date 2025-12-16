@@ -29,17 +29,13 @@ export const metadata = {
 
 export default async function RootLayout({
   children,
-  params,
 }: {
   children: React.ReactNode
-  params: Promise<{ lang?: string }>
 }) {
-  const { lang } = await params
-  const dir = lang === 'ar' ? 'rtl' : 'ltr'
 
   return (
-    <html lang={lang || 'en'} dir={dir}>
-      <body className={frutiger.variable}>{children}</body>
+    <html>
+      <body className="font-sans">{children}</body>
     </html>
   )
 }

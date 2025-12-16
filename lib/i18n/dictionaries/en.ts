@@ -19,8 +19,8 @@ export default {
     applyNow: 'Apply now',
   },
   home: {
-    title: 'UAE Government Leaders Program',
-    description: 'Empowering the next generation of Emirati leaders.',
+  
+    description: 'UAE Government Leaders Program - Empowering the next generation of Emirati leaders.',
   },
   metadata: {
     title: 'GLP',
