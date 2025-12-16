@@ -31,7 +31,8 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Prefer Frutiger LT Arabic if configured, fallback to Geist Sans */
+  font-family: var(--font-frutiger-arabic, var(--font-geist-sans), Arial, Helvetica, sans-serif);
 }
 
 @layer utilities {
