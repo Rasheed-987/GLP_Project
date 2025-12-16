@@ -19,12 +19,14 @@ export default async function WebLayout({
       <Container className="px-4">
         <TopBar locale={lang} dict={dict} />
       </Container>
-      <Container className="px-10">
-        <Navbar locale={lang} dict={dict} />
-      </Container>
-      <main>
-        <Container>{children}</Container>
-      </main>
+      <div className="relative">
+        <header className="absolute top-0 left-0 right-0 z-20 w-full">
+          <Container className="px-10">
+            <Navbar locale={lang} dict={dict} />
+          </Container>
+        </header>
+        <main>{children}</main>
+      </div>
     </>
   );
 }

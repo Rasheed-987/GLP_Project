@@ -8,6 +8,8 @@
   --brand-to: #019977;
   /* Brand gradient */
   --brand-gradient: linear-gradient(90deg, var(--brand-from) 0%, var(--brand-to) 100%);
+  /* Border colors */
+  --border-stroke: rgba(0, 0, 0, 0.2);
 }
 
 @theme inline {
@@ -16,6 +18,8 @@
   /* Map brand colors to Tailwind tokens */
   --color-brand-from: var(--brand-from);
   --color-brand-to: var(--brand-to);
+  /* Border colors */
+  --color-border-stroke: var(--border-stroke);
   /* Prefer Frutiger Arabic if available */
   --font-sans: var(--font-frutiger-arabic, var(--font-geist-sans));
   --font-mono: var(--font-geist-mono);
