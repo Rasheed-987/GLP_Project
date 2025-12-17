@@ -3,8 +3,8 @@ import type { Locale } from '@/lib/i18n/config'
 import { getDictionary } from '@/lib/i18n/dictionaries'
 import DirectionProvider from '../components/DirectionProvider'
 
-export async function generateMetadata({ params }: { params: { lang: Locale } }) {
-  const { lang } = params
+export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }) {
+  const { lang } = await params
   const dict = await getDictionary(lang)
   
   return {
@@ -13,13 +13,14 @@ export async function generateMetadata({ params }: { params: { lang: Locale } })
   }
 }
 
-export default function LangLayout({
+export default async function LangLayout({
   children,
-  params: { lang },
+  params,
 }: {
   children: React.ReactNode
-  params: { lang: Locale }
+  params: Promise<{ lang: Locale }>
 }) {
+  const { lang } = await params
   return (
     <DirectionProvider lang={lang}>
       {children}
