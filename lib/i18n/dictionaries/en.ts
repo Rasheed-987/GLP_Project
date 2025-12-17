@@ -118,6 +118,119 @@ export default {
       subtitle: 'Future-Ready Leaders',
       description: 'Our leadership development approach is guided by a national vision, powered by innovation, and tailored to real-world government challenges',
       button: 'Explore programmes'
+    },
+    methodology: {
+      title: {
+        highlight1: "The UAE Government Leaders Programme (GLP)",
+        text1: " follows a comprehensive and ",
+        highlight2: "future-focused development model",
+        text2: " rooted in the ",
+        highlight3: "UAE Government Leadership Model (UAELGM)"
+      },
+      description1: "Our methodology is designed to equip leaders at every level with the mindset, tools, and capabilities to lead with impact, locally and globally.",
+      description2: "Each program is carefully tailored to meet the specific needs of participants, using a blend of:",
+      cards: {
+        format: "Advanced learning formats",
+        frameworks: "Strategic frameworks",
+        mentorship: "Mentorship opportunities"
+      }
+    },
+    learningMethodology: {
+      label: "LEARNING METHODOLOGY",
+      title: {
+        line1: {
+          text1: "Real ",
+          highlight1: "learning.",
+          text2: " Real ",
+          highlight2: "application.",
+        },
+        line2: {
+          text3: "Real ",
+          highlight3: "results"
+        }
+      },
+      description: "We apply modern, flexible learning methods to deliver an engaging and outcome-driven experience. Each participant's journey is structured to combine theory with action, leadership with service, and ambition with accountability."
+    },
+    learningMethodologyPart2: {
+      title: "KEY FORMATS INCLUDE:",
+      items: [
+        "Interactive workshops and simulations",
+        "Capstone projects and applied case work",
+        "Local and international field visits",
+        "Mentoring and executive coaching",
+        "Digital learning modules and gamified tools"
+      ],
+      description: "All programmes are cohort-based and designed to be part-time, allowing participants to continue in their roles while developing their leadership capacity."
+    },
+    aboutUAELGM: {
+      label: "ABOUT",
+      title: {
+        text1: "At the heart of every programme is the ",
+        highlight1: "UAE Government Leadership Model",
+        text2: " (UAELGM), ",
+        highlight2: "a set of core values and competencies",
+        text3: " that guide the development of all participants"
+      },
+      description: "This model ensures alignment with the UAE's long-term vision and supports a unified standard of leadership excellence across all sectors.",
+      button: "Learn about the model",
+      pillarsTitle: "WE FOCUS ON THREE PILLARS:",
+      pillars: [
+        {
+          title: "Leadership Spirit",
+          description: "Cultivating emotional intelligence, ownership, and commitment to national service."
+        },
+        {
+          title: "Achievement & Impact",
+          description: "Driving performance, innovation, and results within government and organizational settings."
+        },
+        {
+          title: "Future Outlook",
+          description: "Empowering leaders to anticipate challenges, embrace change, and shape the future."
+        }
+      ]
+    },
+    alumniNetwork: {
+      label: "COMMUNITY & ALUMNI NETWORK",
+      title: {
+        text1: "We believe leadership is a ",
+        highlight1: "constant learning process"
+      },
+      description: "Through the Qiyada digital hub, all program alumni gain access to an active and growing leadership network. This community enables continued development, peer learning, collaboration, and recognition.",
+      benefitsTitle: "ALUMNI BENEFITS INCLUDE:",
+      benefits: [
+        "Access to exclusive forums, leadership talks, and workshops",
+        "Professional networking with peers and experts",
+        "Collaborative platforms for innovation and national impact",
+        "Ongoing learning opportunities, both virtual and in-person"
+      ]
+    },
+    features: [
+      {
+        icon: "file.png",
+        text: "Programmes designed for public sector needs"
+      },
+      {
+        icon: "laptop.png",
+        text: "Seamless blend of virtual and real-world learning"
+      },
+      {
+        icon: "link.png",
+        text: "Strong ecosystem of mentors, peers, and experts"
+      },
+      {
+        icon: "network.png",
+        text: "Aligned with a recognized national framework"
+      },
+      {
+        icon: "users.png",
+        text: "Connection to a lifelong leadership community"
+      }
+    ],
+    contact: {
+      titleLine1: "Find out where our leadership",
+      titleLine2: "journey takes you",
+      description: "Explore our programmes and find the one that fits your path",
+      button: "Explore programmes"
     }
   }
 }

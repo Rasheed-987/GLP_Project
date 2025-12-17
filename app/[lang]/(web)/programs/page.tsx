@@ -51,7 +51,12 @@ export default async function ProgramsPage({
             </section>
 
             {/* contact section  */}
-            <ContactSection lang={lang} />
+            <ContactSection
+                titleLine1={dict.programs.contact.titleLine1}
+                titleLine2={dict.programs.contact.titleLine2}
+                description={dict.programs.contact.description}
+                button={dict.programs.contact.button}
+            />
         </>
     );
 }
