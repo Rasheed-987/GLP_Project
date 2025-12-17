@@ -4,16 +4,18 @@ import Container from "../../components/Container";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import type { Locale } from "@/lib/i18n/config";
 
-export default async function WebLayout({ 
+import Footer from "./components/Footer";
+
+export default async function WebLayout({
   children,
-  params 
-}: { 
+  params
+}: {
   children: React.ReactNode;
   params: Promise<{ lang: Locale }>;
 }) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
-  
+
   return (
     <>
       <Container className="px-4">
@@ -26,6 +28,7 @@ export default async function WebLayout({
           </Container>
         </header>
         <main>{children}</main>
+        <Footer locale={lang} dict={dict} />
       </div>
     </>
   );
