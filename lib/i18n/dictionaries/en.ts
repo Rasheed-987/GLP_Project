@@ -19,10 +19,39 @@ export default {
     applyNow: 'Apply now',
   },
   home: {
-    title: 'UAE Government Leaders Program',
-
-    description: 'UAE Government Leaders Program - Empowering the next generation of Emirati leaders.',
-
+    title: 'Empowering the next generation of leaders',
+    description: 'Discover national leadership programmes designed to shape future-ready Emirati talent, aligned with the UAE’s long-term vision and excellence agenda.',
+    about: {
+      pill: 'ABOUT',
+      title: 'The UAE Government Leaders Programme (UAE GLP) is a national initiative dedicated to cultivating Emirati talent for leadership roles across government and beyond',
+      description: 'Through advanced training, mentoring, and real-world exposure, GLP develops leaders equipped to navigate tomorrow’s challenges, today.',
+    },
+    features: [
+      {
+        icon: "/images/frame1.png",
+        text: "Tailored journeys by career stage",
+      },
+      {
+        icon: "/images/frame2.png",
+        text: "Flexible format with part-time structure",
+      },
+      {
+        icon: "/images/frame3.png",
+        text: "Official certification upon completion",
+      },
+      {
+        icon: "/images/frame4.png",
+        text: "Mentorship from government leaders",
+      },
+      {
+        icon: "/images/frame5.png",
+        text: "Field visits & international benchmarking",
+      },
+      {
+        icon: "/images/frame6.png",
+        text: "Lifelong community via Qiyadat alumni network",
+      },
+    ],
   },
   metadata: {
     title: 'GLP',

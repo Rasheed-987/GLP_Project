@@ -6,7 +6,7 @@ import type { Locale } from "@/lib/i18n/config";
 
 type FooterProps = {
     locale: Locale;
-    dict: any; // We'll infer/use specific type if available, but dict is usually large.
+    dict?: any; // We'll infer/use specific type if available, but dict is usually large.
 };
 
 export default function Footer({ locale, dict }: FooterProps) {

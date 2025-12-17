@@ -68,7 +68,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
             {!open && (
               <button
                 onClick={() => setOpen(true)}
-                className="inline-flex items-center justify-center h-9 rounded-full border border-white/50 px-4 sm:px-6 text-sm font-medium text-white hover:bg-white/10 transition-colors"
+                className="inline-flex items-center justify-center h-9 rounded-full border border-black/10 bg-white px-4 sm:px-6 text-sm font-medium text-zinc-700 hover:bg-black/5 transition-colors"
                 aria-label="Open menu"
               >
                 <span className="hidden sm:inline">{dict.nav.menu}</span>
@@ -85,7 +85,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
               <button 
                 type="button" 
                 onClick={() => setOpen(false)} 
-                className="inline-flex items-center justify-center h-9 rounded-full border border-white/50 px-4 sm:px-6 text-sm font-medium text-white hover:bg-white/10 transition-colors"
+                className="inline-flex items-center justify-center h-9 rounded-full border border-black/10 bg-white px-4 sm:px-6 text-sm font-medium text-zinc-700 hover:bg-black/5 transition-colors"
               >
                 <span aria-hidden className="mr-1.5">✕</span> {dict.nav.close}
               </button>
@@ -135,7 +135,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
         key={item.href}
         href={item.href}
         onClick={() => setOpen(false)}
-        className="block border-b border-border-stroke pb-3 text-lg font-bold hover:text-black"
+        className="block border-b border-border-stroke pb-3 text-lg font-bold text-black"
       >
         {item.label}
       </Link>
@@ -184,7 +184,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="block border-b border-border-stroke pb-3 text-lg font-bold hover:text-black"
+                  className="block border-b border-border-stroke pb-3 text-lg font-bold text-black"
                 >
                   {item.label}
                 </Link>

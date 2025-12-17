@@ -19,7 +19,7 @@ type HeroProps = {
 
 export default function Hero({ title, description, backgroundImage, buttons }: HeroProps) {
   return (
-    <div className="relative h-100vh md:h-[700px] w-full">
+    <div className="relative rounded-2xl overflow-hidden md:h-150 w-full">
       <Image
         src={backgroundImage}
         alt={title}
