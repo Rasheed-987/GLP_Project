@@ -27,7 +27,10 @@ export default async function WebLayout({
             <Navbar locale={lang} dict={dict} />
           </Container>
         </header>
-        <main>{children}</main>
+        <Container>
+  <main>{children}</main>
+        </Container>
+      
         <Footer locale={lang} dict={dict} />
       </div>
     </>

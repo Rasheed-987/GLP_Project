@@ -22,7 +22,7 @@ export default function LocaleSwitcher({ currentLocale }: { currentLocale: Local
   return (
     <Link
       href={toggleLocale()}
-      className="hidden sm:inline-flex items-center gap-2 rounded-full border border-black/10 px-3 py-1 text-xs text-zinc-700 hover:bg-black/5 transition-colors"
+      className="hidden sm:inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-3 py-1 text-xs text-zinc-700 hover:bg-black/5 transition-colors"
     >
       <svg
         width="14"
