@@ -19,7 +19,7 @@ export default {
     applyNow: 'Apply now',
   },
   home: {
-  
+    title: 'UAE Government Leaders Program',
     description: 'UAE Government Leaders Program - Empowering the next generation of Emirati leaders.',
   },
   metadata: {
