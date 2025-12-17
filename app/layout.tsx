@@ -18,6 +18,11 @@ const frutiger = localFont({
       weight: '700',
       style: 'normal',
     },
+    {
+      path: './fonts/frutigerltarabic75black.ttf',
+      weight: '900',
+      style: 'normal',
+    },
   ],
   variable: '--font-frutiger-arabic',
 })
@@ -35,7 +40,7 @@ export default async function RootLayout({
 
   return (
     <html>
-      <body className="font-sans">{children}</body>
+      <body className={`${frutiger.variable} font-sans antialiased`}>{children}</body>
     </html>
   )
 }

@@ -1,15 +1,15 @@
 export default {
   nav: {
-    home: 'HOME',
-    about: 'ABOUT',
-    partnership: 'PARTNERSHIP',
-    leadershipModel: 'LEADERSHIP MODEL',
-    programmes: 'PROGRAMMES',
-    alumni: 'ALUMNI',
-    approach: 'APPROACH',
-    resources: 'RESOURCES',
+    home: 'Home',
+    about: 'About',
+    partnership: 'Partnership',
+    leadershipModel: 'Leadership Model',
+    programmes: 'Programmes',
+    alumni: 'Alumni',
+    approach: 'Approach',
+    resources: 'Resources',
     faq: 'FAQ',
-    contact: 'CONTACT',
+    contact: 'Contact',
     menu: 'Menu',
     close: 'Close',
     login: 'Log in',
@@ -19,8 +19,8 @@ export default {
     applyNow: 'Apply now',
   },
   home: {
-  
-    description: 'UAE Government Leaders Program - Empowering the next generation of Emirati leaders.',
+    title: 'UAE Government Leaders Program',
+    description: 'UAE Government Leaders Program - Empowering the next generation of Emirati leaders.',
   },
   metadata: {
     title: 'GLP',
@@ -103,4 +103,19 @@ export default {
       button: 'Contact us'
     }
   },
+  footer: {
+    privacyPolicy: "Privacy Policy",
+    termsOfService: "Terms of Service",
+    copyright: "© 2025 UAE Government Leaders Program. All rights reserved.",
+    description: "UAE Government Leaders Program - Empowering the next generation of Emirati leaders."
+  },
+  approach: {
+    hero: {
+      pill: 'OUR APPROACH',
+      title: 'How We Build',
+      subtitle: 'Future-Ready Leaders',
+      description: 'Our leadership development approach is guided by a national vision, powered by innovation, and tailored to real-world government challenges',
+      button: 'Explore programmes'
+    }
+  }
 }

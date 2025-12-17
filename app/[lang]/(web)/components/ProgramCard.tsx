@@ -1,6 +1,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import Button from './Button';
 
 /* Use heroicons SVG for features (User, Clock, etc.) - simplified mapping for now */
 const Icons = {
@@ -135,16 +136,12 @@ export default function ProgramCard({ item, reversed }: ProgramCardProps) {
 
                     {/* Action Button */}
                     <div className="w-full">
-                        <button
+                        <Button
                             disabled={item.actionDisabled}
-                            className={`px-8 py-3 rounded-full w-full text-sm font-bold transition-all
-                                ${item.actionDisabled
-                                    ? 'bg-[#B6CDC1] text-black cursor-not-allowed'
-                                    : 'bg-gradient-to-r from-[#045A86] to-[#019977] text-white hover:shadow-md'
-                                }`}
+                            className="w-full"
                         >
                             {item.action}
-                        </button>
+                        </Button>
                         {item.note && (
                             <p className="text-center text-[#00000099] text-xs mt-2.5">
                                 {item.note}

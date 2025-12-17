@@ -50,7 +50,7 @@ export default {
           { label: 'المخرجات:', value: 'شهادة + دخول شبكة خريجي قيادات' }
         ],
         action: 'قدم الآن',
-        image: '/images/pro2.png',
+        image: '/images/pro1.png',
         theme: 'white'
       },
       {
@@ -69,7 +69,7 @@ export default {
           { label: 'المخرجات:', value: 'شهادة + الوصول إلى شبكة الخريجين' }
         ],
         action: 'قدم الآن',
-        image: '/images/pro1.png',
+        image: '/images/pro2.png',
         theme: 'green'
       },
       {
@@ -101,4 +101,19 @@ export default {
       button: 'تواصل معنا'
     }
   },
+  footer: {
+    privacyPolicy: "سياسة الخصوصية",
+    termsOfService: "شروط الخدمة",
+    copyright: "© 2025 برنامج قيادات حكومة الإمارات. جميع الحقوق محفوظة.",
+    description: "برنامج قيادات حكومة الإمارات - تمكين الجيل القادم من القادة الإماراتيين."
+  },
+  approach: {
+    hero: {
+      pill: 'نهجنا',
+      title: 'كيف نبني',
+      subtitle: 'قادة جاهزون للمستقبل',
+      description: 'يسترشد نهجنا في تطوير القيادة برؤية وطنية، مدعومة بالابتكار، ومصممة خصيصاً لمواجهة تحديات الحكومة في العالم الحقيقي',
+      button: 'استكشف البرامج'
+    }
+  }
 }
