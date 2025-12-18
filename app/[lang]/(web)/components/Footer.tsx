@@ -37,26 +37,26 @@ export default function Footer({ locale, dict }: FooterProps) {
                     <div className="flex gap-x-24 md:ml-24">
                         {/* Column 1 */}
                         <div className="flex flex-col gap-2">
-                            <Link href={`/${locale}/programs`} className="text-black font-semibold hover:text-brand-from transition-colors text-[13px] md:text-[15px] ">
+                            <Link href={`/${locale}/programs`} className="text-black font-semibold hover:text-brand-blue transition-colors text-[13px] md:text-[15px] ">
                                 {dict.nav.programmes}
                             </Link>
-                            <Link href={`/${locale}/approach`} className="text-black font-semibold hover:text-brand-from transition-colors text-[13px] md:text-[15px]">
+                            <Link href={`/${locale}/approach`} className="text-black font-semibold hover:text-brand-blue transition-colors text-[13px] md:text-[15px]">
                                 {dict.nav.approach}
                             </Link>
-                            <Link href={`/${locale}/partnership`} className="text-black font-semibold hover:text-brand-from transition-colors text-[13px] md:text-[15px]">
+                            <Link href={`/${locale}/partnership`} className="text-black font-semibold hover:text-brand-blue transition-colors text-[13px] md:text-[15px]">
                                 {dict.nav.partnership}
                             </Link>
                         </div>
 
                         {/* Column 2 */}
                         <div className="flex flex-col gap-2">
-                            <Link href={`/${locale}/alumni`} className="text-black font-semibold hover:text-brand-from transition-colors text-[13px] md:text-[15px]">
+                            <Link href={`/${locale}/alumni`} className="text-black font-semibold hover:text-brand-blue transition-colors text-[13px] md:text-[15px]">
                                 {dict.nav.alumni}
                             </Link>
-                            <Link href={`/${locale}/resources`} className="text-black font-semibold hover:text-brand-from transition-colors text-[13px] md:text-[15px]">
+                            <Link href={`/${locale}/resources`} className="text-black font-semibold hover:text-brand-blue transition-colors text-[13px] md:text-[15px]">
                                 {dict.nav.resources}
                             </Link>
-                            <Link href={`/${locale}/about`} className="text-black font-semibold hover:text-brand-from transition-colors text-[13px] md:text-[15px]">
+                            <Link href={`/${locale}/about`} className="text-black font-semibold hover:text-brand-blue transition-colors text-[13px] md:text-[15px]">
                                 {dict.nav.about || 'About'}
                             </Link>
                         </div>

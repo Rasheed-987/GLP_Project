@@ -5,6 +5,7 @@ import Container from '@/app/components/Container';
 import { getDictionary } from '@/lib/i18n/dictionaries';
 import Button from '../components/Button';
 import TagPill from '../components/TagPill';
+import Carousel from '../components/Carousel';
 
 export default async function PartnershipPage({
     params,
@@ -17,7 +18,7 @@ export default async function PartnershipPage({
     return (
         <>
             <section>
-                <Container className="w-full ">
+                <Container className="w-full px-4 ">
                     <Image
                         src="/images/partnership_herobg.png"
                         alt="Partnership"
@@ -31,7 +32,7 @@ export default async function PartnershipPage({
 
             {/* Partnership Content Section */}
             <section className="pb-4 md:pb-8 pt-10">
-                <Container className="px-4">
+                <Container className="px-8">
                     {/* Top Section: Label, Title, Description, Button */}
                     <div className="flex flex-col lg:flex-row gap-5 md:gap-8 lg:gap-32 md:mb-16 mb-8">
                         {/* Left Column: Label, Line, Title */}
@@ -65,12 +66,12 @@ export default async function PartnershipPage({
             </section>
             {/* partnership about section  */}
             <section className="pb-12 md:pb-24">
-                <Container className="px-4">
+                <Container className="px-8">
                     <div className="flex flex-wrap lg:flex-nowrap gap-3 md:gap-8 lg:gap-16 items-start">
                         {/* Title and Description */}
                         <div className="w-full lg:w-6/12  order-1">
 
-                            <span className="text-brand-from text-[12px] md:text-[15px] font-semibold uppercase tracking-[1.2] md:tracking-[1.6] mb-2 md:mb-4 block">
+                            <span className="text-brand-blue text-[12px] md:text-[15px] font-semibold uppercase tracking-[1.2] md:tracking-[1.6] mb-2 md:mb-4 block">
                                 {dict.partnership.about.label}
                             </span>
 
@@ -117,7 +118,7 @@ export default async function PartnershipPage({
 
             {/* Three-step approach section */}
             <section className="pb-12 md:pb-24 pt-12 md:pt-24 bg-white">
-                <Container className="px-4">
+                <Container className="px-8">
                     <div className="flex flex-col lg:flex-row gap-12 lg:gap-28 relative">
                         {/* Left Side: Sticky Title and Arrow */}
                         <div className="w-full lg:w-6/12 lg:sticky lg:top-32 h-fit">
@@ -162,7 +163,7 @@ export default async function PartnershipPage({
             </section>
 
             {/* What We Offer Section */}
-            <section className="relative py-8 overflow-hidden">
+            <section className="relative py-8 overflow-hidden mx-4 ">
                 {/* Background Image with Overlay */}
                 <div className="absolute inset-0 z-0 overflow-hidden rounded-[1rem] md:rounded-[1.5rem]">
                     <Image
@@ -217,6 +218,27 @@ export default async function PartnershipPage({
                         </div>
                     </div>
                 </Container>
+            </section>
+
+            <section className="bg-white pt-20">
+                <Container className="px-14">
+                    <span className="text-brand-blue text-[12px] md:text-[15px] font-semibold uppercase tracking-[1.2] md:tracking-[1.6] mb-2 md:mb-4 block">
+                        {dict.partnership.caseStudies.label}
+                    </span>
+
+                    {/* Separator Line */}
+                    <div className="w-14 md:w-20 h-[3px] bg-[#045A8633] rounded-full overflow-hidden mb-4 md:mb-8">
+                        <div className="h-full w-1/2 bg-[#045A86] rounded-full"></div>
+                    </div>
+
+                    <p className="text-[#00000099] text-[14px] md:text-[15px] leading-[1.4] max-w-md">
+                        {dict.partnership.caseStudies.description}
+                    </p>
+                </Container>
+            </section>
+
+            <section className="bg-white pb-32 pt-5">
+                <Carousel items={dict.home.alumni.items} lang={lang} />
             </section>
         </>
     );

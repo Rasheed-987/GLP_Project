@@ -437,6 +437,10 @@ export default {
           text: "Visibility and recognition across the GLP ecosystem"
         }
       ]
+    },
+    caseStudies: {
+      label: "CASE STUDIES",
+      description: "GLP has partnered with various entities to deliver programmes across strategy, performance, innovation, and leadership"
     }
   }
 }

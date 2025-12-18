@@ -160,7 +160,7 @@ export default async function ApproachPage({
                 <Container className="px-4">
                     <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
                         {/* Label */}
-                        <span className="text-brand-from text-[13px] md:text-[16px] font-semibold uppercase tracking-[1] md:tracking-[1.6] mb-2">
+                        <span className="text-brand-blue text-[13px] md:text-[16px] font-semibold uppercase tracking-[1] md:tracking-[1.6] mb-2">
                             {dict.approach.learningMethodology.label}
                         </span>
 
@@ -265,7 +265,7 @@ export default async function ApproachPage({
                         {/* Left Column: Label, Line, Title */}
                         <div className="w-full lg:w-1/2">
                             {/* Label */}
-                            <span className="text-brand-from text-[12px] md:text-[15px] font-semibold uppercase tracking-[1.2] md:tracking-[1.6] mb-2 md:mb-4 block">
+                            <span className="text-brand-blue text-[12px] md:text-[15px] font-semibold uppercase tracking-[1.2] md:tracking-[1.6] mb-2 md:mb-4 block">
                                 {dict.approach.aboutUAELGM.label}
                             </span>
 
@@ -301,7 +301,7 @@ export default async function ApproachPage({
                     <div className="border border-gray-200 rounded-3xl md:rounded-2xl overflow-hidden">
                         {/* Pillars Title */}
                         <div className="border-b border-gray-200 py-6">
-                            <h3 className="text-center text-brand-from font-bold text-sm md:text-base uppercase tracking-[1.2]">
+                            <h3 className="text-center text-brand-blue font-bold text-sm md:text-base uppercase tracking-[1.2]">
                                 {dict.approach.aboutUAELGM.pillarsTitle}
                             </h3>
                         </div>
@@ -371,7 +371,7 @@ export default async function ApproachPage({
                             {/* Right Column: Content */}
                             <div className="w-full lg:w-1/2">
                                 {/* Label */}
-                                <span className="text-brand-from text-[13px] md:text-[15px] font-semibold uppercase tracking-[1.6] mb-2 md:mb-4 block">
+                                <span className="text-brand-blue text-[13px] md:text-[15px] font-semibold uppercase tracking-[1.6] mb-2 md:mb-4 block">
                                     {dict.approach.alumniNetwork.label}
                                 </span>
 
@@ -392,7 +392,7 @@ export default async function ApproachPage({
                                 </p>
 
                                 {/* Benefits Title */}
-                                <h3 className="text-brand-from font-bold text-[12px] md:text-[15px] uppercase tracking-[1.2] mb-4">
+                                <h3 className="text-brand-blue font-bold text-[12px] md:text-[15px] uppercase tracking-[1.2] mb-4">
                                     {dict.approach.alumniNetwork.benefitsTitle}
                                 </h3>
 
