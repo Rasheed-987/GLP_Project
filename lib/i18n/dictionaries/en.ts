@@ -261,5 +261,78 @@ export default {
       description: "Explore our programmes and find the one that fits your path",
       button: "Explore programmes"
     }
+  },
+  partnership: {
+    label: "PARTNERSHIP",
+    title: {
+      text1: "Invest in leadership today for the ",
+      highlight1: "ambitions of tomorrow"
+    },
+    description: "Partner with GLP to co-create tailored leadership programmes that align with your strategic goals and national priorities.",
+    button: "Send an inquiry",
+    about: {
+      label: "ABOUT",
+      title: {
+        text1: "The UAE Government Leaders Programme ",
+        highlight1: "(GLP)",
+        text2: " works hand-in-hand with government entities to design and deliver bespoke ",
+        highlight2: "leadership development initiatives"
+      },
+      description: "Every partnership begins with a deep understanding of your organization's objectives, whether that's nurturing emerging talent, preparing your leaders for complex challenges, or closing key capability gaps."
+    },
+    approach: {
+      title: {
+        text1: "We follow a ",
+        highlight1: "three-step approach",
+        text2: " to ensure every tailored program delivers measurable impact"
+      },
+      steps: [
+        {
+          number: "01",
+          title: "Consultation",
+          description: "We begin by working closely with your leadership team to assess your goals, challenges, and context, including talent gaps, strategic priorities, and target demographics."
+        },
+        {
+          number: "02",
+          title: "Co-design",
+          description: "Based on your needs, we design a program using proven learning models, curriculum design and implementation strategies, drawing on successes from government accelerators, performance programs and sector-specific training."
+        },
+        {
+          number: "03",
+          title: "Delivery",
+          description: "Our team supports the full rollout, from onboarding participants to managing facilitation, mentorship, and final assessments. Every programme is delivered to the highest standard and adapted for real-world application."
+        }
+      ]
+    },
+    offer: {
+      pill: "WHAT WE OFFER",
+      title: {
+        text1: "Unlock ",
+        highlight1: "Potential",
+        text2: " with GLP's Innovative ",
+        highlight2: "Learning Models",
+        text3: " and ",
+        highlight3: "Digital Tools"
+      },
+      description: "We also offer digital collaboration opportunities through Qiyadat, our leadership community platform, giving your team ongoing access to support, alumni networks, and curated knowledge exchanges.",
+      cards: [
+        {
+          icon: "/images/development.png",
+          text: "Expertise in leadership development at every level"
+        },
+        {
+          icon: "/images/users.png",
+          text: "High-level facilitation, coaching, and programme design"
+        },
+        {
+          icon: "/images/target.png",
+          text: "Strategic alignment with UAE Vision 2031 and beyond"
+        },
+        {
+          icon: "/images/star.png",
+          text: "Visibility and recognition across the GLP ecosystem"
+        }
+      ]
+    }
   }
 }
