@@ -28,9 +28,9 @@ export default async function WebLayout({
           </Container>
         </header>
         <Container>
-  <main>{children}</main>
+          <main>{children}</main>
         </Container>
-      
+
         <Footer locale={lang} dict={dict} />
       </div>
     </>

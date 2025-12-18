@@ -45,3 +45,10 @@ body {
     background-image: var(--brand-gradient);
   }
 }
+
+.gradient-text {
+  background: linear-gradient(90deg, #045A86 0%, #019977 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

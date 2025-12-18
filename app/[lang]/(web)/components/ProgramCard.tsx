@@ -56,24 +56,25 @@ export default function ProgramCard({ item, reversed }: ProgramCardProps) {
     const bgColor = isGreenTheme ? 'bg-[#E4F3EF]' : 'bg-[#F7FAF9]';
 
     return (
-        <div className={`w-full max-w-7xl mx-auto p-5 rounded-3xl overflow-hidden ${bgColor} `}>
-            <div className={`flex flex-col ${reversed ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
+        <div className={`w-full max-w-7xl mx-auto p-3 md:p-5 rounded-2xl md:rounded-3xl overflow-hidden ${bgColor} `}>
+            <div className={`flex flex-col-reverse ${reversed ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
                 {/* Content Section */}
-                <div className="w-full lg:w-1/2 px-8 lg:px-12 self-start">
+                <div className="w-full lg:w-1/2 md:px-4 lg:px-8 xl:px-12 self-start">
                     {/* Tag */}
-                    <div className="inline-block px-3 rounded-full bg-[#E6EEF3] border border-[#D8E5EB] mb-3">
-                        <span className="text-[10px] md:text-[13px] font-bold text-[#045A86] uppercase tracking-wider">
+                    <div className="inline-flex px-3 py-1 rounded-full bg-[#E6EEF3] border border-[#D8E5EB] mb-3">
+                        <span className="flex items-center pt-[1px] md:pt-[2px] text-[10px] md:text-[13px] font-bold leading-none text-[#045A86] uppercase tracking-wider">
                             {item.tag}
                         </span>
                     </div>
 
+
                     {/* Title */}
-                    <h2 className="text-[1.7rem] font-bold text-black mb-2 tracking-tight">
+                    <h2 className="text-[1.3rem] md:text-[1.7rem] font-bold text-black mb-2 leading-[1.1] tracking-tight">
                         {item.title}
                     </h2>
 
                     {/* Description */}
-                    <p className="text-[#00000099] mb-8 leading-[1.3]">
+                    <p className="text-[#00000099] mb-8 leading-[1.3] ">
                         {item.description}
                     </p>
 
@@ -151,7 +152,7 @@ export default function ProgramCard({ item, reversed }: ProgramCardProps) {
                 </div>
 
                 {/* Image Section */}
-                <div className="w-full lg:w-1/2 relative min-h-[300px] lg:min-h-0 lg:h-auto lg:aspect-[4/3] overflow-hidden rounded-xl bg-gray-200">
+                <div className="w-full mb-4 md:mb-0 lg:w-1/2 relative min-h-[300px] lg:min-h-0 lg:h-auto lg:aspect-[4/3] overflow-hidden rounded-2xl  md:rounded-xl bg-gray-200">
                     {/* Placeholder or actual image */}
                     {item.image ? (
                         <Image
