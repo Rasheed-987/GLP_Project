@@ -19,14 +19,16 @@ export default function Footer({ locale, dict }: FooterProps) {
                         <div className="inline-block">
                             <Image
                                 src="/images/logo2.png"
-                                alt={dict.home.title}
+                                alt="UGLP"
                                 width={120}
                                 height={60}
                                 className="h-auto w-auto max-w-full"
                             />
                         </div>
 
+
                         <p className="text-gray-500 text-[14px] md:text-[15px] max-w-[14rem] leading-[1.2]">
+
                             {dict.footer.description}
                         </p>
                     </div>

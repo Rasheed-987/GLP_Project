@@ -19,11 +19,20 @@ export default {
     applyNow: 'Apply now',
   },
   home: {
-    title: 'Empowering the next generation of leaders',
+    hero: {
+      titlePrefix: "Empowering the ",
+      titleHighlight: "next generation",
+      titleSuffix: " of leaders",
+    },
     description: 'Discover national leadership programmes designed to shape future-ready Emirati talent, aligned with the UAE’s long-term vision and excellence agenda.',
     about: {
       pill: 'ABOUT',
-      title: 'The UAE Government Leaders Programme (UAE GLP) is a national initiative dedicated to cultivating Emirati talent for leadership roles across government and beyond',
+      title: {
+        part1: 'The UAE Government Leaders Programme (UAE GLP)',
+        part2: ' is a national initiative dedicated to cultivating ',
+        part3: 'Emirati talent for leadership',
+        part4: ' roles across government and beyond',
+      },
       description: 'Through advanced training, mentoring, and real-world exposure, GLP develops leaders equipped to navigate tomorrow’s challenges, today.',
     },
     features: [
@@ -52,6 +61,101 @@ export default {
         text: "Lifelong community via Qiyadat alumni network",
       },
     ],
+    quote: {
+      text: "The goal is to graduate new and continuous leadership to take on new responsibilities in a nation that never stops and ",
+      highlight: "turn the government's vision into achievements.",
+      author: "H.H. SHEIKH MOHAMMED BIN RASHID AL MAKTOUM"
+    },
+    alumni: {
+      items: [
+        {
+          tag: "2024 GRADUATE",
+          quote: "Through the Strategic Leaders Programme, I developed the strategic vision to launch Dubai's first carbon-neutral district. This initiative now serves as a model for sustainable urban development across the region.",
+          author: "AHMED AL ZAABI",
+          role: "HEAD OF SUSTAINABILITY INITIATIVES",
+          image: "/images/carasol1.png",
+          logo: "/images/carasollogo.png",
+          stats: [
+            { value: "100%", label: "Carbon neutral district" },
+            { value: "25M", label: "AED investment secured" },
+            { value: "5", label: "Regional partnerships" }
+          ]
+        },
+        {
+          tag: "2024 GRADUATE",
+          quote: "The programme provided me with the tools to lead digital transformation at a national level, ensuring our services are ready for the challenges of tomorrow.",
+          author: "FATIMA AL MANSOURI",
+          role: "DIRECTOR OF DIGITAL STRATEGY",
+          image: "/images/carasol2.png",
+          logo: "/images/carasollogo.png",
+          stats: [
+            { value: "85%", label: "Digitization rate" },
+            { value: "10+", label: "National projects" },
+            { value: "15", label: "Strategic alliances" }
+          ]
+        },
+        {
+          tag: "2024 GRADUATE",
+          quote: "The UAE Government Leadership Program equipped me with the tools to modernize our healthcare delivery system. We've improved patient outcomes by 40% while reducing operational costs significantly.",
+          author: "DR. FATIMA AL RASHID",
+          role: "Deputy Director of Healthcare Innovation",
+          image: "/images/carasol1.png",
+          logo: "/images/carasollogo.png",
+          stats: [
+            { value: "40%", label: "Improved patient outcomes" },
+            { value: "25%", label: "Reduction in costs" },
+            { value: "12", label: "National awards" }
+          ]
+        }
+      ],
+      graduatesStories: "Read graduates' stories"
+    },
+    nomination: {
+      title: "Know someone with the",
+      titleHighlight: "potential to lead?",
+      description: "Provide your details along with the nominee's information, we'll reach out to them and let them know you recommended them.",
+      recommendTitle: "WHO CAN YOU RECOMMEND?",
+      recommendList: [
+        {
+          icon: "/images/icon1.png",
+          text: "Emirati professionals with a clear track record of initiative and impact"
+        },
+        {
+          icon: "/images/icon2.png",
+          text: "Individuals working in government or private sector roles"
+        },
+        {
+          icon: "/images/icon3.png",
+          text: "Those who align with the values of the UAE Government Leadership Model"
+        }
+      ],
+      form: {
+        yourDetails: "YOUR DETAILS",
+        fullName: "Your full name",
+        organization: "Organization name",
+        email: "Your email",
+        nomineeDetails: "NOMINEE'S DETAILS",
+        nomineeName: "Name of nominee",
+        nomineeOrg: "Nominee's organization",
+        nomineeEmail: "Nominee's Email",
+        reason: "Why are you recommending this individual?",
+        submit: "Submit"
+      }
+    },
+    partners: {
+      pill: "PARTNERS & RECOGNITION",
+      title: "Proudly supporting national talent through",
+      titleHighlight: "award-winning programmes",
+      titleSuffix: " featured across key government and media platforms",
+      subTitle: "Proud partners of:"
+    },
+    contact: {
+      title1: "Ready to take the next step",
+      title2: "in your leadership journey?",
+      description: "Apply now or explore which program fits your path",
+      button1: "Apply now",
+      button2: "Partner with us"
+    }
   },
   metadata: {
     title: 'GLP',
@@ -70,7 +174,7 @@ export default {
         id: 'uaeglp',
         tag: 'FOR EMERGING AND MID-LEVEL LEADERS',
         title: 'UAE Government Leadership Program',
-        description: 'A future-focused programme for emerging leaders, UAEGLP prepares emerging leaders to thrive in fast-evolving environments with a curriculum that blends strategy, innovation and applied leadership to accelerate growth and readiness.',
+        description: 'Designed for experienced professionals across government and private sectors who are ready to lead with resilience and innovation.',
         features: [
           'Strategic leadership training',
           'Mentorship from experienced leaders',
@@ -89,7 +193,7 @@ export default {
         id: 'nafis',
         tag: 'FOR EARLY-CAREER TALENT',
         title: 'Nafis Leadership Program',
-        description: "Nafis is built to nurture early-career professionals who show leadership potential. It's a hands-on programme that builds confidence, develops leadership foundations, and provides a national perspective on development and public impact.",
+        description: "Designed for ambitious young leaders (aged 21-35) from the private sector, building foundational skills for the future.",
         features: [
           'Personal leadership development',
           'Applied projects and field visits',
@@ -109,7 +213,7 @@ export default {
         id: 'strategic',
         tag: 'FOR SENIOR LEADERSHIP',
         title: 'Strategic Leaders Program',
-        description: 'An ongoing development platform for senior leaders shaping policy at the highest levels. Strategic Leaders is not a public application program; participants are nominated and engage in continuous capacity-building tailored to national priorities.',
+        description: 'Tailored for Undersecretaries and Directors General from the federal government, focused on shaping policy and global leadership capacity.',
         features: [
           'Advanced leadership dialogues',
           'Global and regional insights',

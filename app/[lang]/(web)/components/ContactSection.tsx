@@ -7,6 +7,7 @@ type ContactSectionProps = {
     titleLine2: string;
     description: string;
     button: string;
+    button2?: string;
     backgroundImage?: string;
 };
 
@@ -15,6 +16,7 @@ export default function ContactSection({
     titleLine2,
     description,
     button,
+    button2,
     backgroundImage = '/images/contactbg.png'
 }: ContactSectionProps) {
     return (
@@ -32,20 +34,30 @@ export default function ContactSection({
                 </div>
 
                 {/* Content Overlay */}
-                <div className="relative z-10 w-full md:max-w-2xl md:px-4">
+
+                <div className="relative z-10 max-w-3xl px-4">
+
                     <h2 className="text-white mb-3 leading-tight">
-                        <span className="block text-2xl md:text-3xl  mb-1">{titleLine1}</span>
-                        <span className="block text-2xl md:text-3xl font-extrabold">{titleLine2}</span>
+                        <span className="block text-3xl md:text-5xl mb-1">{titleLine1}</span>
+                        <span className="block text-3xl md:text-5xl font-extrabold">{titleLine2}</span>
                     </h2>
-                    <p className="text-white/90 text-sm md:text-base mb-8 max-w-xs mx-auto leading-relaxed">
+                    <p className="text-white/90 text-sm md:text-base mb-8 max-w-sm mx-auto leading-relaxed">
                         {description}
                     </p>
-                    <button
-                        className="inline-flex items-center justify-center px-5 py-3.5 rounded-full bg-white text-black/80 hover:cursor-pointer hover:text-brand-from font-extrabold text-sm md:text-[14px] capitalize leading-none transition-transform duration-200 ease-out hover:-translate-x-0.5 hover:translate-y-0.5"
-                    >
-                        {button}
-                    </button>
-
+                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                        <button
+                            className="inline-flex items-center justify-center px-10 py-4 rounded-full bg-white text-black/80 hover:cursor-pointer font-extrabold text-sm md:text-[14px] capitalize leading-none transition-transform duration-200 ease-out hover:scale-105"
+                        >
+                            {button}
+                        </button>
+                        {button2 && (
+                            <button
+                                className="inline-flex items-center justify-center px-10 py-4 rounded-full border border-white text-white hover:cursor-pointer font-extrabold text-sm md:text-[14px] capitalize leading-none transition-transform duration-200 ease-out hover:scale-105"
+                            >
+                                {button2}
+                            </button>
+                        )}
+                    </div>
                 </div>
             </div>
         </section>
