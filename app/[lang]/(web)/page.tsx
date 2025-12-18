@@ -14,11 +14,8 @@ export default async function HomePage({
 }) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
-  // Ensure we have access to the quote even if potential type mismatch happens during dev
-  const quote = dict.home.quote || { text: "", highlight: "", author: "" }; 
 
   const programs = dict.programs.items.slice(0, 3);
-  const images = ["/images/homemid1.png", "/images/homemid2.png", "/images/homemid3.png"];
 
   return (
     <>
@@ -153,7 +150,7 @@ export default async function HomePage({
                         />
                      </div>
                      <div className="w-full lg:w-7/12 flex flex-col justify-center">
-                        <p className="text-4xl md:text-5xl text-brand-green font-serif mb-6">"</p>
+                        <p className="text-4xl md:text-5xl text-brand-green font-serif mb-6">&quot;</p>
                         <p className="text-[28px] md:text-[36px] leading-tight font-normal mb-8">
                             <span className="bg-brand-gradient bg-clip-text text-transparent inline-block">
                                 {dict.home.quote.text}

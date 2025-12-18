@@ -25,7 +25,6 @@ type NavbarProps = {
       login: string;
     };
     home: {
-      title: string;
       description: string;
     };
   };
