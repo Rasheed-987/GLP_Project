@@ -19,7 +19,7 @@ export default function ContactSection({
 }: ContactSectionProps) {
     return (
         <section className="px-4 pb-20">
-            <div className="relative w-full max-w-8xl mx-auto rounded-3xl overflow-hidden min-h-[500px] flex flex-col items-center justify-center text-center p-8">
+            <div className="relative w-full max-w-8xl mx-auto rounded-3xl overflow-hidden min-h-[400px] md:min-h-[500px] flex flex-col items-center justify-center text-center p-4 md:p-8">
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <Image
@@ -32,7 +32,7 @@ export default function ContactSection({
                 </div>
 
                 {/* Content Overlay */}
-                <div className="relative z-10 max-w-2xl px-4">
+                <div className="relative z-10 w-full md:max-w-2xl md:px-4">
                     <h2 className="text-white mb-3 leading-tight">
                         <span className="block text-2xl md:text-3xl  mb-1">{titleLine1}</span>
                         <span className="block text-2xl md:text-3xl font-extrabold">{titleLine2}</span>

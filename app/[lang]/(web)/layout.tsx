@@ -19,7 +19,7 @@ export default async function WebLayout({
   return (
     <>
       <Container className="px-4">
-        <TopBar locale={lang} dict={dict} />
+        {/* <TopBar locale={lang} dict={dict} /> */}
       </Container>
       <div className="relative">
         <header className="absolute top-0 left-0 right-0 z-20 w-full">
@@ -28,9 +28,9 @@ export default async function WebLayout({
           </Container>
         </header>
         <Container>
-  <main>{children}</main>
+          <main>{children}</main>
         </Container>
-      
+
         <Footer locale={lang} dict={dict} />
       </div>
     </>

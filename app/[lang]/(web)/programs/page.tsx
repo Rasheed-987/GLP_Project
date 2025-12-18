@@ -17,7 +17,7 @@ export default async function ProgramsPage({
         <>
             {/* hero section  */}
             <section className="bg-white pt-20 pb-10 px-4">
-                <div className="max-w-4xl mx-auto flex flex-col items-center text-center space-y-8">
+                <div className="max-w-4xl mx-auto flex flex-col items-center text-center space-y-4 md:space-y-8">
                     {/* Pill Component */}
                     <TagPill label={dict.programs.hero.pill} />
 
@@ -27,20 +27,20 @@ export default async function ProgramsPage({
                         <span className="block text-4xl md:text-[4rem] md:-tracking-[0.05rem] font-bold leading-[1] ">
                             {dict.programs.hero.title}
                         </span>
-                        <span className="block text-3xl md:text-[3rem] max-w-2xl md:-tracking-[0.05rem] leading-[0.9] font-normal ">
+                        <span className="block text-3xl md:text-[3rem] max-w-2xl md:-tracking-[0.05rem] leading-[1]  md:leading-[0.9] font-normal ">
                             {dict.programs.hero.subtitle}
                         </span>
                     </h1>
 
                     {/* Subheading Description */}
-                    <p className="max-w-xl text-base  md:text-lg text-[#00000099] leading-[1.3] whitespace-pre-wrap">
+                    <p className="max-w-xl text-sm sm:text-base  md:text-lg text-[#00000099] leading-[1.3] whitespace-pre-wrap">
                         {dict.programs.hero.description}
                     </p>
                 </div>
             </section>
 
             {/* programs section */}
-            <section className="bg-white pb-20 px-4 space-y-8">
+            <section className="bg-white pb-5 sm:pb-10 md:pb-20 px-4 space-y-8">
                 {dict.programs.items?.map((item, index) => (
                     <ProgramCard
                         key={item.id}
