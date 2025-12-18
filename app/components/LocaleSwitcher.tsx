@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import type { Locale } from '@/lib/i18n/config'
 
-export default function LocaleSwitcher({ currentLocale }: { currentLocale: Locale }) {
+export default function LocaleSwitcher({ currentLocale, className }: { currentLocale: Locale; className?: string }) {
   const pathName = usePathname()
 
   const redirectedPathName = (locale: Locale) => {
@@ -22,7 +22,7 @@ export default function LocaleSwitcher({ currentLocale }: { currentLocale: Local
   return (
     <Link
       href={toggleLocale()}
-      className="hidden sm:inline-flex items-center gap-2 rounded-full border border-black/10 bg-white px-3 py-1 text-xs text-zinc-700 hover:bg-black/5 transition-colors"
+      className={`group items-center justify-center h-9 gap-2 rounded-full border border-black/10 bg-white px-3 text-xs text-black hover:bg-black/5 transition-colors ${className}`}
     >
       <svg
         width="14"
@@ -30,6 +30,7 @@ export default function LocaleSwitcher({ currentLocale }: { currentLocale: Local
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        className="group-hover:hidden"
       >
         <path
           d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
@@ -47,7 +48,9 @@ export default function LocaleSwitcher({ currentLocale }: { currentLocale: Local
           strokeWidth="1.5"
         />
       </svg>
-      {currentLocale === 'en' ? 'AR' : 'EN'}
+      <span className="font-bold text-black group-hover:text-brand-gradient group-hover:bg-white">
+        {currentLocale === 'en' ? 'AR' : 'EN'}
+      </span>
     </Link>
   )
 }

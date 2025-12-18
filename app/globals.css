@@ -4,10 +4,10 @@
   --background: #ffffff;
   --foreground: #171717;
   /* Brand palette */
-  --brand-from: #045A86;
-  --brand-to: #019977;
+  --blue: #045A86;
+  --green: #019977;
   /* Brand gradient */
-  --brand-gradient: linear-gradient(90deg, var(--brand-from) 0%, var(--brand-to) 100%);
+  --brand-gradient: linear-gradient(90deg, var(--blue) 0%, var(--green) 100%);
   /* Border colors */
   --border-stroke: rgba(0, 0, 0, 0.2);
 }
@@ -16,12 +16,13 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   /* Map brand colors to Tailwind tokens */
-  --color-brand-from: var(--brand-from);
-  --color-brand-to: var(--brand-to);
+  --color-brand-blue: var(--blue);
+  --color-brand-green: var(--green);
+  --color-brand-dark-blue: var(--blue); /* Alias for backward compatibility/specific usage */
   /* Border colors */
   --color-border-stroke: var(--border-stroke);
   /* Prefer Frutiger Arabic if available */
-  --font-sans: var(--font-frutiger-arabic), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-frutiger-arabic),;
   --font-mono: var(--font-geist-mono);
 }
 

@@ -2,7 +2,11 @@
 import Image from "next/image";
 
 type HeroProps = {
-  title: string;
+  title: {
+    prefix: string;
+    highlight: string;
+    suffix: string;
+  };
   description: string;
   backgroundImage: string;
   buttons: {
@@ -19,10 +23,10 @@ type HeroProps = {
 
 export default function Hero({ title, description, backgroundImage, buttons }: HeroProps) {
   return (
-    <div className="relative rounded-2xl overflow-hidden md:h-150 w-full">
+    <div className="relative rounded-2xl overflow-hidden md:h-180 w-full">
       <Image
         src={backgroundImage}
-        alt={title}
+        alt={`${title.prefix}${title.highlight}${title.suffix}`}
         fill
         style={{ objectFit: "cover" }}
         className="z-0"
@@ -30,8 +34,12 @@ export default function Hero({ title, description, backgroundImage, buttons }: H
       />
       <div className="absolute inset-0 bg-black/30" />
       <div className="relative z-10 flex h-full items-center justify-start text-white">
-        <div className="max-w-2xl px-4 md:px-10">
-          <h1 className="text-4xl md:text-6xl font-bold">{title}</h1>
+        <div className="max-w-xl px-4 md:px-10">
+          <h1 className="text-4xl md:text-6xl font-light">
+            {title.prefix}
+            <span className="font-bold">{title.highlight}</span>
+            {title.suffix}
+          </h1>
           <p className="mt-4 text-lg md:text-xl">
             {description}
           </p>
