@@ -65,17 +65,17 @@ export default function Carousel({ items, lang }: CarouselProps) {
               <div className="lg:w-7/12 bg-[#E6EFEA] rounded-[32px] p-8 md:p-12 lg:p-14 flex flex-col justify-between relative lg:h-[600px] overflow-hidden">
                 <div>
                   <div className="text-brand-green text-5xl font-serif mb-4 leading-none">“</div>
-                  <p className="text-xl md:text-2xl leading-tight text-brand-dark-blue font-light mb-8">
+                  <p className="text-xl md:text-2xl leading-tight text-brand-dark-brand-blue font-light mb-8">
                     {item.quote}
                   </p>
 
                   <div className="flex justify-between items-end">
                     <div>
-                      <div className="h-1 w-12 bg-brand-dark-blue mb-4" />
-                      <h4 className="text-lg font-bold text-brand-dark-blue uppercase tracking-tight">
+                      <div className="h-1 w-12 bg-brand-dark-brand-blue mb-4" />
+                      <h4 className="text-lg font-bold text-brand-dark-brand-blue uppercase tracking-tight">
                         {item.author}
                       </h4>
-                      <p className="text-xs text-brand-dark-blue/70 font-medium uppercase tracking-widest mt-1">
+                      <p className="text-xs text-brand-dark-brand-blue/70 font-medium uppercase tracking-widest mt-1">
                         {item.role}
                       </p>
                     </div>
@@ -90,14 +90,14 @@ export default function Carousel({ items, lang }: CarouselProps) {
                   </div>
                 </div>
 
-                <div className="mt-8 pt-8 border-t border-brand-dark-blue/10">
+                <div className="mt-8 pt-8 border-t border-brand-dark-brand-blue/10">
                   <div className="grid grid-cols-3 gap-8">
                     {item.stats.map((stat, sIndex) => (
                       <div key={sIndex} className="text-center lg:text-left">
                         <div className="text-4xl md:text-5xl font-bold text-brand-green mb-2">
                           {stat.value}
                         </div>
-                        <div className="text-xs text-brand-dark-blue/60 uppercase font-medium leading-tight">
+                        <div className="text-xs text-brand-dark-brand-blue/60 uppercase font-medium leading-tight">
                           {stat.label}
                         </div>
                       </div>
