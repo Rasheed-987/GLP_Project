@@ -6,6 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import Carousel from "./components/Carousel";
 import ContactSection from "./components/ContactSection";
+import Marquee from "react-fast-marquee";
+import InteractiveProgramCard from "./components/InteractiveProgramCard";
 
 export default async function HomePage({
   params,
@@ -19,6 +21,7 @@ export default async function HomePage({
 
   return (
     <>
+      {/* Hero Section: Main introduction with primary call-to-actions */}
       <div className="px-4 ">
         <Hero
           title={{
@@ -34,12 +37,13 @@ export default async function HomePage({
               href: `/${lang}/programmes`,
             },
             secondary: {
-              text: dict.nav.partnership,
+              text: dict.nav.partnerWithUs,
               href: `/${lang}/partnership`,
             },
           }}
         />
       </div>
+      {/* Features Section: Key highlights and program benefits */}
       <div className="py-12 bg-white sm:py-16">
         <div className="mx-auto  px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-x-8 gap-y-10 text-center sm:grid-cols-3 lg:grid-cols-6">
@@ -54,6 +58,7 @@ export default async function HomePage({
           </div>
         </div>
       </div>
+      {/* About & Programs Section: Detailed introduction to GLP and preview of available programs */}
       <section className="py-16 bg-white">
         <div className="mx-auto  px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -79,56 +84,24 @@ export default async function HomePage({
           </div>
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {programs.map((program, index) => {
-              const isInteractive = index < 2;
+              const isInteractive = index < 3;
               const foregroundImages = ["/images/homecenter1.png", "/images/homecenter2.png", "/images/homecenter3.png"];
 
               return (
-                <div key={program.title} className="group relative rounded-[32px] overflow-hidden aspect-4/5 lg:aspect-3/4 bg-brand-green">
-                  {/* Background Pattern */}
-                  <Image
-                    src="/images/gb.png"
-                    alt=""
-                    fill
-                    className="object-cover"
-                  />
-
-                  {/* Foreground Image */}
-                  <div className="absolute inset-0 z-10">
-                    <Image
-                      src={foregroundImages[index]}
-                      alt={program.title}
-                      fill
-                      className={`object-contain object-bottom-right pointer-events-none transition-transform duration-500 ease-out ${isInteractive ? 'group-hover:scale-105' : ''}`}
-                    />
-                  </div>
-
-                  {/* Overlays for text readability */}
-                  <div className="absolute inset-0 z-20 bg-gradient-to-b from-black/60 via-transparent h-1/2" />
-                  <div className={`absolute inset-0 z-20 bg-linear-to-t from-black/80 via-transparent transition-opacity duration-500 ${isInteractive ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'}`} />
-
-                  {/* Content (Pill, Title, and Description) */}
-                  <div className="absolute inset-0 z-30 p-8 flex flex-col pointer-events-none">
-                    <div className="mb-4">
-                      <span className="inline-block px-4 py-1.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-wider">
-                        {program.tag}
-                      </span>
-                    </div>
-                    <h3 className="text-2xl md:text-3xl font-bold text-white leading-tight max-w-[90%]">
-                      {program.title}
-                    </h3>
-
-                    <div className={`mt-auto transition-all duration-500 transform ${isInteractive ? 'opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0' : 'opacity-100 translate-y-0'}`}>
-                      <p className="text-white/90 text-sm leading-relaxed max-w-[95%]">
-                        {program.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <InteractiveProgramCard
+                  key={program.title}
+                  program={program}
+                  isInteractive={isInteractive}
+                  foregroundImage={foregroundImages[index]}
+                  index={index}
+                  dict={dict}
+                />
               );
             })}
           </div>
         </div>
       </section>
+      {/* Programs CTA Section: Direct link to the full programs list */}
       <section className="bg-white pb-16">
         <div className="flex justify-center">
           <Link href={`/${lang}/programmes`}>
@@ -137,10 +110,23 @@ export default async function HomePage({
         </div>
       </section>
 
+      {/* Leadership Quote Section: Inspirational message from H.H. Sheikh Mohammed Bin Rashid Al Maktoum */}
       <section className="bg-white pb-32">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 ">
           <div className="bg-[#E6EFEA] rounded-[32px] px-6 py-12 md:p-16 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-            <div className="relative w-full lg:w-5/12 flex justify-center lg:justify-end">
+            {/* Mobile: Quote text first */}
+            <div className="w-full lg:hidden flex flex-col justify-center order-1">
+              <p className="text-4xl md:text-5xl text-brand-green font-serif mb-6">&quot;</p>
+              <p className="text-[28px] md:text-[36px] leading-tight font-normal mb-8">
+                <span className="bg-brand-gradient bg-clip-text text-transparent inline-block">
+                  {dict.home.quote.text}
+                  <span className="font-bold">{dict.home.quote.highlight}</span>
+                </span>
+              </p>
+            </div>
+
+            {/* Image */}
+            <div className="relative w-full lg:w-5/12 flex justify-center lg:justify-end order-2 lg:order-1">
               <Image
                 src="/images/shiekh.png"
                 alt="H.H. Sheikh Mohammed Bin Rashid Al Maktoum"
@@ -149,15 +135,30 @@ export default async function HomePage({
                 className="object-contain drop-shadow-xl"
               />
             </div>
-            <div className="w-full lg:w-7/12 flex flex-col justify-center">
-              <p className="text-4xl md:text-5xl text-brand-green font-serif mb-6">&quot;</p>
-              <p className="text-[28px] md:text-[36px] leading-tight font-normal mb-8">
-                <span className="bg-brand-gradient bg-clip-text text-transparent inline-block">
-                  {dict.home.quote.text}
-                  <span className="font-bold">{dict.home.quote.highlight}</span>
-                </span>
-              </p>
-              <div>
+
+            {/* Desktop: Quote text and author */}
+            <div className="w-full lg:w-7/12 flex flex-col justify-center order-3 lg:order-2">
+              {/* Desktop only */}
+              <div className="hidden lg:block">
+                <p className="text-4xl md:text-5xl text-brand-green font-serif mb-6">&quot;</p>
+                <p className="text-[28px] md:text-[36px] leading-tight font-normal mb-8">
+                  <span className="bg-brand-gradient bg-clip-text text-transparent inline-block">
+                    {dict.home.quote.text}
+                    <span className="font-bold">{dict.home.quote.highlight}</span>
+                  </span>
+                </p>
+              </div>
+
+              {/* Mobile: Author at bottom */}
+              <div className="w-full lg:hidden">
+                <div className="h-1 w-10 bg-brand-dark-brand-blue mb-4"></div>
+                <p className="text-xs md:text-sm font-bold tracking-widest text-brand-dark-brand-blue uppercase">
+                  {dict.home.quote.author}
+                </p>
+              </div>
+
+              {/* Desktop: Author */}
+              <div className="hidden lg:block">
                 <div className="h-1 w-10 bg-brand-dark-brand-blue mb-4"></div>
                 <p className="text-xs md:text-sm font-bold tracking-widest text-brand-dark-brand-blue uppercase">
                   {dict.home.quote.author}
@@ -168,12 +169,14 @@ export default async function HomePage({
         </div>
       </section>
 
+      {/* Alumni Testimonials Section: Carousel displaying success stories from previous graduates */}
       <section className="bg-white pb-32">
         <div className="">
           <Carousel items={dict.home.alumni.items} lang={lang} />
         </div>
       </section>
 
+      {/* Alumni Stories CTA Section: Link to view all alumni stories */}
       <section className="bg-white pb-32">
         <div className="flex justify-center">
           <Link href={`/${lang}/alumni`}>
@@ -181,6 +184,7 @@ export default async function HomePage({
           </Link>
         </div>
       </section>
+      {/* Nomination Section: Information and form for recommending potential leaders */}
       <section className="bg-white pb-32">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
@@ -267,15 +271,16 @@ export default async function HomePage({
                   />
                 </div>
 
-                <button className="w-full py-5 rounded-full bg-gradient-to-r from-brand-dark-brand-blue to-brand-green text-white font-bold text-sm tracking-widest uppercase hover:opacity-90 transition-opacity">
+                <Button className="w-full py-5 rounded-full tracking-widest uppercase">
                   {dict.home.nomination.form.submit}
-                </button>
+                </Button>
               </form>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Partners & Recognition Section: Showcasing strategic partners and media presence */}
       <section className="bg-white pb-32">
         <div className=" mx-auto px-4 sm:px-6 lg:px-8 ">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -304,24 +309,25 @@ export default async function HomePage({
                 <p className="text-[14px] text-[#4B5563]/70 mb-8">
                   {dict.home.partners.subTitle}
                 </p>
-                <div className="flex items-center gap-4">
-                  {/* Logo Pills with varying opacities to match the design fade effect */}
-                  <div className="px-6 py-2.5 rounded-full bg-[#006A8E]/10 flex items-center justify-center">
-                    <span className="text-[10px] font-bold text-[#006A8E]/30 tracking-widest uppercase">Logo</span>
+                <Marquee speed={50} gradient={true} gradientColor="#E9F1EE" gradientWidth={60} pauseOnHover={true}>
+                  <div className="flex items-center gap-4 mx-2">
+                    <div className="px-6 py-2.5 rounded-full bg-[#006A8E] flex items-center justify-center">
+                      <span className="text-[10px] font-bold text-white tracking-widest uppercase">Logo</span>
+                    </div>
+                    <div className="px-6 py-2.5 rounded-full bg-[#006A8E] flex items-center justify-center">
+                      <span className="text-[10px] font-bold text-white tracking-widest uppercase">Logo</span>
+                    </div>
+                    <div className="px-6 py-2.5 rounded-full bg-[#006A8E] flex items-center justify-center">
+                      <span className="text-[10px] font-bold text-white tracking-widest uppercase">Logo</span>
+                    </div>
+                    <div className="px-6 py-2.5 rounded-full bg-[#006A8E] flex items-center justify-center">
+                      <span className="text-[10px] font-bold text-white tracking-widest uppercase">Logo</span>
+                    </div>
+                    <div className="px-6 py-2.5 rounded-full bg-[#006A8E] flex items-center justify-center">
+                      <span className="text-[10px] font-bold text-white tracking-widest uppercase">Logo</span>
+                    </div>
                   </div>
-                  <div className="px-6 py-2.5 rounded-full bg-[#066480]/60 flex items-center justify-center">
-                    <span className="text-[10px] font-bold text-white tracking-widest uppercase">Logo</span>
-                  </div>
-                  <div className="px-6 py-2.5 rounded-full bg-[#006A8E] flex items-center justify-center">
-                    <span className="text-[10px] font-bold text-white tracking-widest uppercase">Logo</span>
-                  </div>
-                  <div className="px-6 py-2.5 rounded-full bg-[#066480]/60 flex items-center justify-center">
-                    <span className="text-[10px] font-bold text-white tracking-widest uppercase">Logo</span>
-                  </div>
-                  <div className="px-6 py-2.5 rounded-full bg-[#006A8E]/10 flex items-center justify-center">
-                    <span className="text-[10px] font-bold text-[#006A8E]/30 tracking-widest uppercase">Logo</span>
-                  </div>
-                </div>
+                </Marquee>
               </div>
             </div>
 
@@ -337,6 +343,7 @@ export default async function HomePage({
           </div>
         </div>
       </section>
+      {/* Final Contact Section: Closing global call-to-action for the entire page */}
       <ContactSection
         titleLine1={dict.home.contact.title1}
         titleLine2={dict.home.contact.title2}

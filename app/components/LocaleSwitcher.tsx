@@ -4,7 +4,17 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import type { Locale } from '@/lib/i18n/config'
 
-export default function LocaleSwitcher({ currentLocale, className }: { currentLocale: Locale; className?: string }) {
+type LocaleSwitcherProps = {
+  currentLocale: Locale
+  className?: string
+  isMenuOpen?: boolean
+}
+
+export default function LocaleSwitcher({
+  currentLocale,
+  className,
+  isMenuOpen = false,
+}: LocaleSwitcherProps) {
   const pathName = usePathname()
 
   const redirectedPathName = (locale: Locale) => {
@@ -22,15 +32,27 @@ export default function LocaleSwitcher({ currentLocale, className }: { currentLo
   return (
     <Link
       href={toggleLocale()}
-      className={`group items-center justify-center h-9 gap-2 rounded-full border border-black/10 bg-white px-3 text-xs text-black hover:bg-black/5 transition-colors ${className}`}
+      className={`
+        group relative flex items-center gap-2 h-9 rounded-full bg-white
+        transition-all duration-300 ease-out
+        ${isMenuOpen
+          ? 'px-3 border border-black/10'
+          : 'px-3 border border-black/10 hover:border-transparent'
+        }
+        ${className ?? ''}
+      `}
     >
+      {/* SVG Icon */}
       <svg
         width="14"
         height="14"
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="group-hover:hidden"
+        className={`
+          flex-shrink-0 text-black transition-opacity duration-300
+          ${isMenuOpen ? 'opacity-100' : 'group-hover:opacity-0'}
+        `}
       >
         <path
           d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
@@ -48,7 +70,9 @@ export default function LocaleSwitcher({ currentLocale, className }: { currentLo
           strokeWidth="1.5"
         />
       </svg>
-      <span className="font-bold text-black group-hover:text-brand-gradient group-hover:bg-white">
+
+      {/* Locale Text */}
+      <span className="text-xs font-bold text-black whitespace-nowrap">
         {currentLocale === 'en' ? 'AR' : 'EN'}
       </span>
     </Link>
