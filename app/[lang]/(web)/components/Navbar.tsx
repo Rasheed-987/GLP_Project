@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import LocaleSwitcher from "@/app/components/LocaleSwitcher";
 import type { Locale } from "@/lib/i18n/config";
@@ -47,42 +47,80 @@ export default function Navbar({ locale, dict }: NavbarProps) {
     { href: `/${locale}/contact`, label: dict.nav.contact },
   ];
   const [open, setOpen] = useState(false);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const menuImages = ["/images/menuimg1.png", "/images/menuimg2.png", "/images/menuimg3.png"];
+
+
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (isHovered) {
+      interval = setInterval(() => {
+        setActiveImageIndex((prev) => (prev + 1) % menuImages.length);
+      }, 1000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isHovered, menuImages.length]);
+
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [open]);
 
   return (
-    <div className={`w-full transition-colors duration-200 ${open ? 'bg-white h-screen fixed inset-0 z-50 overflow-y-auto' : ''}`}>
+    <div className={`w-full fixed left-0 right-0 transition-colors duration-200 ${open ? 'bg-white h-screen inset-0 z-50 overflow-y-auto' : 'z-40 bg-transparent'}`}>
       <header className={`w-full ${open ? 'fixed top-0 z-60 bg-white' : 'top-0 z-60'}`}>
-        <div className="flex h-16 items-center justify-between px-4 sm:px-6">
+        <div className="flex h-16 md:h-20 items-center justify-between px-4 md:px-6">
           {/* Left: logo and locale switcher */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 md:gap-3">
             <Link href={`/${locale}`} aria-label="UGLP home" className="flex items-center">
-              <Image src="/images/logo.png" alt="UGLP logo" width={32} height={32} className="rounded-sm" />
+              <Image src="/images/logo.png" alt="UGLP logo" width={40} height={40} className="rounded-sm md:w-8 md:h-8" />
             </Link>
-            <LocaleSwitcher currentLocale={locale} className={open ? "flex" : "hidden sm:flex"} />
+            <LocaleSwitcher currentLocale={locale} isMenuOpen={open} className={open ? "flex" : "flex"} />
           </div>
 
           {/* Right: actions */}
-          <div className="flex items-center gap-2 sm:gap-3">
-            <button className="inline-flex items-center h-9 rounded-full bg-brand-gradient text-white px-4 sm:px-6 text-sm font-medium shadow-sm hover:opacity-90 transition-opacity">{dict.nav.login}</button>
+          <div className="flex items-center gap-2 md:gap-3">
+            <button className="inline-flex items-center h-10 md:h-9 rounded-full bg-brand-gradient text-white px-4 md:px-6 text-sm font-medium shadow-sm hover:opacity-90 transition-opacity">
+              {dict.nav.login}
+            </button>
             {!open && (
               <button
                 onClick={() => setOpen(true)}
-                className="inline-flex items-center justify-center h-9 rounded-full border border-black/10 bg-white px-3 text-sm font-bold text-zinc-900 hover:bg-black/5 transition-colors gap-2"
+                className="group inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 bg-white md:px-3 text-sm font-bold text-zinc-900 hover:bg-black/5 hover:border-transparent transition-all duration-300 gap-2 hover:gap-0"
                 aria-label="Open menu"
               >
-                <svg width="14" height="10" viewBox="0 0 14 10" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M0 1H14M0 5H14M0 9H14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                <svg 
+                  width="18" 
+                  height="14" 
+                  viewBox="0 0 18 14" 
+                  fill="none" 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  className="md:w-[14px] md:h-[10px] transition-all duration-300 group-hover:w-0 group-hover:opacity-0 group-hover:scale-0 overflow-hidden"
+                >
+                  <path d="M0 1H18M0 7H18M0 13H18" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
                 </svg>
-                <span>{dict.nav.menu}</span>
+                <span className="hidden md:inline transition-all duration-300 group-hover:scale-105">{dict.nav.menu}</span>
               </button>
             )}
             {open && (
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="inline-flex items-center justify-center h-9 w-9 rounded-full border border-black/10 bg-white text-zinc-900 hover:bg-black/5 transition-colors"
+                className="group inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 bg-white text-zinc-900 hover:bg-black/5 hover:border-transparent transition-all duration-300 md:px-4 gap-2 hover:gap-0"
                 aria-label="Close menu"
               >
-                <span aria-hidden className="font-normal text-lg">✕</span>
+                <span aria-hidden className="font-normal text-xl md:text-sm transition-all duration-300 group-hover:w-0 group-hover:opacity-0 group-hover:scale-0 overflow-hidden">✕</span>
+                <span className="hidden md:inline text-sm font-bold transition-all duration-300 group-hover:scale-105">{dict.nav.close}</span>
               </button>
             )}
           </div>
@@ -91,7 +129,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
 
       {/* Fullscreen Menu Content */}
       {open && (
-        <div className="bg-white pt-16 min-h-screen flex flex-col">
+        <div className="bg-white pt-16  min-h-screen flex flex-col">
           {/* MOBILE MENU (md:hidden) */}
           <div className="flex-1 overflow-y-auto md:hidden px-4 py-6">
             <div className="flex flex-col">
@@ -128,18 +166,27 @@ export default function Navbar({ locale, dict }: NavbarProps) {
           </div>
 
           {/* DESKTOP MENU (hidden md:grid) */}
-          <div className="hidden md:grid grid-cols-3 h-[calc(100vh-64px)]">
+          <div className="hidden md:grid z-50 grid-cols-3 h-[calc(100vh-64px)]">
             {/* Left Image Section */}
             <div className="flex flex-col justify-between p-6 border-r border-border-stroke h-full">
-              <div className="relative flex-1 w-full rounded-lg overflow-hidden mb-4 min-h-0">
-                <Image
-                  src="/images/menu_image.png"
-                  alt="Leader Image"
-                  fill
-                  sizes="(min-width: 768px) 33vw, 100vw"
-                  priority
-                  className="object-cover"
-                />
+              <div 
+                className="relative flex-1 w-full rounded-lg overflow-hidden mb-4 min-h-0 cursor-pointer"
+                onMouseEnter={() => setIsHovered(true)}
+                onMouseLeave={() => setIsHovered(false)}
+              >
+                {menuImages.map((src, i) => (
+                  <Image
+                    key={src}
+                    src={src}
+                    alt="Leader Image"
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    priority={i === 0}
+                    className={`object-cover transition-opacity duration-300 ease-out ${
+                      i === activeImageIndex ? 'opacity-100' : 'opacity-0'
+                    }`}
+                  />
+                ))}
               </div>
               <div className="mt-2 shrink-0">
                 <Image src="/images/logo2.png" alt="UGLP logo" width={48} height={48} className="mb-3" />
@@ -154,7 +201,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
                     key={item.href}
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="block border-b border-border-stroke pb-2 text-lg font-bold text-black hover:text-brand-green transition-colors"
+                    className="block border-b border-border-stroke pb-2 text-[38px] font-medium text-black hover:text-brand-green transition-colors uppercase"
                   >
                     {item.label}
                   </Link>
@@ -186,7 +233,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="block border-b border-border-stroke pb-2 text-lg font-bold text-black hover:text-brand-green transition-colors"
+                  className="block border-b border-border-stroke pb-2 text-[38px] font-medium text-black hover:text-brand-green transition-colors uppercase"
                 >
                   {item.label}
                 </Link>

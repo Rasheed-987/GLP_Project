@@ -22,7 +22,7 @@ export default async function WebLayout({
         <TopBar locale={lang} dict={dict} />
       </Container>
       <div className="relative">
-        <header className="absolute top-0 left-0 right-0 z-20 w-full">
+        <header className="absolute top-0 left-0 right-0 z-50 w-full">
           <Container className="px-10">
             <Navbar locale={lang} dict={dict} />
           </Container>
