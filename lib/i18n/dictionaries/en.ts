@@ -3,8 +3,9 @@ export default {
     home: 'Home',
     about: 'About',
     partnership: 'Partnership',
+    partnerWithUs: 'Partner with us',
     leadershipModel: 'Leadership Model',
-    programmes: 'Programmes',
+    programmes: 'Explore programmes',
     alumni: 'Alumni',
     approach: 'Approach',
     resources: 'Resources',
@@ -12,11 +13,98 @@ export default {
     contact: 'Contact',
     menu: 'Menu',
     close: 'Close',
+    expand: 'Expand',
     login: 'Log in',
   },
   topBar: {
     announcement: 'Nafis Leadership Program Admissions Now Open',
     applyNow: 'Apply now',
+  },
+  about: {
+    hero: {
+      pill: 'ABOUT',
+      title: {
+        text1: 'Nurturing Leadership',
+        text2: 'for a ',
+        highlight: 'Future-Ready Nation',
+      },
+      description: 'We empower Emirati talent to lead with purpose, agility, and impact across government and generations',
+    },
+    features: [
+      {
+        icon: "/images/aboutframe1.png",
+        text: "Alignment with the UAE Government Leadership Model",
+      },
+      {
+        icon: "/images/aboutframe2.png",
+        text: "Tailored programmes for each career stage",
+      },
+      {
+        icon: "/images/aboutframe3.png",
+        text: "Innovative learning formats and global exposure",
+      },
+      {
+        icon: "/images/aboutframe4.png",
+        text: "A growing Qiyadat alumni community of change-makers",
+      },
+      {
+        icon: "/images/aboutframe5.png",
+        text: "Partnerships with federal and local government entities",
+      },
+    ],
+    role: {
+      pill: "GLP PLAYS A VITAL ROLE IN",
+      title: "The UAE Government Leaders Programme (GLP) is a national initiative launched under the directives of the UAE leadership to develop, empower, and sustain future-ready leaders across all sectors of society",
+      description: "Through carefully designed programmes and strategic collaborations, GLP prepares Emiratis at every career stage to drive national transformation, shape policy, and deliver results that align with the UAE’s long-term vision.",
+      items: [
+        {
+          icon: "/images/aboutframe1.png",
+          text: "Reinforcing the UAE’s leadership values"
+        },
+        {
+          icon: "/images/aboutframe2.png",
+          text: "Supporting institutional excellence"
+        },
+        {
+          icon: "/images/aboutframe3.png",
+          text: "Building bridges between generations"
+        },
+        {
+          icon: "/images/aboutframe4.png",
+          text: "Enabling adaptive and resilient governance"
+        }
+      ]
+    },
+    stats: {
+      items: [
+        { value: "1,200", label: "Leader graduates" },
+        { value: "45+", label: "Government partnerships" },
+        { value: "120+", label: "Programmes delivered" },
+        { value: "95%", label: "Satisfaction rate" }
+      ],
+      description: "Since its launch, GLP has empowered hundreds of professionals to lead within government, contribute to national priorities, and drive real-world impact."
+    },
+    missionVision: {
+      mission: {
+        pill: "OUR MISSION",
+        text: "To build a pipeline of high-impact leaders equipped with the mindset, capabilities, and values needed to lead the UAE into the future."
+      },
+      vision: {
+        pill: "OUR VISION",
+        text: "To be the leading national platform for leadership development, creating a generation of trusted, agile, and forward-thinking leaders."
+      },
+      why: {
+        pill: "WHY LEADERSHIP MATTERS",
+        text: "At a time of global change and rapid innovation, the quality of leadership defines the success of institutions, systems, and nations."
+      }
+    },
+    cta: {
+      titleLine1: "Want to be part of the UAE's",
+      titleLine2: "leadership journey?",
+      description: "Explore our programmes or partner with us to develop your next generation of leaders.",
+      button1: "Explore programmes",
+      button2: "Partner with us"
+    }
   },
   home: {
     hero: {
@@ -441,6 +529,180 @@ export default {
     caseStudies: {
       label: "CASE STUDIES",
       description: "GLP has partnered with various entities to deliver programmes across strategy, performance, innovation, and leadership"
+    }
+  },
+  article: {
+    back: "Back",
+    readMore: "Read More",
+    relatedArticles: "Related Articles",
+    latestCaseStudies: "Our latest case studies",
+    noArticlesFound: "No articles found",
+    shareArticle: "Share Article",
+    publishedOn: "Published on",
+    author: "Author",
+    articles: [
+      {
+        id: "1",
+        slug: "dubai-carbon-neutral-district",
+        tag: "CASE STUDY",
+        date: "09/03/2019",
+        title: "Dubai's first carbon-neutral district",
+        excerpt: "Through the Strategic Leaders Programme, I developed the strategic vision to launch Dubai's first carbon-neutral district.",
+        image: "/images/casestudy1.png",
+        mobileImage: "/images/casestudymbl1.png",
+        author: "GLP Team",
+        stats: [
+          { value: "100%", label: "Carbon neutral district" },
+          { value: "25M", label: "AED investment secured" },
+          { value: "5", label: "Regional partnerships" }
+        ],
+        content: "The UAE Government Leaders Programme is inviting UAE nationals to register for its 2025 cohort...",
+        sections: [
+          {
+            id: "1",
+            type: "text",
+            heading: "New heading",
+            content: "The UAE Government Leaders Programme is inviting UAE nationals to register for its 2025 cohort across three categories – Executive Leaders Programme, Future Leaders Programme, and UAE Youth Leaders Programme. The program also accepts nominations from individuals and institutions. Dr Tayeb Al Mazrouei, Assistant Director General for Leadership and Government Capabilities at the Prime Minister's Office within the Ministry of Cabinet Affairs and the Future said: \"The UAE programme is designed to develop local talent and foster a culture of continuous learning.\""
+          },
+          {
+            id: "2",
+            type: "text",
+            heading: "New heading",
+            content: "This approach aligns with the UAE Model for Government Leadership that was launched by His Highness Sheikh Mohammed bin Rashid Al Maktoum, Vice President and Prime Minister of the UAE and Ruler of Dubai. In his vision for a new generation of leaders, he said: \\\"The UAE Government Leaders Programme enables ambitious young professionals to make a difference in our nation's future. Leaders who can drive the country's progress across all sectors.\\\" He added: \\\"The UAE Government Leaders Programme enables ambitious young professionals to make a difference in our nation's future.\\\"\\n\\nFor his part, Ahmad Yousif Ahmad Al Mansouri, Assistant Undersecretary of the Ministry of Human Resources and Emiratisation, said: \\\"The UAE Government Leaders Programme provides an exceptional opportunity to local cadres in the government and private sectors to gain expertise and experience. The Ministry is collaborating with its strategic partners to engage Emirati working in both government and private sectors to gain valuable experience. The Ministry is collaborating with its strategic partners to engage Emirati.\\\"",
+          },
+          {
+            id: "3",
+            type: "text",
+            heading: "New heading",
+            content: "Al Nasser commended the efforts of the Government Leaders Programme in implementing the agreement and called on UAE nationals in all eligible private sector companies to apply. In September 2018, the UAE Government Leaders Programme signed a memorandum of understanding MoU with the Ministry of Human Resources and Emiratisation.\\n\\nThe agreement enables Emirati working in the private sector to exchange experiences with their government sector counterparts. Under the program the programme has dedicated 25 percent of the placements in each of its categories."
+          },
+          {
+            id: "4",
+            type: "text",
+            heading: "Conclusion",
+            content: "The UAE Government Leaders Programme integrates the UAE government's sustained efforts to discover local talent and enhance the capabilities of leaders across diverse sectors so that they can spearhead change and build a better future for the nation."
+          }
+        ]
+      },
+      {
+        id: "2",
+        slug: "digital-transformation-platform",
+        tag: "CASE STUDY",
+        date: "09/03/2019",
+        title: "Digital Transformation Platform",
+        excerpt: "Redesigned GLP's digital ecosystem to centralize leadership programmes and streamline participant journeys.",
+        image: "/images/casestudy2.png",
+        mobileImage: "/images/casestudymbl2.png",
+        author: "GLP Team",
+        stats: [
+          { value: "40%", label: "Faster onboarding" },
+          { value: "3x", label: "Engagement" },
+          { value: "+60%", label: "Band recognition" }
+        ]
+      },
+      {
+        id: "3",
+        slug: "national-leadership-portal",
+        tag: "CASE STUDY",
+        date: "09/03/2019",
+        title: "National Leadership Portal",
+        excerpt: "A unified collaboration and learning platform for government and private sector leaders. Designed to accelerate development.",
+        image: "/images/casestudy3.png",
+        mobileImage: "/images/casestudymbl3.png",
+        author: "GLP Team",
+        stats: [
+          { value: "20%", label: "Faster completion rates" },
+          { value: "85%", label: "User satisfaction" },
+          { value: "12+", label: "Integrated programs" }
+        ]
+      }
+    ]
+  alumniPage: {
+    label: "ALUMNI",
+    title: {
+      text1: "Leadership ",
+      highlight1: "that lasts",
+      text2: " beyond the programme"
+    },
+    description: "Through the Qiyadat platform, our alumni stay connected, engaged, and empowered to continue shaping the future of leadership across the UAE.",
+    community: {
+      title: {
+        text1: "Every participant who completes a UAE GLP program becomes ",
+        highlight1: "part of a growing leadership community",
+        text2: ", united by purpose, driven by excellence"
+      },
+      description: "The Qiyadat platform serves as the central hub for this network, enabling alumni to exchange knowledge, join exclusive initiatives, and access ongoing learning opportunities. More than just a network, it's a space where leadership continues to evolve.",
+      button: "Log in to Qiyadat",
+      features: [
+        {
+          title: "Ongoing Development",
+          text: "Access curated talks, workshops, and resources that extend your leadership journey",
+          icon: "loading.png"
+        },
+        {
+          title: "Peer Collaboration",
+          text: "Connect with fellow alumni across sectors and cohorts to exchange ideas and insights",
+          icon: "handshake.png"
+        },
+        {
+          title: "Exclusive Opportunities",
+          text: "Participate in government-backed initiatives, pilot programmes, and innovation platforms",
+          icon: "star.png"
+        },
+        {
+          title: "Recognition & Visibility",
+          text: "Celebrate key milestones, share achievements, and contribute thought leadership to the wider GLP community",
+          icon: "torch.png"
+        },
+        {
+          title: "Support Network",
+          text: "Gain mentorship, offer guidance to new participants, and stay engaged in shaping the next generation of leaders",
+          icon: "link.png"
+        }
+      ]
+    },
+    impactSection: {
+      title: {
+        text1: "Real-life practice. ",
+        highlight1: "Real Impact"
+      },
+      description: "Our alumni continue to play vital roles in driving national transformation — across ministries, private sector organizations, and innovation platforms"
+    },
+    contact: {
+      titleLine1: "Already part",
+      titleLine2: "of the",
+      titleLine2Bold: "Qiyadat community?",
+      description: "",
+      button: "Log in to Qiyadat"
+    }
+  },
+  contactPage: {
+    hero: {
+      title: {
+        text1: "We're here to support ",
+        highlight1: "your leadership journey"
+      },
+      description: "Exploring our programmes, seeking guidance, or interested in partnering with us? We'd love to hear from you.",
+      phone: "04 748 2429",
+      email: "media@uaeglp.gov.ae",
+      address: "UAE, Dubai"
+    },
+    form: {
+      title: "Become part of the ",
+      titleHighlight: "UAE's leadership journey",
+      name: "Your full name",
+      email: "Your email",
+      phone: "Your phone (optional)",
+      interest: "Area of interest",
+      message: "Message",
+      submit: "Submit",
+      interests: [
+        "General Inquiry",
+        "Programme Information",
+        "Partnership Opportunities",
+        "Alumni Support",
+        "Media & Press"
+      ]
     }
   }
 }
