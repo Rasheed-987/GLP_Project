@@ -617,5 +617,92 @@ export default {
         ]
       }
     ]
+  alumniPage: {
+    label: "ALUMNI",
+    title: {
+      text1: "Leadership ",
+      highlight1: "that lasts",
+      text2: " beyond the programme"
+    },
+    description: "Through the Qiyadat platform, our alumni stay connected, engaged, and empowered to continue shaping the future of leadership across the UAE.",
+    community: {
+      title: {
+        text1: "Every participant who completes a UAE GLP program becomes ",
+        highlight1: "part of a growing leadership community",
+        text2: ", united by purpose, driven by excellence"
+      },
+      description: "The Qiyadat platform serves as the central hub for this network, enabling alumni to exchange knowledge, join exclusive initiatives, and access ongoing learning opportunities. More than just a network, it's a space where leadership continues to evolve.",
+      button: "Log in to Qiyadat",
+      features: [
+        {
+          title: "Ongoing Development",
+          text: "Access curated talks, workshops, and resources that extend your leadership journey",
+          icon: "loading.png"
+        },
+        {
+          title: "Peer Collaboration",
+          text: "Connect with fellow alumni across sectors and cohorts to exchange ideas and insights",
+          icon: "handshake.png"
+        },
+        {
+          title: "Exclusive Opportunities",
+          text: "Participate in government-backed initiatives, pilot programmes, and innovation platforms",
+          icon: "star.png"
+        },
+        {
+          title: "Recognition & Visibility",
+          text: "Celebrate key milestones, share achievements, and contribute thought leadership to the wider GLP community",
+          icon: "torch.png"
+        },
+        {
+          title: "Support Network",
+          text: "Gain mentorship, offer guidance to new participants, and stay engaged in shaping the next generation of leaders",
+          icon: "link.png"
+        }
+      ]
+    },
+    impactSection: {
+      title: {
+        text1: "Real-life practice. ",
+        highlight1: "Real Impact"
+      },
+      description: "Our alumni continue to play vital roles in driving national transformation — across ministries, private sector organizations, and innovation platforms"
+    },
+    contact: {
+      titleLine1: "Already part",
+      titleLine2: "of the",
+      titleLine2Bold: "Qiyadat community?",
+      description: "",
+      button: "Log in to Qiyadat"
+    }
+  },
+  contactPage: {
+    hero: {
+      title: {
+        text1: "We're here to support ",
+        highlight1: "your leadership journey"
+      },
+      description: "Exploring our programmes, seeking guidance, or interested in partnering with us? We'd love to hear from you.",
+      phone: "04 748 2429",
+      email: "media@uaeglp.gov.ae",
+      address: "UAE, Dubai"
+    },
+    form: {
+      title: "Become part of the ",
+      titleHighlight: "UAE's leadership journey",
+      name: "Your full name",
+      email: "Your email",
+      phone: "Your phone (optional)",
+      interest: "Area of interest",
+      message: "Message",
+      submit: "Submit",
+      interests: [
+        "General Inquiry",
+        "Programme Information",
+        "Partnership Opportunities",
+        "Alumni Support",
+        "Media & Press"
+      ]
+    }
   }
 }

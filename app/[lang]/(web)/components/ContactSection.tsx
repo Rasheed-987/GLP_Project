@@ -5,6 +5,7 @@ import Image from 'next/image';
 type ContactSectionProps = {
     titleLine1: string;
     titleLine2: string;
+    titleLine2Bold?: string;
     description: string;
     button: string;
     button2?: string;
@@ -14,13 +15,14 @@ type ContactSectionProps = {
 export default function ContactSection({
     titleLine1,
     titleLine2,
+    titleLine2Bold,
     description,
     button,
     button2,
     backgroundImage = '/images/contactbg.png'
 }: ContactSectionProps) {
     return (
-        <section className="px-4 pb-20">
+        <section className="px-4 pb-20 text-white">
             <div className="relative w-full max-w-8xl mx-auto rounded-3xl overflow-hidden min-h-[400px] md:min-h-[500px] flex flex-col items-center justify-center text-center p-4 md:p-8">
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
@@ -37,9 +39,15 @@ export default function ContactSection({
 
                 <div className="relative z-10 max-w-3xl px-4">
 
-                    <h2 className="text-white mb-3 leading-tight">
-                        <span className="block text-3xl md:text-5xl mb-1">{titleLine1}</span>
-                        <span className="block text-3xl md:text-5xl font-extrabold">{titleLine2}</span>
+                    <h2 className="mb-3 leading-tight">
+                        <span className="block text-3xl md:text-5xl mb-1 font-normal">{titleLine1}</span>
+                        {titleLine2Bold ? (
+                            <span className="block text-3xl md:text-5xl font-normal">
+                                {titleLine2} <span className="font-extrabold">{titleLine2Bold}</span>
+                            </span>
+                        ) : (
+                            <span className="block text-3xl md:text-5xl font-extrabold">{titleLine2}</span>
+                        )}
                     </h2>
                     <p className="text-white/90 text-sm md:text-base mb-8 max-w-sm mx-auto leading-relaxed">
                         {description}
