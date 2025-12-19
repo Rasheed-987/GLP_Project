@@ -24,15 +24,15 @@ export default async function PartnershipPage({
                         alt="Partnership"
                         width={1920}
                         height={600}
-                        className="w-full h-auto"
+                        className="w-full h-[200px] rounded-xl md:h-auto object-cover"
                         priority
                     />
                 </Container>
             </section>
 
             {/* Partnership Content Section */}
-            <section className="pb-4 md:pb-8 pt-10">
-                <Container className="px-8">
+            <section className="pb-4 md:pb-8 pt-4 md:pt-10">
+                <Container className="px-4 md:px-8">
                     {/* Top Section: Label, Title, Description, Button */}
                     <div className="flex flex-col lg:flex-row gap-5 md:gap-8 lg:gap-32 md:mb-16 mb-8">
                         {/* Left Column: Label, Line, Title */}
@@ -44,7 +44,7 @@ export default async function PartnershipPage({
 
 
                             {/* Title with Gradient */}
-                            <h2 className="text-[1.2rem] md:text-[2.8rem] leading-[1.2] md:leading-[1] tracking-[1.5] text-black ">
+                            <h2 className="text-[1.85rem] md:text-[2.8rem] leading-[1.2] md:leading-[1] tracking-[1.5] text-black ">
                                 <span className="font-medium">{dict.partnership.title.text1}</span>
                                 <span className="font-extrabold">{dict.partnership.title.highlight1}</span>
                             </h2>
@@ -66,7 +66,7 @@ export default async function PartnershipPage({
             </section>
             {/* partnership about section  */}
             <section className="pb-12 md:pb-24">
-                <Container className="px-8">
+                <Container className="px-4 md:px-8">
                     <div className="flex flex-wrap lg:flex-nowrap gap-3 md:gap-8 lg:gap-16 items-start">
                         {/* Title and Description */}
                         <div className="w-full lg:w-6/12  order-1">
@@ -81,13 +81,13 @@ export default async function PartnershipPage({
                             </div>
 
                             {/* Title with Gradient */}
-                            <h2 className="text-[1.2rem] max-w-md md:text-[1.7rem] leading-[1.2] md:leading-[1.1] bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent mb-6 md:mb-48">
+                            <h2 className="text-[1.3rem] max-w-md md:text-[1.7rem] leading-[1.2] md:leading-[1.1] bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent mb-6 md:mb-48">
                                 <span className="font-extrabold">{dict.partnership.about.title.text1}</span>
                                 <span className="font-extrabold">{dict.partnership.about.title.highlight1}</span>
                                 <span className="font-normal">{dict.partnership.about.title.text2}</span>
                                 <span className="font-extrabold">{dict.partnership.about.title.highlight2}</span>
                             </h2>
-                            <div className="w-full md:block hidden">
+                            <div className="w-full ">
                                 <p className="text-[#00000099] leading-[1.2] text-sm md:text-[16px] max-w-lg">
                                     {dict.partnership.about.description}
                                 </p>
@@ -106,19 +106,14 @@ export default async function PartnershipPage({
                             </div>
                         </div>
 
-                        {/* Description - appears after image on small screens, with title on large screens */}
-                        <div className="w-full md:hidden block order-3">
-                            <p className="text-[#00000099] leading-[1.2] text-sm md:text-[16px] max-w-sm">
-                                {dict.partnership.about.description}
-                            </p>
-                        </div>
+
                     </div>
                 </Container>
             </section>
 
             {/* Three-step approach section */}
             <section className="pb-12 md:pb-24 pt-12 md:pt-24 bg-white">
-                <Container className="px-8">
+                <Container className="px-4 md:px-8">
                     <div className="flex flex-col lg:flex-row gap-12 lg:gap-28 relative">
                         {/* Left Side: Sticky Title and Arrow */}
                         <div className="w-full lg:w-6/12 lg:sticky lg:top-32 h-fit">
@@ -138,9 +133,9 @@ export default async function PartnershipPage({
                         </div>
 
                         {/* Right Side: Steps */}
-                        <div className="w-full lg:w-6/12 space-y-20 lg:space-y-7">
+                        <div className="w-full lg:w-6/12 space-y-5 lg:space-y-7">
                             {dict.partnership.approach.steps.map((step, idx) => (
-                                <div key={idx} className="flex flex-col gap-6">
+                                <div key={idx} className="flex flex-col md:gap-6">
                                     <div className="flex items-baseline gap-4">
                                         <span className="text-3xl md:text-4xl font-light gradient-text opacity-40">
                                             {step.number}
@@ -149,7 +144,7 @@ export default async function PartnershipPage({
                                             {step.title}
                                         </h3>
                                     </div>
-                                    <p className="text-[#00000099] max-w-md mt-24 text-[14px] md:text-[16px] leading-relaxed ">
+                                    <p className="text-[#00000099] max-w-md  mt-5 md:mt-24 text-[14px] md:text-[16px] leading-relaxed ">
                                         {step.description}
                                     </p>
                                     {idx !== dict.partnership.approach.steps.length - 1 && (
@@ -163,28 +158,32 @@ export default async function PartnershipPage({
             </section>
 
             {/* What We Offer Section */}
-            <section className="relative py-8 overflow-hidden mx-4 ">
-                {/* Background Image with Overlay */}
-                <div className="absolute inset-0 z-0 overflow-hidden rounded-[1rem] md:rounded-[1.5rem]">
+            <section className="relative py-8 md:py-12 overflow-hidden md:mx-4 bg-white md:bg-transparent">
+                {/* Desktop Background - Hidden on Mobile */}
+                <div className="hidden md:block absolute inset-0 z-0 overflow-hidden rounded-[1.5rem]">
                     <Image
                         src="/images/model_bg.png"
                         alt="Background"
                         fill
                         className="object-fill"
                     />
-                    {/* <div className="absolute inset-0 bg-[#045A86] opacity-80 md:bg-black/40"></div> */}
                 </div>
 
-                <Container className="relative z-10 px-6">
+                <Container className="relative z-10 px-4 md:px-6">
                     <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-start">
                         {/* Left Side: Text Content */}
                         <div className="w-full lg:w-8/12">
-                            <p className="text-white text-sm text-semibold pb-3" >{dict.partnership.offer.pill} </p>
+                            <p className="text-brand-blue md:text-white tracking-[1] md:tracking-[0.5px] text-xs md:text-sm font-semibold pb-2 md:pb-3">
+                                {dict.partnership.offer.pill}
+                            </p>
+
                             {/* Separator Line */}
-                            <div className=" w-20 md:w-24 h-[2px] md:h-[3px] bg-[#045A8633] rounded-full overflow-hidden mb-6">
-                                <div className="h-full w-1/2 bg-white rounded-full"></div>
+                            <div className="w-20 md:w-24 h-[2px] md:h-[3px] bg-[#045A8633] rounded-full overflow-hidden mb-4 md:mb-6">
+                                <div className="h-full w-1/2 bg-brand-blue md:bg-white rounded-full"></div>
                             </div>
-                            <h2 className="text-[2rem] md:text-[1.7rem] max-w-sm leading-[1.1] text-white  font-medium">
+
+                            {/* Title - Teal on Mobile, White on Desktop */}
+                            <h2 className="text-[1.25rem] md:text-[1.7rem] max-w-sm leading-[1.1] gradient-text md:text-white font-medium mb-8">
                                 <span className="font-extrabold">{dict.partnership.offer.title.text1}{dict.partnership.offer.title.highlight1}</span>
                                 {dict.partnership.offer.title.text2}
                                 <span className="font-extrabold">{dict.partnership.offer.title.highlight2}</span>
@@ -192,7 +191,23 @@ export default async function PartnershipPage({
                                 <span className="font-extrabold">{dict.partnership.offer.title.highlight3}</span>
                             </h2>
 
-                            <p className="text-white text-[14px] md:text-[15px] leading-[1.3] max-w-md pt-20 md:pt-68">
+                            {/* Mobile Image and Overlaid Description Block - Hidden on Desktop */}
+                            <div className="md:hidden relative w-full h-[500px] mb-12 rounded-[1rem] overflow-hidden">
+                                <Image
+                                    src="/images/model_bg.png"
+                                    alt="Innovation"
+                                    fill
+                                    className="object-cover"
+                                />
+                                <div className="absolute bottom-0 left-0 right-0 p-3 pt-20 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
+                                    <p className="text-white text-[14px] leading-[1.3] max-w-xs">
+                                        {dict.partnership.offer.description}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Desktop Description - Hidden on Mobile */}
+                            <p className="hidden md:block text-white text-[14px] md:text-[16px] leading-[1.3] max-w-md pt-56">
                                 {dict.partnership.offer.description}
                             </p>
                         </div>
@@ -200,17 +215,17 @@ export default async function PartnershipPage({
                         {/* Right Side: Offer Cards */}
                         <div className="w-full lg:w-4/12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
                             {dict.partnership.offer.cards.map((card, idx) => (
-                                <div key={idx} className="bg-white rounded-xl p-2 md:p-4 flex flex-col justify-between group h-full min-h-[110px] transition-all hover:shadow-lg">
-                                    <div className="w-10 h-10 bg-[#E6EFEA] rounded-lg flex items-center justify-center  transition-transform duration-[1500ms] ease-in-out group-hover:rotate-[360deg]">
+                                <div key={idx} className="bg-white border border-gray-200 rounded-[1.5rem] p-6 md:p-4 flex flex-col justify-between group h-full min-h-[140px] md:min-h-[110px] transition-all hover:shadow-lg">
+                                    <div className="w-12 h-12 md:w-10 md:h-10 bg-[#E6EFEA] rounded-lg flex items-center justify-center transition-transform duration-[1500ms] ease-in-out group-hover:rotate-[360deg]">
                                         <Image
                                             src={card.icon}
                                             alt=""
-                                            width={20}
-                                            height={20}
-                                            className="object-contain transition-transform duration-[1500ms] ease-in-out group-hover:-rotate-[360deg]"
+                                            width={24}
+                                            height={24}
+                                            className="object-contain transition-transform duration-[1500ms] ease-in-out group-hover:-rotate-[360deg] md:w-5 md:h-5"
                                         />
                                     </div>
-                                    <span className="text-[14px] md:text-[15px] text-[#00000099] font-medium leading-tight tracking-tight">
+                                    <span className="text-[15px] md:text-[15px] text-[#00000099] font-medium leading-tight tracking-tight mt-4 md:mt-0">
                                         {card.text}
                                     </span>
                                 </div>
@@ -221,7 +236,7 @@ export default async function PartnershipPage({
             </section>
 
             <section className="bg-white pt-20">
-                <Container className="px-14">
+                <Container className="px-4 md:px-14">
                     <span className="text-brand-blue text-[12px] md:text-[15px] font-semibold uppercase tracking-[1.2] md:tracking-[1.6] mb-2 md:mb-4 block">
                         {dict.partnership.caseStudies.label}
                     </span>
@@ -239,7 +254,13 @@ export default async function PartnershipPage({
 
             <section className="bg-white pb-32 pt-5">
                 <Carousel items={dict.home.alumni.items} lang={lang} />
+                <div className="flex justify-center mt-12">
+                    <Button>
+                        {dict.home.alumni.graduatesStories}
+                    </Button>
+                </div>
             </section>
+
         </>
     );
 }
