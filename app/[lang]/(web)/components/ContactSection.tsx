@@ -37,7 +37,7 @@ export default function ContactSection({
 
                 {/* Content Overlay */}
 
-                <div className="relative z-10 max-w-3xl px-4">
+                <div className="relative z-10 max-w-3xl md:px-4">
 
                     <h2 className="mb-3 leading-tight">
                         <span className="block text-3xl md:text-5xl mb-1 font-normal">{titleLine1}</span>

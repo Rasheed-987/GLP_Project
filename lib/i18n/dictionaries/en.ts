@@ -55,23 +55,27 @@ export default {
     ],
     role: {
       pill: "GLP PLAYS A VITAL ROLE IN",
-      title: "The UAE Government Leaders Programme (GLP) is a national initiative launched under the directives of the UAE leadership to develop, empower, and sustain future-ready leaders across all sectors of society",
+      title: {
+        part1: "The UAE Government Leaders Programme (GLP)",
+        part2: " is a national initiative launched under the directives of the UAE leadership ",
+        part3: "to develop, empower, and sustain future-ready leaders across all sectors of society"
+      },
       description: "Through carefully designed programmes and strategic collaborations, GLP prepares Emiratis at every career stage to drive national transformation, shape policy, and deliver results that align with the UAE’s long-term vision.",
       items: [
         {
-          icon: "/images/aboutframe1.png",
+          icon: "/images/star.png",
           text: "Reinforcing the UAE’s leadership values"
         },
         {
-          icon: "/images/aboutframe2.png",
+          icon: "/images/trophy.png",
           text: "Supporting institutional excellence"
         },
         {
-          icon: "/images/aboutframe3.png",
+          icon: "/images/link.png",
           text: "Building bridges between generations"
         },
         {
-          icon: "/images/aboutframe4.png",
+          icon: "/images/settings.png",
           text: "Enabling adaptive and resilient governance"
         }
       ]
