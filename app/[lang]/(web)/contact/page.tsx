@@ -131,7 +131,7 @@ export default async function ContactPage({
             <section className="bg-white pb-32">
                 <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-16 items-center">
-                        {/* Left Column: Text Content */}
+                        {/* Left Column: Texts Content */}
                         <div className="lg:max-w-md">
                             <h2 className="text-4xl md:text-4xl gradient-text  leading-[1.1] mb-8">
                                 <span className="">{dict.home.nomination.title}</span> <br />
