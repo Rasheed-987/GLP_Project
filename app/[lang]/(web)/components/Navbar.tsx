@@ -23,10 +23,9 @@ type NavbarProps = {
       menu: string;
       close: string;
       login: string;
-    };
-    home: {
       description: string;
     };
+    
   };
 };
 
@@ -77,7 +76,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
   }, [open]);
 
   return (
-    <div className={`w-full fixed left-0 right-0 transition-colors duration-200 ${open ? 'bg-white h-screen inset-0 z-50 overflow-y-auto' : 'z-40 bg-transparent'}`}>
+    <div className={`w-full  fixed left-0 right-0 transition-colors duration-200 ${open ? 'bg-white h-screen inset-0 z-50 overflow-y-auto' : 'z-40 bg-transparent'}`}>
       <header className={`w-full ${open ? 'fixed top-0 z-60 bg-white' : 'top-0 z-60'}`}>
         <div className="flex h-16 md:h-20 items-center justify-between px-4 md:px-6">
           {/* Left: logo and locale switcher */}
@@ -190,7 +189,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
               </div>
               <div className="mt-2 shrink-0">
                 <Image src="/images/logo2.png" alt="UGLP logo" width={48} height={48} className="mb-3" />
-                <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">{dict.home.description}</p>
+                <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">{dict.nav.description}</p>
               </div>
             </div>
 

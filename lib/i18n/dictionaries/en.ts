@@ -5,7 +5,7 @@ export default {
     partnership: 'Partnership',
     partnerWithUs: 'Partner with us',
     leadershipModel: 'Leadership Model',
-    programmes: 'Explore programmes',
+    programmes: 'programmes',
     alumni: 'Alumni',
     approach: 'Approach',
     resources: 'Resources',
@@ -15,6 +15,7 @@ export default {
     close: 'Close',
     expand: 'Expand',
     login: 'Log in',
+    description: 'UAE Government Leaders Program - Empowering the next generation of Emirati leaders.'
   },
   topBar: {
     announcement: 'Nafis Leadership Program Admissions Now Open',
@@ -111,7 +112,11 @@ export default {
       titlePrefix: "Empowering the ",
       titleHighlight: "next generation",
       titleSuffix: " of leaders",
+      description: "Discover national leadership programs to prepare Emirati talent for the future, in line with the UAE's vision and excellence agenda.",
+      button1: "Explore Programmes",
+      button2: "Partner with us",
     },
+    partnerWithUs: "Partner with us",
     description: 'Discover national leadership programmes designed to shape future-ready Emirati talent, aligned with the UAE’s long-term vision and excellence agenda.',
     about: {
       pill: 'ABOUT',
