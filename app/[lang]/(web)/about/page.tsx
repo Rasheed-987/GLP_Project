@@ -83,14 +83,7 @@ export default async function AboutPage({
             <div className="lg:col-span-4 flex flex-col justify-between items-start min-h-[500px]">
               <div className="w-full">
                 <h2 className="text-[28px] md:text-[32px] leading-[1.15] font-normal text-[#045A86] tracking-tight max-w-sm">
-                  The UAE Government <br />
-                  <span className="font-bold text-[#045A86]">Leaders Programme</span> (GLP) is 
-                  a national initiative launched 
-                  under the directives of the UAE 
-                  leadership to <span className="font-bold">develop, 
-                  empower, and sustain 
-                  future-ready leaders</span> across all 
-                  sectors of society
+                  {dict.about.role.title}
                 </h2>
               </div>
               
@@ -212,7 +205,7 @@ export default async function AboutPage({
             </div>
 
             {/* Vision & Why Container (White Box) */}
-            <div className="w-full max-w-5xl bg-white rounded-[32px] p-8 md:p-12 shadow-sm flex flex-col">
+            <div className="w-full max-w-5xl bg-white rounded-[32px] p-8 md:p-12 shadow-sm flex flex-col items-center">
               {/* Vision section */}
               <div className="text-center mb-12">
                 <span className="text-brand-blue text-xs font-bold uppercase tracking-widest mb-2 block">

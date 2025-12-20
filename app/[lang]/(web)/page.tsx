@@ -33,11 +33,11 @@ export default async function HomePage({
           backgroundImage="/images/home1.png"
           buttons={{
             primary: {
-              text: dict.nav.programmes,
+              text: dict.home.hero.button1,
               href: `/${lang}/programmes`,
             },
             secondary: {
-              text: dict.nav.partnerWithUs,
+              text: dict.home.partnerWithUs,
               href: `/${lang}/partnership`,
             },
           }}
