@@ -189,10 +189,18 @@ export default async function HomePage({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
             {/* Left Column: Text Content */}
             <div className="lg:max-w-xl">
-              <h2 className="text-4xl md:text-5xl font-bold leading-[1.1] mb-8">
-                <span className="text-[#006A8E]">{dict.home.nomination.title}</span> <br />
-                <span className="text-[#003B4F]">{dict.home.nomination.titleHighlight}</span>
-              </h2>
+              <div className="leading-[1.1] mb-8">
+                <h2 className="text-1xl md:text-2xl font-bold">
+                  <span className="bg-brand-gradient bg-clip-text text-transparent">
+                    {dict.home.nomination.title}
+                  </span>
+                </h2>
+                <h2 className="text-2xl md:text-4xl font-bold">
+                  <span className="bg-brand-gradient bg-clip-text text-transparent">
+                    {dict.home.nomination.titleHighlight}
+                  </span>
+                </h2>
+              </div>
               <p className="text-[#6B7280] text-lg leading-relaxed mb-16">
                 {dict.home.nomination.description}
               </p>
@@ -220,7 +228,7 @@ export default async function HomePage({
             <div className="bg-[#E9F1EE] rounded-[32px] p-8 md:p-12">
               <form className="space-y-5">
                 <div>
-                  <h4 className="text-xs font-bold tracking-widest text-brand-dark-brand-blue mb-6">
+                  <h4 className="text-medium font-bold tracking-widest text-brand-blue mb-6">
                     {dict.home.nomination.form.yourDetails}
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -243,7 +251,7 @@ export default async function HomePage({
                 </div>
 
                 <div>
-                  <h4 className="text-xs font-bold tracking-widest text-brand-dark-brand-blue mb-6">
+                  <h4 className="text-medium font-bold tracking-widest text-brand-blue mb-6">
                     {dict.home.nomination.form.nomineeDetails}
                   </h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
