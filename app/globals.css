@@ -18,6 +18,7 @@
   /* Map brand colors to Tailwind tokens */
   --color-brand-blue: var(--blue);
   --color-brand-green: var(--green);
+  --color-brand-gradient: var(--brand-gradient);
   --color-brand-dark-blue: var(--blue); /* Alias for backward compatibility/specific usage */
   /* Border colors */
   --color-border-stroke: var(--border-stroke);

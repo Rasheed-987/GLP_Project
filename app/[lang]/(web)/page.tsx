@@ -21,7 +21,7 @@ export default async function HomePage({
 
   return (
     <>
-      {/* Hero Section: Main introduction with primary call-to-actions */}
+      {/* Hero Section: Main introduction with primary call-to-action */}
       <div className="px-4 ">
         <Hero
           title={{
@@ -33,17 +33,16 @@ export default async function HomePage({
           backgroundImage="/images/home1.png"
           buttons={{
             primary: {
-              text: dict.nav.programmes,
+              text: dict.home.hero.button1,
               href: `/${lang}/programmes`,
             },
             secondary: {
-              text: dict.nav.partnerWithUs,
+              text: dict.home.partnerWithUs,
               href: `/${lang}/partnership`,
             },
           }}
         />
       </div>
-      {/* Features Section: Key highlights and program benefits */}
       <div className="py-12 bg-white sm:py-16">
         <div className="mx-auto  px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-x-8 gap-y-10 text-center sm:grid-cols-3 lg:grid-cols-6">
