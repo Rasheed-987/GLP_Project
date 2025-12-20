@@ -616,7 +616,8 @@ export default {
           { value: "12+", label: "Integrated programs" }
         ]
       }
-    ]
+    ],
+  },
   alumniPage: {
     label: "ALUMNI",
     title: {
