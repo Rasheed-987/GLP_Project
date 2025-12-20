@@ -787,9 +787,9 @@ export default {
         stats: [
           { value: "20%", label: "معدلات إنجاز أسرع" },
           { value: "85%", label: "رضا المستخدمين" },
-          { value: "12+", label: "برامج متكاملة" },
-        ],
-      },
+          { value: "12+", label: "برامج متكاملة" }
+        ]
+      }
     ],
   },
   alumniPage: {
