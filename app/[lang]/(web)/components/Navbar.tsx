@@ -95,7 +95,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
             {!open && (
               <button
                 onClick={() => setOpen(true)}
-                className="group inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 bg-white md:px-3 text-sm font-bold text-zinc-900 hover:bg-black/5 hover:border-transparent transition-all duration-300 gap-2 hover:gap-0"
+                className="group inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 bg-white md:px-3 text-sm font-bold text-black hover:border-transparent transition-all duration-300 gap-2 hover:gap-0"
                 aria-label="Open menu"
               >
                 <svg 
@@ -200,7 +200,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
                     key={item.href}
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="block border-b border-border-stroke pb-2 text-[38px] font-medium text-black hover:text-brand-green transition-colors uppercase"
+                    className="block border-b border-border-stroke pb-2 text-[32px] font-medium text-black hover: transition-colors uppercase"
                   >
                     {item.label}
                   </Link>
@@ -232,7 +232,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="block border-b border-border-stroke pb-2 text-[38px] font-medium text-black hover:text-brand-green transition-colors uppercase"
+                  className="block border-b border-border-stroke pb-2 text-[32px] font-medium text-black hover:text-brand-green transition-colors uppercase"
                 >
                   {item.label}
                 </Link>
