@@ -199,6 +199,7 @@ export default async function HomePage({
                   <span className="bg-brand-gradient bg-clip-text text-transparent">
                     {dict.home.nomination.titleHighlight}
                   </span>
+                  {/* commet */}
                 </h2>
               </div>
               <p className="text-[#6B7280] text-lg leading-relaxed mb-16">
