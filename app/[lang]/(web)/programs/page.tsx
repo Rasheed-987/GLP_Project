@@ -40,14 +40,22 @@ export default async function ProgramsPage({
             </section>
 
             {/* programs section */}
-            <section className="bg-white pb-5 sm:pb-10 md:pb-20 px-4 space-y-8">
-                {dict.programs.items?.map((item, index) => (
-                    <ProgramCard
-                        key={item.id}
-                        item={item}
-                        reversed={index % 2 === 0} // Index 0 (First): Image Left. Index 1 (Second): Image Right.
-                    />
-                ))}
+            <section className="bg-white pb-5 sm:pb-10 md:pb-20 px-4 space-y-12">
+                {dict.programs.items?.map((item, index) => {
+                    const isLast = index === (dict.programs.items?.length ?? 0) - 1;
+                    return (
+                        <div
+                            key={item.id}
+                            className={`${isLast ? "relative" : "sticky md:top-4 top-32"} w-full`}
+                            style={{ zIndex: index + 1 }}
+                        >
+                            <ProgramCard
+                                item={item}
+                                reversed={index % 2 === 0} // Index 0 (First): Image Left. Index 1 (Second): Image Right.
+                            />
+                        </div>
+                    );
+                })}
             </section>
 
             {/* contact section  */}
