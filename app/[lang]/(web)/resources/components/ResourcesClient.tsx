@@ -1,11 +1,21 @@
+// app/[lang]/(web)/resources/components/ResourcesClient.tsx
 "use client";
 
 import React, { useMemo, useState } from "react";
 import VideoTile from "./VideoTile";
 import ArticlesInsightsSection from "./ArticlesInsightsSection";
+import AlumniImpactShowcase, {
+  FeaturedShowcase,
+  ShowcaseCard,
+} from "./AlumniImpactShowcase";
 
 type TabKey = "articles" | "videos" | "reports";
-type VideoCard = { title: string; image: string; href?: string };
+
+type VideoCard = {
+  title: string;
+  image: string;
+  href?: string;
+};
 
 export type Article = {
   id?: string | number;
@@ -17,14 +27,19 @@ export type Article = {
   href?: string;
 };
 
+type ReportsData = {
+  featured: FeaturedShowcase;
+  cards: ShowcaseCard[];
+};
+
 interface ResourcesClientProps {
   tabs: { key: TabKey; label: string }[];
   subtitle: Record<string, string>;
   videoCards: VideoCard[];
   articles: Article[];
-  reports: any[];
   seeMoreText: string;
-  lang: string;
+  lang: "en" | "ar";
+  reportsData?: ReportsData; // ✅ comes from dict.resources.reportsData
 }
 
 export default function ResourcesClient({
@@ -32,19 +47,24 @@ export default function ResourcesClient({
   subtitle,
   videoCards,
   articles,
-  reports,
   seeMoreText,
+  lang,
+  reportsData,
 }: ResourcesClientProps) {
   const [active, setActive] = useState<TabKey>("videos");
 
   const activeSubtitle = subtitle?.[active] ?? "";
 
-  const showVideos = active === "videos";
-  const showArticles = active === "articles";
-  const showReports = active === "reports";
+  // keep only 7 like screenshot (1 featured + 6 small cards)
+  const articlesForSection = useMemo(
+    () => articles?.slice(0, 7) ?? [],
+    [articles]
+  );
 
-  // optional: keep only 7 like screenshot (1 featured + 6)
-  const articlesForSection = useMemo(() => articles?.slice(0, 7) ?? [], [articles]);
+  const featured = reportsData?.featured;
+  const reportCards = reportsData?.cards ?? [];
+
+  const isArabic = lang === "ar";
 
   return (
     <div className="flex flex-col items-center w-full">
@@ -74,7 +94,7 @@ export default function ResourcesClient({
       {/* Content */}
       <div className="w-full mt-10 md:mt-14">
         {/* VIDEOS */}
-        {showVideos && (
+        {active === "videos" && (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
               {videoCards.map((c, idx) => (
@@ -87,7 +107,8 @@ export default function ResourcesClient({
                 type="button"
                 className="rounded-full text-white px-6 py-2.5 text-[14px] font-bold shadow-sm transition hover:brightness-95"
                 style={{
-                  backgroundImage: "linear-gradient(90deg, #045A86 0%, #019977 100%)",
+                  backgroundImage:
+                    "linear-gradient(90deg, #045A86 0%, #019977 100%)",
                 }}
               >
                 {seeMoreText}
@@ -97,21 +118,41 @@ export default function ResourcesClient({
         )}
 
         {/* ARTICLES */}
-        {showArticles && (
-          <ArticlesInsightsSection items={articlesForSection} seeMoreText={seeMoreText} />
+        {active === "articles" && (
+          <ArticlesInsightsSection
+            items={articlesForSection}
+            seeMoreText={seeMoreText}
+          />
         )}
 
         {/* REPORTS */}
-        {showReports && (
-          <div className="grid grid-cols-1 gap-6 w-full">
-            <div className="col-span-full py-20 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-300">
-              <p className="text-slate-500 font-medium">Coming Soon</p>
-              <p className="text-sm text-slate-400 mt-1">
-                We are compiling the latest research for you.
-              </p>
-            </div>
+        {active === "reports" && featured ? (
+          <div dir={isArabic ? "rtl" : "ltr"}>
+            <AlumniImpactShowcase
+              featured={featured}
+              items={
+                reportCards.length >= 6
+                  ? reportCards
+                  : [...reportCards, ...reportCards].slice(0, 6)
+              }
+              seeMoreText={seeMoreText}
+            />
           </div>
-        )}
+        ) : null}
+
+        {/* REPORTS fallback if missing in dict */}
+        {active === "reports" && !featured ? (
+          <div className="py-20 text-center bg-slate-50 rounded-2xl border border-dashed border-slate-300">
+            <p className="text-slate-500 font-medium">
+              {isArabic ? "قريباً" : "Coming Soon"}
+            </p>
+            <p className="text-sm text-slate-400 mt-1">
+              {isArabic
+                ? "نعمل على إعداد أحدث التقارير والأبحاث."
+                : "We are compiling the latest research for you."}
+            </p>
+          </div>
+        ) : null}
       </div>
     </div>
   );

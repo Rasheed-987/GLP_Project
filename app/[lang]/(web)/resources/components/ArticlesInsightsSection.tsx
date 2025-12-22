@@ -44,7 +44,7 @@ function FeaturedCard({ a }: { a: Article }) {
   const href = a.href || (a.slug ? `/article/${a.slug}` : "#");
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[1.55fr_1fr] gap-10 items-stretch">
+    <div className="grid grid-cols-1 lg:grid-cols-[1.55fr_1fr] gap-4 lg:gap-10 items-stretch">
       {/* LEFT IMAGE with BLUE BORDER */}
       <div className="rounded-[26px]  p-[6px]">
         <div className="relative overflow-hidden rounded-[22px] aspect-[16/10]">
@@ -53,7 +53,7 @@ function FeaturedCard({ a }: { a: Article }) {
       </div>
 
       {/* RIGHT CONTENT */}
-      <div className="relative flex flex-col justify-start pt-8 pb-8 text-left ">
+      <div className="relative flex flex-col justify-start lg:pt-8 pb-8 text-left ">
         {a.date ? <p className="text-[11px] md:text-[12px] text-[#00000099] font-semibold">{a.date}</p> : null}
 
         <h3 className="mt-2 text-[18px] text-left md:text-[22px] lg:text-[26px] font-semibold text-slate-900 leading-snug">
