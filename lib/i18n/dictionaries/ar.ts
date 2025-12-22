@@ -21,11 +21,18 @@ export default {
     announcement: "تم فتح باب القبول لبرنامج قيادات نافس",
     applyNow: "قدم الآن",
   },
+  // ar dictionary (where you keep export default {...})
   resources: {
     hero: {
       pill: "الموارد",
+      titleLine1Prefix: "ابقَ ",
+      titleLine1Bold: "على اطلاع",
+      titleLine1Suffix: "،",
+      titleLine2Prefix: "ابقَ ",
+      titleLine2Bold: "مُلهَماً",
       titleLine1: "ابقَ على اطلاع،",
       titleLine2: "ابقَ مُلهَماً",
+      titleLine2Suffix: "",
       description:
         "استكشف رؤى وأدوات وتحديثات مُنسّقة لدعم نموّك المستمر كقائد في الحكومة وخارجها.",
     },
@@ -38,8 +45,7 @@ export default {
       videos:
         "شاهد المحاضرات وأبرز محطات البرامج والمقابلات مع الخبراء وقصص القيادة.",
       articles: "اطّلع على مقالات ورؤى مُنسّقة لدعم رحلتك القيادية.",
-      reports:
-        "استكشف تقارير وأبحاثاً تساعد على اتخاذ قرارات مبنية على المعرفة.",
+      reports: "استكشف تقارير وأبحاثاً تساعد على اتخاذ قرارات مبنية على المعرفة.",
     },
     videoCards: [
       {
@@ -64,7 +70,6 @@ export default {
       },
     ],
     seeMore: "عرض المزيد",
-
     faq: {
       title: "الأسئلة الشائعة",
       groups: [
@@ -137,13 +142,13 @@ export default {
         },
       ],
     },
-
     cta: {
       title: "هل لديك فكرة ترغب بمشاركتها؟",
       description: "مهتم بالمساهمة في محتوى المنصة أو استضافة جلسة؟",
       button: "تواصل معنا",
     },
   },
+
 
   about: {
     hero: {
@@ -715,7 +720,7 @@ export default {
           "أول حي محايد للكربون في دبي",
         excerpt:
           "من خلال برنامج القادة الاستراتيجية، اكتسبتُ الرؤية التي مكنتني من إطلاق أول حي خال من الانبعاثات الكربونية في دبي. وقد أصبح هذا ال...",
-        image: "/images/casestudy1.png",
+        image: "/images/casestudy2.png",
         mobileImage: "/images/casestudymbl1.png",
         author: "فريق البرنامج",
         stats: [
@@ -781,7 +786,7 @@ export default {
         title: "بوابة القيادة الوطنية",
         excerpt:
           "منصة تعاون وتعلم موحدة لقادة القطاعين الحكومي والخاص. مصممة لتسريع التطوير.",
-        image: "/images/casestudy3.png",
+        image: "/images/casestudy2.png",
         mobileImage: "/images/casestudymbl3.png",
         author: "فريق البرنامج",
         stats: [

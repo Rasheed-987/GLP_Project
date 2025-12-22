@@ -17,6 +17,135 @@ export default {
     login: 'Log in',
     description: 'UAE Government Leaders Program - Empowering the next generation of Emirati leaders.'
   },
+  // en dictionary (where you keep export default {...})
+  resources: {
+    hero: {
+      pill: "RESOURCES",
+      titleLine1Prefix: "Stay ",
+      titleLine1Bold: "Informed",
+      titleLine1Suffix: ",",
+      titleLine2Prefix: "Stay ",
+      titleLine2Bold: "Inspired",
+      titleLine2Suffix: "",
+      titleLine1: "Stay Informed,",
+      titleLine2: "Stay Inspired",
+      description:
+        "Explore curated insights, tools, and updates to support your continued growth as a leader in government and beyond.",
+    },
+    tabs: {
+      articles: "Articles & Insights",
+      videos: "Video Library",
+      reports: "Reports & Research",
+    },
+    subtitle: {
+      videos:
+        "Watch talks, programme highlights, expert interviews, and leadership stories.",
+      articles: "Explore curated articles and insights to support your leadership journey.",
+      reports: "Explore reports and research to support evidence-based decisions.",
+    },
+    videoCards: [
+      {
+        title: "Strategic partnership between Egypt and UAE\nin government modernization",
+        image: "/images/resources/v1.png",
+        href: "#",
+      },
+      {
+        title: "Session with Professor James Robinson",
+        image: "/images/resources/v2.png",
+        href: "#",
+      },
+      {
+        title: "UAEGLP session with Mr. Masood Ahmed from\nIMF",
+        image: "/images/resources/v3.png",
+        href: "#",
+      },
+      {
+        title: "Roadshow by UAEGLP Alumni",
+        image: "/images/resources/v4.png",
+        href: "#",
+      },
+    ],
+    seeMore: "See more",
+    faq: {
+      title: "FAQ",
+      groups: [
+        {
+          label: "GENERAL",
+          items: [
+            {
+              q: "What is the UAE Government Leaders Programme (GLP)?",
+              a: "GLP is a national initiative dedicated to developing Emirati leadership across various career stages. It offers structured, experience-driven programmes built around the UAE Government Leadership Model.",
+            },
+            {
+              q: "Who are the programmes designed for?",
+              a: "Programmes are designed for Emirati talent across career stages in government and the private sector, based on eligibility for each programme track.",
+            },
+            {
+              q: "Is GLP only for government employees?",
+              a: "No. Some tracks focus on government, while others are open to private sector participants depending on the programme and eligibility.",
+            },
+            {
+              q: "What is the duration of each programme?",
+              a: "Duration varies by programme, typically part-time across several months up to one year depending on the track.",
+            },
+            {
+              q: "Are these academic or certified programmes?",
+              a: "GLP provides completion certificates, and some tracks may include academic partnerships depending on the programme.",
+            },
+          ],
+        },
+        {
+          label: "APPLICATION & SELECTION",
+          items: [
+            {
+              q: "How do I apply to a programme?",
+              a: "You can apply through the online application form when admissions are open, by submitting the required details and documents (if needed).",
+            },
+            {
+              q: "Can I apply to more than one programme?",
+              a: "Yes, subject to eligibility criteria and scheduling. We recommend choosing the programme that best matches your career stage first.",
+            },
+            {
+              q: "What does the selection process involve?",
+              a: "Depending on the programme, selection may include application review, interviews, and assessments to ensure alignment with programme goals.",
+            },
+            {
+              q: "Is there a cost to participate?",
+              a: "Fees (if applicable) depend on the programme and partnerships. Most programmes are supported; details are shared during admissions.",
+            },
+            {
+              q: "How can I access the Qiyadat platform?",
+              a: "Access is granted to participants and alumni depending on the programme, via credentials shared after admission or graduation.",
+            },
+            {
+              q: "What opportunities are available after graduation?",
+              a: "Graduates join the alumni network and can access ongoing learning, leadership events, and collaboration initiatives.",
+            },
+          ],
+        },
+        {
+          label: "FOR ENTITIES / PARTNERS",
+          items: [
+            {
+              q: "Can our entity collaborate with GLP to develop a custom programme?",
+              a: "Yes. GLP partners with entities to co-design and deliver tailored programmes aligned with strategic needs through consultation, co-design, and delivery.",
+            },
+            {
+              q: "Do you work with private companies or only government bodies?",
+              a: "We work with government entities and private sector partners depending on the partnership scope and programme objectives.",
+            },
+          ],
+        },
+      ],
+    },
+    cta: {
+      title: "Have an insight to share?",
+      description: "Interested in contributing to our content or hosting a session?",
+      button: "Contact us",
+    },
+  },
+
+
   topBar: {
     announcement: 'Nafis Leadership Program Admissions Now Open',
     applyNow: 'Apply now',
@@ -555,9 +684,9 @@ export default {
         slug: "dubai-carbon-neutral-district",
         tag: "CASE STUDY",
         date: "09/03/2019",
-        title: "Dubai's first carbon-neutral district",
-        excerpt: "Through the Strategic Leaders Programme, I developed the strategic vision to launch Dubai's first carbon-neutral district.",
-        image: "/images/casestudy1.png",
+        title: "UAE Government Leaders Programme opens registration for UAE Nationals",
+        excerpt: "The UAE Government Leaders Programme, UAE GLP, has organised two discussion session titled ‘The Leadership Spirit’ and ‘The Economic Horizons’ as part of the 'Government Leadership Talks' series.",
+        image: "/images/casestudy2.png",
         mobileImage: "/images/casestudymbl1.png",
         author: "GLP Team",
         stats: [
@@ -599,7 +728,7 @@ export default {
         tag: "CASE STUDY",
         date: "09/03/2019",
         title: "Digital Transformation Platform",
-        excerpt: "Redesigned GLP's digital ecosystem to centralize leadership programmes and streamline participant journeys.",
+        excerpt: "The UAE Government Leaders Programme, UAE GLP, has organised two discussion session titled ‘The Leadership Spirit’ and ‘The Economic Horizons’ as part of the 'Government Leadership Talks' series.",
         image: "/images/casestudy2.png",
         mobileImage: "/images/casestudymbl2.png",
         author: "GLP Team",
@@ -610,13 +739,30 @@ export default {
         ]
       },
       {
-        id: "3",
+        id: "2",
+        slug: "digital-transformation-platform",
+        tag: "CASE STUDY",
+        date: "09/03/2019",
+        title: "Digital Transformation Platform",
+        excerpt: "Redesigned GLP's digital ecosystem to centralize leadership programmes and streamline participant journeys.",
+        image: "/images/casestudy2.png",
+        mobileImage: "/images/casestudymbl2.png",
+        author: "GLP Team",
+        stats: [
+          { value: "40%", label: "Faster onboarding" },
+          { value: "3x", label: "Engagement" },
+          { value: "+60%", label: "Band recognition" }
+        ]
+      },
+
+      {
+        id: "6",
         slug: "national-leadership-portal",
         tag: "CASE STUDY",
         date: "09/03/2019",
         title: "National Leadership Portal",
         excerpt: "A unified collaboration and learning platform for government and private sector leaders. Designed to accelerate development.",
-        image: "/images/casestudy3.png",
+        image: "/images/casestudy2.png",
         mobileImage: "/images/casestudymbl3.png",
         author: "GLP Team",
         stats: [
@@ -715,4 +861,6 @@ export default {
       ]
     }
   }
+
+
 }
