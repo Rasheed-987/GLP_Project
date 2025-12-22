@@ -19,7 +19,7 @@ export default async function DashboardLayout({
             <Sidebar lang={lang} dict={dict} />
 
             {/* Main Content */}
-            <div className="flex-1 flex flex-col md:pl-64">
+            <div className="flex-1 flex flex-col md:pl-64 no-scrollbar">
                 {/* Topbar Placeholder */}
                 <header className="h-16 border-b border-border-stroke flex items-center justify-between px-8 bg-white/80 backdrop-blur-md sticky top-0 z-40">
                     <div className="flex items-center gap-4">

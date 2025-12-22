@@ -19,11 +19,12 @@
   --color-brand-blue: var(--blue);
   --color-brand-green: var(--green);
   --color-brand-gradient: var(--brand-gradient);
-  --color-brand-dark-blue: var(--blue); /* Alias for backward compatibility/specific usage */
+  --color-brand-dark-blue: var(--blue);
+  /* Alias for backward compatibility/specific usage */
   /* Border colors */
   --color-border-stroke: var(--border-stroke);
   /* Prefer Frutiger Arabic if available */
-  --font-sans: var(--font-frutiger-arabic),;
+  --font-sans: var(--font-frutiger-arabic), ;
   --font-mono: var(--font-geist-mono);
 }
 
@@ -55,9 +56,20 @@ body {
 }
 
 .hover-gradient-text:hover {
-background: linear-gradient(90deg, #045A86 0%, #019977 100%);
+  background: linear-gradient(90deg, #045A86 0%, #019977 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
 
+}
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
