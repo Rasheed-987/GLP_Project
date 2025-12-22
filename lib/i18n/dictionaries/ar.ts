@@ -889,4 +889,42 @@ export default {
       ],
     },
   },
+  auth: {
+    signIn: {
+      title: 'تسجيل الدخول',
+      email: 'البريد الإلكتروني',
+      password: 'كلمة المرور',
+      signInBtn: 'تسجيل الدخول',
+      forgotPassword: 'هل نسيت كلمة المرور؟',
+      noAccount: 'ليس لديك حساب؟',
+      signUp: 'إنشاء حساب',
+    },
+    signUp: {
+      title: 'إنشاء حساب جديد',
+      fullName: 'الاسم الكامل',
+      email: 'البريد الإلكتروني',
+      phone: 'رقم الهاتف',
+      password: 'كلمة المرور',
+      confirmPassword: 'تأكيد كلمة المرور',
+      signUpBtn: 'إنشاء حساب',
+      haveAccount: 'لديك حساب بالفعل؟',
+      signIn: 'تسجيل الدخول',
+    },
+  },
+  dashboard: {
+    sidebar: {
+      dashboard: 'لوحة التحكم',
+      resources: 'الموارد',
+      articles: 'المقالات',
+      programs: 'البرامج',
+      logout: 'تسجيل الخروج',
+    },
+    overview: {
+      welcome: 'مرحباً بعودتك،',
+      activePrograms: 'البرامج النشطة',
+      recentArticles: 'أحدث المقالات',
+      newResources: 'موارد جديدة',
+      viewAll: 'عرض الكل',
+    },
+  },
 };
