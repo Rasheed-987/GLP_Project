@@ -173,13 +173,33 @@ export default async function ApproachPage({
                         {/* Title - Gradient applied to whole block */}
                         <h2 className="text-[1.25rem] md:text-[2rem] leading-[0.9] md:leading-[0.8] mb-4 md:mb-7 bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent">
                             <span className="block mb-1 md:mb-2">
-                                <span className="font-normal">{dict.approach.learningMethodology.title.line1.text1}</span>
-                                <span className="font-bold">{dict.approach.learningMethodology.title.line1.highlight1}</span>
-                                <span className="font-normal">{dict.approach.learningMethodology.title.line1.text2}</span>
-                                <span className="font-bold">{dict.approach.learningMethodology.title.line1.highlight2}</span>
-                                <span className="font-bold">{dict.approach.learningMethodology.title.line1.highlight3}</span>
-                                   <span className="font-normal">{dict.approach.learningMethodology.title.line1.text3}</span>
-                                    
+                                {lang === 'en' ? (
+                                    <>
+                                        <span className="block md:inline">
+                                            <span className="font-normal">{dict.approach.learningMethodology.title.line1.text1}</span>
+                                            <span className="font-bold">{dict.approach.learningMethodology.title.line1.highlight1}</span>
+                                        </span>
+                                        <span className="block md:inline">
+
+                                       
+                                            <span className="font-normal">{dict.approach.learningMethodology.title.line1.text2}</span>
+                                            <span className="font-bold">{dict.approach.learningMethodology.title.line1.highlight2}</span>
+                                        </span>
+                                        <span className="block md:inline">
+                                            <span className="font-bold">{dict.approach.learningMethodology.title.line1.highlight3}</span>
+                                            <span className="font-normal">{dict.approach.learningMethodology.title.line1.text3}</span>
+                                        </span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="font-normal">{dict.approach.learningMethodology.title.line1.text1}</span>
+                                        <span className="font-bold">{dict.approach.learningMethodology.title.line1.highlight1}</span>
+                                        <span className="font-normal">{dict.approach.learningMethodology.title.line1.text2}</span>
+                                        <span className="font-bold">{dict.approach.learningMethodology.title.line1.highlight2}</span>
+                                        <span className="font-bold">{dict.approach.learningMethodology.title.line1.highlight3}</span>
+                                        <span className="font-normal">{dict.approach.learningMethodology.title.line1.text3}</span>
+                                    </>
+                                )}
                             </span>
                             <span className="block">
                                 <span className="font-normal">{dict.approach.learningMethodology.title.line2.text3}</span>

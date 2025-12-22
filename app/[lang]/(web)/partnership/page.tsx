@@ -6,6 +6,7 @@ import { getDictionary } from '@/lib/i18n/dictionaries';
 import Button from '../components/Button';
 import TagPill from '../components/TagPill';
 import Carousel from '../components/Carousel';
+import ContactSection from '../components/ContactSection';
 
 export default async function PartnershipPage({
     params,
@@ -18,7 +19,7 @@ export default async function PartnershipPage({
     return (
         <>
             <section>
-                <Container className="w-full px-4 ">
+                <Container className="w-full mt-20 md:mt-0 px-4 ">
                     <Image
                         src="/images/partnership_herobg.png"
                         alt="Partnership"
@@ -44,15 +45,15 @@ export default async function PartnershipPage({
 
 
                             {/* Title with Gradient */}
-                            <h2 className="text-[1.85rem] md:text-[2.8rem] leading-[1.2] md:leading-[1] tracking-[1.5] text-black ">
+                            <h2 className="text-[1.5rem] md:text-[2.5rem] leading-[1.2] lg:max-w-[500px]  max-w-[200px] md:leading-[1] tracking-[1.5] text-black ">
                                 <span className="font-medium">{dict.partnership.title.text1}</span>
                                 <span className="font-extrabold">{dict.partnership.title.highlight1}</span>
                             </h2>
                         </div>
-
+        
                         {/* Right Column: Description and Button */}
                         <div className="w-full lg:w-1/2 flex flex-col md:ps-32 justify-start md:pt-10 gap-6">
-                            <p className="text-[#00000099] text-[14px] md:text-[16px] leading-[1.2]">
+                            <p className="text-[#00000099] text-xs md:text-[15px] leading-[1.2]">
                                 {dict.partnership.description}
                             </p>
                             <div>
@@ -71,7 +72,7 @@ export default async function PartnershipPage({
                         {/* Title and Description */}
                         <div className="w-full lg:w-6/12  order-1">
 
-                            <span className="text-brand-blue text-[12px] md:text-[15px] font-semibold uppercase tracking-[1.2] md:tracking-[1.6] mb-2 md:mb-4 block">
+                            <span className="text-brand-blue text-[11px] md:text-[14px] font-semibold uppercase tracking-[1.2] md:tracking-[1.6] mb-2 md:mb-4 block">
                                 {dict.partnership.about.label}
                             </span>
 
@@ -81,14 +82,15 @@ export default async function PartnershipPage({
                             </div>
 
                             {/* Title with Gradient */}
-                            <h2 className="text-[1.3rem] max-w-md md:text-[1.7rem] leading-[1.2] md:leading-[1.1] bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent mb-6 md:mb-48">
+                            <h2 className="text-[1.1rem] max-w-md md:text-[1.5rem] leading-[1.2] md:leading-[1.1] bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent mb-6 md:mb-48">
                                 <span className="font-extrabold">{dict.partnership.about.title.text1}</span>
                                 <span className="font-extrabold">{dict.partnership.about.title.highlight1}</span>
                                 <span className="font-normal">{dict.partnership.about.title.text2}</span>
                                 <span className="font-extrabold">{dict.partnership.about.title.highlight2}</span>
+                                <span className="font-normal">{dict.partnership.about.title.text3}</span>
                             </h2>
                             <div className="w-full ">
-                                <p className="text-[#00000099] leading-[1.2] text-sm md:text-[16px] max-w-lg">
+                                <p className="text-[#00000099] leading-[1.2] text-xs md:text-[15px] max-w-lg">
                                     {dict.partnership.about.description}
                                 </p>
                             </div>
@@ -117,7 +119,7 @@ export default async function PartnershipPage({
                     <div className="flex flex-col lg:flex-row gap-12 lg:gap-28 relative">
                         {/* Left Side: Sticky Title and Arrow */}
                         <div className="w-full lg:w-6/12 lg:sticky lg:top-32 h-fit">
-                            <h2 className="text-[1.5rem] md:text-[1.85rem] max-w-lg leading-[1.2] md:leading-[1.1] mb-8 bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent">
+                            <h2 className="text-[1.25rem] md:text-[1.6rem] max-w-lg leading-[1.2] md:leading-[1.1] mb-8 bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent">
                                 <span className="font-normal">{dict.partnership.approach.title.text1}</span>
                                 <span className="font-extrabold">{dict.partnership.approach.title.highlight1}</span>
                                 <span className="font-normal">{dict.partnership.approach.title.text2}</span>
@@ -137,14 +139,14 @@ export default async function PartnershipPage({
                             {dict.partnership.approach.steps.map((step, idx) => (
                                 <div key={idx} className="flex flex-col md:gap-6">
                                     <div className="flex items-baseline gap-4">
-                                        <span className="text-3xl md:text-4xl font-light gradient-text opacity-40">
+                                        <span className="text-2xl md:text-3xl font-light gradient-text opacity-40">
                                             {step.number}
                                         </span>
-                                        <h3 className="text-2xl md:text-[2rem] font-medium -tracking-[0.9px] gradient-text">
+                                        <h3 className="text-xl md:text-[1.75rem] font-medium -tracking-[0.9px] gradient-text">
                                             {step.title}
                                         </h3>
                                     </div>
-                                    <p className="text-[#00000099] max-w-md  mt-5 md:mt-24 text-[14px] md:text-[16px] leading-relaxed ">
+                                    <p className="text-[#00000099] max-w-md  mt-5 md:mt-24 text-xs md:text-[15px] leading-relaxed ">
                                         {step.description}
                                     </p>
                                     {idx !== dict.partnership.approach.steps.length - 1 && (
@@ -173,7 +175,7 @@ export default async function PartnershipPage({
                     <div className="flex flex-col lg:flex-row gap-12 lg:gap-20 items-start">
                         {/* Left Side: Text Content */}
                         <div className="w-full lg:w-8/12">
-                            <p className="text-brand-blue md:text-white tracking-[1] md:tracking-[0.5px] text-xs md:text-sm font-semibold pb-2 md:pb-3">
+                            <p className="text-brand-blue md:text-white tracking-[1] md:tracking-[0.5px] text-[10px] md:text-[13px] font-semibold pb-2 md:pb-3">
                                 {dict.partnership.offer.pill}
                             </p>
 
@@ -183,12 +185,12 @@ export default async function PartnershipPage({
                             </div>
 
                             {/* Title - Teal on Mobile, White on Desktop */}
-                            <h2 className="text-[1.25rem] md:text-[1.7rem] max-w-sm leading-[1.1] gradient-text md:text-white font-medium mb-8">
-                                <span className="font-extrabold">{dict.partnership.offer.title.text1}{dict.partnership.offer.title.highlight1}</span>
+                            <h2 className="text-[1.1rem] md:text-[1.5rem] max-w-sm leading-[1.1] bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent lg:text-white lg:bg-none font-medium mb-8">
+                                <span className="font-bold">{dict.partnership.offer.title.text1}{dict.partnership.offer.title.highlight1}</span>
                                 {dict.partnership.offer.title.text2}
-                                <span className="font-extrabold">{dict.partnership.offer.title.highlight2}</span>
+                                <span className="font-bold">{dict.partnership.offer.title.highlight2}</span>
                                 {dict.partnership.offer.title.text3}
-                                <span className="font-extrabold">{dict.partnership.offer.title.highlight3}</span>
+                                <span className="font-bold">{dict.partnership.offer.title.highlight3}</span>
                             </h2>
 
                             {/* Mobile Image and Overlaid Description Block - Hidden on Desktop */}
@@ -200,14 +202,14 @@ export default async function PartnershipPage({
                                     className="object-cover"
                                 />
                                 <div className="absolute bottom-0 left-0 right-0 p-3 pt-20 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
-                                    <p className="text-white text-[14px] leading-[1.3] max-w-xs">
+                                    <p className="text-white text-[13px] leading-[1.3] max-w-xs">
                                         {dict.partnership.offer.description}
                                     </p>
                                 </div>
                             </div>
 
                             {/* Desktop Description - Hidden on Mobile */}
-                            <p className="hidden md:block text-white text-[14px] md:text-[16px] leading-[1.3] max-w-md pt-56">
+                            <p className="hidden md:block text-white text-[13px] md:text-[15px] leading-[1.3] max-w-md pt-56">
                                 {dict.partnership.offer.description}
                             </p>
                         </div>
@@ -225,7 +227,7 @@ export default async function PartnershipPage({
                                             className="object-contain transition-transform duration-[1500ms] ease-in-out group-hover:-rotate-[360deg] md:w-5 md:h-5"
                                         />
                                     </div>
-                                    <span className="text-[15px] md:text-[15px] text-[#00000099] font-medium leading-tight tracking-tight mt-4 md:mt-0">
+                                    <span className="text-[13px] md:text-[14px] text-[#00000099] font-medium leading-tight tracking-tight mt-4 md:mt-0">
                                         {card.text}
                                     </span>
                                 </div>
@@ -237,7 +239,7 @@ export default async function PartnershipPage({
 
             <section className="bg-white pt-20">
                 <Container className="px-4 md:px-14">
-                    <span className="text-brand-blue text-[12px] md:text-[15px] font-semibold uppercase tracking-[1.2] md:tracking-[1.6] mb-2 md:mb-4 block">
+                    <span className="text-brand-blue text-[11px] md:text-[14px] font-semibold uppercase tracking-[1.2] md:tracking-[1.6] mb-2 md:mb-4 block">
                         {dict.partnership.caseStudies.label}
                     </span>
 
@@ -246,7 +248,7 @@ export default async function PartnershipPage({
                         <div className="h-full w-1/2 bg-[#045A86] rounded-full"></div>
                     </div>
 
-                    <p className="text-[#00000099] text-[14px] md:text-[15px] leading-[1.4] max-w-md">
+                    <p className="text-[#00000099] text-[13px] md:text-[14px] leading-[1.4] max-w-md">
                         {dict.partnership.caseStudies.description}
                     </p>
                 </Container>
@@ -260,6 +262,24 @@ export default async function PartnershipPage({
                     </Button>
                 </div>
             </section>
+
+            {lang === 'ar' ? (
+                <ContactSection
+                    titleLine1={dict.partnership.contact.title1}
+                    titleLine2={dict.partnership.contact.title2}
+                    description={dict.partnership.contact.description}
+                    button={dict.partnership.contact.button1}
+                    button2={dict.partnership.contact.button2}
+                />
+            ) : (
+                <ContactSection
+                    titleLine1={dict.partnership.contact.titleLine1}
+                    titleLine2Bold={dict.partnership.contact.titleLine2Bold}
+                    titleLine2={dict.partnership.contact.titleLine2}
+                    description={dict.partnership.contact.description}
+                    button={dict.partnership.contact.button}
+                />
+            )}
 
         </>
     );

@@ -1,3 +1,5 @@
+import { text } from "stream/consumers";
+
 export default {
   nav: {
     home: 'Home',
@@ -508,10 +510,10 @@ export default {
       subTitle: "Proud partners of:"
     },
     contact: {
-      title1: "Ready to take the next step",
-      title2: "in your leadership journey?",
+      titleLine1: "Ready to take the next step",
+      titleLine2: "in your leadership journey?",
       description: "Apply now or explore which program fits your path",
-      button1: "Apply now",
+      button: "Apply now",
       button2: "Partner with us"
     }
   },
@@ -740,7 +742,8 @@ export default {
         text1: "The UAE Government Leaders Programme ",
         highlight1: "(GLP)",
         text2: " works hand-in-hand with government entities to design and deliver bespoke ",
-        highlight2: "leadership development initiatives"
+        highlight2: "leadership development initiatives",
+        text3: " that drive real-world impact"
       },
       description: "Every partnership begins with a deep understanding of your organization's objectives, whether that's nurturing emerging talent, preparing your leaders for complex challenges, or closing key capability gaps."
     },
@@ -801,6 +804,17 @@ export default {
     caseStudies: {
       label: "CASE STUDIES",
       description: "GLP has partnered with various entities to deliver programmes across strategy, performance, innovation, and leadership"
+    },
+    contact: {
+      title1:"",
+      title2:"",
+      button1:"",
+      button2:"",
+      titleLine1: "Ready to invest in your",
+      titleLine2Bold: "next generation",
+      titleLine2: " of leaders?",
+      description: "Let's build a programme that reflects your vision",
+      button: "Send an inquiry"
     }
   },
   article: {
