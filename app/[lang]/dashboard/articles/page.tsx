@@ -1,51 +1,470 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
 import { Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import { Plus, ChevronLeft, ChevronRight, Edit2, Trash2, Calendar, Clock, CheckCircle, XCircle, ChevronDown, Image as ImageIcon, Type, AlignLeft, FileText, Layout, X } from "lucide-react";
+
+interface ContentSection {
+    id: string;
+    heading: {
+        en: string;
+        ar: string;
+    };
+    content: {
+        en: string;
+        ar: string;
+    };
+}
+
+interface Article {
+    id: string;
+    title: {
+        en: string;
+        ar: string;
+    };
+    subtitle: {
+        en: string;
+        ar: string;
+    };
+    date: {
+        en: string;
+        ar: string;
+    };
+    mainImage: string;
+    sections: ContentSection[];
+    status: {
+        en: "active" | "inactive";
+        ar: "active" | "inactive";
+    };
+    createdAt: string;
+}
 
 export default function ArticlesPage() {
     const params = useParams();
     const lang = params.lang as Locale;
-    const [dict, setDict] = React.useState<any>(null);
+    const [dict, setDict] = useState<any>(null);
+    const [articles, setArticles] = useState<Article[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [editingArticle, setEditingArticle] = useState<Article | null>(null);
 
-    React.useEffect(() => {
+    // Form state
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [sections, setSections] = useState<ContentSection[]>([]);
+    const [statusDropdownOpenEn, setStatusDropdownOpenEn] = useState(false);
+    const [statusDropdownOpenAr, setStatusDropdownOpenAr] = useState(false);
+    const [selectedStatusEn, setSelectedStatusEn] = useState<"active" | "inactive">("active");
+    const [selectedStatusAr, setSelectedStatusAr] = useState<"active" | "inactive">("active");
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+    const itemsPerPage = 8;
+
+    useEffect(() => {
         getDictionary(lang).then(setDict);
+        // Mock data
+        const mockArticles: Article[] = [
+            {
+                id: "1",
+                title: {
+                    en: "UAE Government Leaders Programme opens registration for UAE Nationals",
+                    ar: "برنامج قيادات حكومة الإمارات يفتح باب التسجيل لمواطني الدولة"
+                },
+                subtitle: {
+                    en: "From rising professionals to senior decision-makers, our programmes help shape future-ready leaders.",
+                    ar: "من المهنيين الصاعدين إلى كبار صناع القرار، تساعد برامجنا في تشكيل قادة مستعدين للمستقبل."
+                },
+                date: { en: "2025-04-07", ar: "٢٠٢٥-٠٤-٠٧" },
+                mainImage: "https://via.placeholder.com/800x400",
+                sections: [
+                    {
+                        id: "s1",
+                        heading: { en: "New heading", ar: "عنوان جديد" },
+                        content: {
+                            en: "The UAE Government Leaders Programme is inviting UAE nationals to register for its 2020 cohort across three categories – Executive Leaders Programme, Future Leaders Programme, and UAE Youth Leaders Programme.",
+                            ar: "يدعو برنامج قيادات حكومة الإمارات مواطني الدولة للتسجيل في دفعة 2020 ضمن ثلاث فئات – برنامج القيادات التنفيذية، وبرنامج قادة المستقبل، وبرنامج شباب الإمارات."
+                        }
+                    }
+                ],
+                status: { en: "active", ar: "active" },
+                createdAt: new Date().toISOString()
+            }
+        ];
+        setArticles(mockArticles);
     }, [lang]);
+
+    useEffect(() => {
+        if (editingArticle) {
+            setImagePreview(editingArticle.mainImage);
+            setSections(editingArticle.sections);
+            setSelectedStatusEn(editingArticle.status.en);
+            setSelectedStatusAr(editingArticle.status.ar);
+        } else {
+            setImagePreview(null);
+            setSections([{ id: Date.now().toString(), heading: { en: "", ar: "" }, content: { en: "", ar: "" } }]);
+            setSelectedStatusEn("active");
+            setSelectedStatusAr("active");
+        }
+    }, [editingArticle]);
 
     if (!dict) return null;
 
+    const totalPages = Math.ceil(articles.length / itemsPerPage);
+    const currentArticles = articles.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => setImagePreview(reader.result as string);
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const addSection = () => {
+        setSections([...sections, { id: Date.now().toString(), heading: { en: "", ar: "" }, content: { en: "", ar: "" } }]);
+    };
+
+    const removeSection = (id: string) => {
+        setSections(sections.filter(s => s.id !== id));
+    };
+
+    const updateSection = (id: string, field: 'heading' | 'content', l: 'en' | 'ar', val: string) => {
+        setSections(sections.map(s => {
+            if (s.id === id) {
+                return { ...s, [field]: { ...s[field], [l]: val } };
+            }
+            return s;
+        }));
+    };
+
+    const toggleStatus = (id: string) => {
+        setArticles(prev => prev.map(item => {
+            if (item.id === id) {
+                const newStatus = item.status[lang] === "active" ? "inactive" : "active";
+                return { ...item, status: { ...item.status, [lang]: newStatus } };
+            }
+            return item;
+        }));
+    };
+
+    const deleteArticle = (id: string) => {
+        if (confirm("Are you sure you want to delete this article?")) {
+            setArticles(prev => prev.filter(item => item.id !== id));
+        }
+    };
+
     return (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-            <div>
-                <h1 className="text-2xl font-bold text-black tracking-tight">
-                    {dict.dashboard.sidebar.articles}
-                </h1>
-                <p className="text-[#00000099] text-sm mt-1">
-                    Insights and updates from the world of government leadership.
-                </p>
+        <div className="space-y-8 py-10 text-[#00000099] animate-in fade-in slide-in-from-bottom-4 duration-700">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 className="text-2xl font-bold text-black tracking-tight flex items-center gap-2">
+                        {dict.dashboard.sidebar.articles}
+                    </h1>
+                    <p className="text-[#00000099] text-sm mt-1">
+                        Publish insights and leadership stories.
+                    </p>
+                </div>
+                <button
+                    onClick={() => {
+                        setEditingArticle(null);
+                        setIsModalOpen(true);
+                    }}
+                    className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gradient text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all group cursor-pointer"
+                >
+                    <Plus className="w-4 h-4 transition-transform group-hover:rotate-90" />
+                    Create New Article
+                </button>
             </div>
 
-            <div className="space-y-4">
-                {[1, 2, 3, 4].map((i) => (
-                    <div key={i} className="flex flex-col md:flex-row gap-6 p-4 rounded-2xl bg-[#F7FAF9] border border-border-stroke hover:border-brand-blue/30 transition-all group">
-                        <div className="w-full md:w-48 aspect-video rounded-xl bg-gray-200 overflow-hidden relative shrink-0">
-                            <div className="absolute inset-0 bg-brand-gradient opacity-10"></div>
-                        </div>
-                        <div className="flex flex-col justify-center">
-                            <span className="text-[10px] font-bold text-brand-green uppercase tracking-widest mb-1">Insights</span>
-                            <h3 className="font-bold text-black text-lg group-hover:text-brand-blue transition-colors">Article Title {i}</h3>
-                            <p className="text-sm text-[#00000099] mt-2 line-clamp-2 max-w-2xl">This is a summary of the article that explains the key takeaways and why you should read it.</p>
-                            <div className="mt-4 flex items-center gap-4 text-[10px] text-[#00000066] font-medium">
-                                <span>24 Dec 2025</span>
-                                <span>•</span>
-                                <span>6 min read</span>
-                            </div>
-                        </div>
-                    </div>
-                ))}
+            {/* List Table */}
+            <div className="bg-white rounded-2xl border border-border-stroke overflow-hidden shadow-sm">
+                <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                        <thead>
+                            <tr className="bg-[#F7FAF9] border-b border-border-stroke">
+                                <th className="px-6 py-4 text-xs font-bold text-[#00000066] uppercase tracking-wider whitespace-nowrap">Article</th>
+                                <th className="px-6 py-4 text-xs font-bold text-[#00000066] uppercase tracking-wider whitespace-nowrap">Status</th>
+                                <th className="px-6 py-4 text-xs font-bold text-[#00000066] uppercase tracking-wider whitespace-nowrap">Article Date</th>
+                                <th className="px-6 py-4 text-xs font-bold text-[#00000066] uppercase tracking-wider whitespace-nowrap">Created</th>
+                                <th className="px-6 py-4 text-xs font-bold text-[#00000066] uppercase tracking-wider whitespace-nowrap text-right">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-border-stroke">
+                            {currentArticles.map((item) => (
+                                <tr key={item.id} className="group hover:bg-[#F7FAF9]/50 transition-colors">
+                                    <td className="px-6 py-4">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-12 h-12 rounded-lg bg-brand-blue/5 border border-border-stroke flex items-center justify-center shrink-0 overflow-hidden">
+                                                {item.mainImage ? (
+                                                    <img src={item.mainImage} alt="Main" className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <FileText className="w-5 h-5 text-brand-blue" />
+                                                )}
+                                            </div>
+                                            <div className="space-y-0.5 max-w-sm">
+                                                <p className="text-sm font-bold text-black line-clamp-1">
+                                                    {lang === 'ar' ? item.title.ar : item.title.en}
+                                                </p>
+                                                <p className="text-[11px] text-[#00000099] line-clamp-1">
+                                                    {lang === 'ar' ? item.subtitle.ar : item.subtitle.en}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <button
+                                            onClick={() => toggleStatus(item.id)}
+                                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wider transition-all
+                                                ${item.status[lang] === "active"
+                                                    ? "bg-[#E6F4F1] text-[#019977] hover:bg-[#019977] hover:text-white"
+                                                    : "bg-red-50 text-red-600 hover:bg-red-600 hover:text-white"}`}
+                                        >
+                                            {item.status[lang] === "active" ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
+                                            {item.status[lang]}
+                                        </button>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <div className="flex whitespace-nowrap items-center gap-2 text-xs text-[#00000099]">
+                                            <Calendar className="w-3.5 h-3.5 text-brand-blue" />
+                                            {lang === 'ar' ? item.date.ar : item.date.en}
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4">
+                                        <div className="flex items-center gap-2 text-xs text-[#00000066]">
+                                            <Clock className="w-3.5 h-3.5" />
+                                            {new Date(item.createdAt).toLocaleDateString()}
+                                        </div>
+                                    </td>
+                                    <td className="px-6 py-4 text-right">
+                                        <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button
+                                                onClick={() => { setEditingArticle(item); setIsModalOpen(true); }}
+                                                className="p-2 text-[#00000066] hover:text-brand-blue hover:bg-brand-blue/5 rounded-lg transition-all cursor-pointer"
+                                            >
+                                                <Edit2 className="w-4 h-4" />
+                                            </button>
+                                            <button
+                                                onClick={() => deleteArticle(item.id)}
+                                                className="p-2 text-[#00000066] hover:text-red-600 hover:bg-red-50 rounded-lg transition-all cursor-pointer"
+                                            >
+                                                <Trash2 className="w-4 h-4" />
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                {/* Pagination (Simplified for now) */}
+                <div className="px-6 py-4 bg-[#F7FAF9] border-t border-border-stroke flex items-center justify-between">
+                    <p className="text-xs text-[#00000066] font-medium">
+                        Showing results for {dict.dashboard.sidebar.articles}
+                    </p>
+                </div>
             </div>
+
+            {/* Add/Edit Modal */}
+            {isModalOpen && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-300">
+                    <div className="bg-white w-full max-w-5xl rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-300 max-h-[96vh]">
+                        <div className="p-8 border-b border-border-stroke flex items-center justify-between bg-[#F7FAF9] shrink-0">
+                            <div>
+                                <h3 className="text-xl font-bold text-black">{editingArticle ? "Edit Article" : "Create New Article"}</h3>
+                                <p className="text-[#00000099] text-xs mt-1">Publish bilingual leadership content and insights.</p>
+                            </div>
+                            <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-black/5 rounded-full text-[#00000066] transition-colors cursor-pointer">
+                                <Plus className="w-6 h-6 rotate-45" />
+                            </button>
+                        </div>
+
+                        <form className="flex-1 overflow-y-auto no-scrollbar p-8 space-y-10" onSubmit={(e) => { e.preventDefault(); setIsModalOpen(false); }}>
+                            <div className="space-y-10">
+                                {/* Article Metadata */}
+                                <div className="space-y-6">
+                                    <h4 className="flex items-center gap-2 text-sm font-bold text-black uppercase tracking-widest border-l-4 border-brand-blue pl-3">
+                                        Article Logistics
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div className="space-y-6">
+                                            <div>
+                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Article Date (ENG)</label>
+                                                <input type="text" placeholder="e.g. 07.04.2025" defaultValue={editingArticle?.date.en} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" />
+                                            </div>
+                                            <div className="relative">
+                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Published Status (ENG)</label>
+                                                <button type="button" onClick={() => { setStatusDropdownOpenEn(!statusDropdownOpenEn); setStatusDropdownOpenAr(false); }} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black">
+                                                    <span className="capitalize">{selectedStatusEn}</span>
+                                                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${statusDropdownOpenEn ? "rotate-180" : ""}`} />
+                                                </button>
+                                                {statusDropdownOpenEn && (
+                                                    <div className="absolute z-[110] bottom-full mb-2 left-0 w-full bg-white rounded-2xl border border-border-stroke shadow-xl overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-200">
+                                                        {["active", "inactive"].map(s => (
+                                                            <button key={s} type="button" onClick={() => { setSelectedStatusEn(s as any); setStatusDropdownOpenEn(false); }} className={`w-full px-4 py-3 text-left hover:bg-black/5 text-sm capitalize ${selectedStatusEn === s ? "bg-brand-blue/5 text-brand-blue font-bold" : "text-[#00000099]"}`}>{s}</button>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <div className="space-y-6">
+                                            <div>
+                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">تاريخ المقال (AR)</label>
+                                                <input type="text" dir="rtl" placeholder="مثال: ٠٧.٠٤.٢٠٢٥" defaultValue={editingArticle?.date.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" />
+                                            </div>
+                                            <div className="relative">
+                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">حالة النشر (AR)</label>
+                                                <button type="button" dir="rtl" onClick={() => { setStatusDropdownOpenAr(!statusDropdownOpenAr); setStatusDropdownOpenEn(false); }} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black">
+                                                    <span className="capitalize">{selectedStatusAr === "active" ? "نشط" : "غير نشط"}</span>
+                                                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${statusDropdownOpenAr ? "rotate-180" : ""}`} />
+                                                </button>
+                                                {statusDropdownOpenAr && (
+                                                    <div className="absolute z-[110] bottom-full mb-2 left-0 w-full bg-white rounded-2xl border border-border-stroke shadow-xl overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-200">
+                                                        {[
+                                                            { val: "active", lab: "نشط (Active)" },
+                                                            { val: "inactive", lab: "غير نشط (Inactive)" }
+                                                        ].map(s => (
+                                                            <button key={s.val} type="button" onClick={() => { setSelectedStatusAr(s.val as any); setStatusDropdownOpenAr(false); }} className={`w-full px-4 py-3 text-right hover:bg-black/5 text-sm ${selectedStatusAr === s.val ? "bg-brand-blue/5 text-brand-blue font-bold" : "text-[#00000099]"}`}>{s.lab}</button>
+                                                        ))}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Title & Subtitle */}
+                                <div className="space-y-6">
+                                    <h4 className="flex items-center gap-2 text-sm font-bold text-black uppercase tracking-widest border-l-4 border-brand-blue pl-3">
+                                        Headlines
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                        <div className="space-y-4">
+                                            <div>
+                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Title (ENG)</label>
+                                                <input type="text" placeholder="Article Headline..." defaultValue={editingArticle?.title.en} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-bold" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Subtitle (ENG)</label>
+                                                <textarea rows={2} placeholder="Brief summary..." defaultValue={editingArticle?.subtitle.en} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" />
+                                            </div>
+                                        </div>
+                                        <div className="space-y-4">
+                                            <div>
+                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">العنوان (AR)</label>
+                                                <input type="text" dir="rtl" placeholder="عنوان المقال..." defaultValue={editingArticle?.title.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-bold" />
+                                            </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">عنوان فرعي (AR)</label>
+                                                <textarea rows={2} dir="rtl" placeholder="ملخص قصير..." defaultValue={editingArticle?.subtitle.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Main Image */}
+                                <div className="space-y-4">
+                                    <h4 className="flex items-center gap-2 text-sm font-bold text-black uppercase tracking-widest border-l-4 border-brand-blue pl-3">
+                                        Main Featured Image
+                                    </h4>
+                                    <div className="relative group">
+                                        <div className={`w-full aspect-[21/9] rounded-3xl border-2 border-dashed border-border-stroke bg-[#F7FAF9] flex flex-col items-center justify-center overflow-hidden transition-all ${!imagePreview ? "hover:border-brand-blue/50" : ""}`}>
+                                            {imagePreview ? (
+                                                <>
+                                                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                        <button type="button" onClick={() => fileInputRef.current?.click()} className="bg-white text-black px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2">
+                                                            <ImageIcon className="w-4 h-4" /> Change Image
+                                                        </button>
+                                                    </div>
+                                                </>
+                                            ) : (
+                                                <button type="button" onClick={() => fileInputRef.current?.click()} className="flex flex-col items-center gap-3 text-[#00000033]">
+                                                    <ImageIcon className="w-12 h-12" />
+                                                    <span className="text-sm font-bold">Click to upload featured image (21:9 Aspect Recommended)</span>
+                                                </button>
+                                            )}
+                                        </div>
+                                        <input type="file" ref={fileInputRef} onChange={handleImageUpload} accept="image/*" className="hidden" />
+                                    </div>
+                                </div>
+
+                                {/* Dynamic Content Sections */}
+                                <div className="space-y-6">
+                                    <div className="flex items-center justify-between border-l-4 border-brand-blue pl-3">
+                                        <h4 className="text-sm font-bold text-black uppercase tracking-widest">
+                                            Content Sections (Headings & Paragraphs)
+                                        </h4>
+                                        <button type="button" onClick={addSection} className="flex items-center gap-2 text-xs font-bold text-brand-blue hover:text-brand-blue/80 transition-all">
+                                            <Plus className="w-4 h-4" /> Add Section
+                                        </button>
+                                    </div>
+
+                                    <div className="space-y-12">
+                                        {sections.map((section, index) => (
+                                            <div key={section.id} className="relative p-8 rounded-3xl bg-[#F7FAF9] border border-border-stroke space-y-8 animate-in slide-in-from-top-4 duration-300">
+                                                <button type="button" onClick={() => removeSection(section.id)} className="absolute top-4 right-4 p-2 bg-red-50 text-red-600 rounded-full hover:bg-red-600 hover:text-white transition-all">
+                                                    <X className="w-4 h-4" />
+                                                </button>
+
+                                                <span className="inline-block px-4 py-1.5 bg-brand-blue/10 text-brand-blue rounded-full text-[10px] font-bold uppercase tracking-wider">
+                                                    Section {index + 1}
+                                                </span>
+
+                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                                    <div className="space-y-6">
+                                                        <div>
+                                                            <label className="flex items-center gap-2 text-[10px] font-bold text-[#00000066] uppercase tracking-wider mb-2">
+                                                                <Type className="w-3 h-3" /> Section Heading (ENG)
+                                                            </label>
+                                                            <input type="text" placeholder="Enter heading..." value={section.heading.en} onChange={(e) => updateSection(section.id, 'heading', 'en', e.target.value)} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-white focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-bold text-brand-blue" />
+                                                        </div>
+                                                        <div>
+                                                            <label className="flex items-center gap-2 text-[10px] font-bold text-[#00000066] uppercase tracking-wider mb-2">
+                                                                <AlignLeft className="w-3 h-3" /> Section Content (ENG)
+                                                            </label>
+                                                            <textarea rows={6} placeholder="Enter article paragraphs..." value={section.content.en} onChange={(e) => updateSection(section.id, 'content', 'en', e.target.value)} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-white focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none leading-relaxed" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="space-y-6">
+                                                        <div>
+                                                            <label className="flex items-center justify-end gap-2 text-[10px] font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">
+                                                                عنوان القسم (AR) <Type className="w-3 h-3" />
+                                                            </label>
+                                                            <input type="text" dir="rtl" placeholder="أدخل العنوان..." value={section.heading.ar} onChange={(e) => updateSection(section.id, 'heading', 'ar', e.target.value)} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-white focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-bold text-brand-blue" />
+                                                        </div>
+                                                        <div>
+                                                            <label className="flex items-center justify-end gap-2 text-[10px] font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">
+                                                                محتوى القسم (AR) <AlignLeft className="w-3 h-3" />
+                                                            </label>
+                                                            <textarea rows={6} dir="rtl" placeholder="أدخل فقرات المقال..." value={section.content.ar} onChange={(e) => updateSection(section.id, 'content', 'ar', e.target.value)} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-white focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none leading-relaxed" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    <button type="button" onClick={addSection} className="w-full py-6 border-2 border-dashed border-border-stroke bg-white rounded-3xl text-sm font-bold text-[#00000033] hover:border-brand-blue/30 hover:text-brand-blue transition-all flex items-center justify-center gap-2 group cursor-pointer">
+                                        <Plus className="w-5 h-5 group-hover:rotate-90 transition-transform" />
+                                        Add Another Content Section
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-3 pt-8 border-t border-border-stroke">
+                                <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 cursor-pointer py-4 text-sm font-bold text-[#00000099] hover:bg-black/5 rounded-2xl transition-all">Cancel</button>
+                                <button type="submit" className="flex-[2] cursor-pointer py-4 bg-brand-gradient text-white rounded-2xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all">
+                                    {editingArticle ? "Update Article" : "Publish Article"}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

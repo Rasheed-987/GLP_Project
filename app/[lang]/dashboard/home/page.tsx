@@ -1,37 +1,97 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import Link from "next/link";
+import {
+    Newspaper,
+    MessageSquare,
+    FileText,
+    ArrowRight,
+    TrendingUp,
+    Clock,
+    Calendar,
+    ChevronRight,
+    User
+} from "lucide-react";
 
 export default function DashboardPage() {
     const params = useParams();
     const lang = params.lang as Locale;
-    const [dict, setDict] = React.useState<any>(null);
+    const [dict, setDict] = useState<any>(null);
 
-    React.useEffect(() => {
+    useEffect(() => {
         getDictionary(lang).then(setDict);
     }, [lang]);
 
     if (!dict) return null;
 
     const stats = [
-        { label: dict.dashboard.overview.activePrograms, value: "2", color: "from-[#045A86] to-[#019977]", href: `/${lang}/programs` },
-        { label: dict.dashboard.overview.recentArticles, value: "5", color: "from-[#019977] to-[#045A86]", href: `/${lang}/articles` },
-        { label: dict.dashboard.overview.newResources, value: "12", color: "from-[#045A86] to-[#019977]", href: `/${lang}/resources` },
+        {
+            label: dict.dashboard.sidebar.articles,
+            value: "1",
+            icon: <FileText className="w-5 h-5" />,
+            color: "text-brand-blue",
+            bg: "bg-brand-blue/10",
+            href: `/${lang}/dashboard/articles`
+        },
+        {
+            label: dict.dashboard.sidebar.news,
+            value: "2",
+            icon: <Newspaper className="w-5 h-5" />,
+            color: "text-[#019977]",
+            bg: "bg-[#019977]/10",
+            href: `/${lang}/dashboard/news`
+        },
+        {
+            label: dict.dashboard.sidebar.testimonials,
+            value: "2",
+            icon: <MessageSquare className="w-5 h-5" />,
+            color: "text-brand-blue",
+            bg: "bg-brand-blue/10",
+            href: `/${lang}/dashboard/testimonials`
+        },
+    ];
+
+    const recentArticles = [
+        {
+            title: lang === 'ar' ? "برنامج قيادات حكومة الإمارات يفتح باب التسجيل" : "UAE Government Leaders Programme opens registration",
+            date: lang === 'ar' ? "٧ أبريل ٢٠٢٥" : "07 Apr 2025",
+            readTime: "6 min read"
+        }
+    ];
+
+    const recentNews = [
+        {
+            topic: lang === 'ar' ? "إطلاق دفعة جديدة من القادة" : "New Cohort of Leaders Launched",
+            expiry: lang === 'ar' ? "تنتهي في ٣٠ ديسمبر" : "Expires 30 Dec",
+            status: "active"
+        },
+        {
+            topic: lang === 'ar' ? "تحديث سياسة التدريب القيادي" : "Leadership Training Policy Update",
+            expiry: lang === 'ar' ? "تنتهي في ١٥ يناير" : "Expires 15 Jan",
+            status: "active"
+        }
+    ];
+
+    const recentTestimonials = [
+        {
+            name: lang === 'ar' ? "محمد القاسمي" : "Mohammed Al Qasimi",
+            profession: lang === 'ar' ? "مدير أول" : "Senior Director",
+        }
     ];
 
     return (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="space-y-10 py-10 text-[#00000099] animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Welcome Header */}
             <div>
-                <h1 className="text-2xl font-bold text-black tracking-tight">
-                    {dict.dashboard.overview.welcome} <span className="gradient-text">User</span>
+                <h1 className="text-3xl font-bold text-black tracking-tight">
+                    {dict.dashboard.overview.welcome} <span className="text-brand-blue">Admin</span>
                 </h1>
-                <p className="text-[#00000099] text-sm mt-1">
-                    Manage your learning journey and explore new opportunities.
+                <p className="text-[#00000099] text-sm mt-1.5 font-medium">
+                    Here's what's happening across your modules today.
                 </p>
             </div>
 
@@ -41,81 +101,146 @@ export default function DashboardPage() {
                     <Link
                         key={idx}
                         href={stat.href}
-                        className="group relative overflow-hidden p-6 rounded-2xl bg-[#F7FAF9] border border-border-stroke hover:border-brand-blue/30 transition-all hover:shadow-xl hover:shadow-brand-blue/5"
+                        className="group relative p-6 rounded-3xl bg-white border border-border-stroke hover:border-brand-blue/30 transition-all hover:shadow-xl hover:shadow-brand-blue/5 overflow-hidden"
                     >
-                        <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${stat.color} opacity-[0.03] rounded-bl-[100px] transition-all group-hover:scale-110`}></div>
-                        <p className="text-sm font-semibold text-[#00000099] uppercase tracking-wider">
-                            {stat.label}
-                        </p>
-                        <p className="text-4xl font-bold text-black mt-2">
-                            {stat.value}
-                        </p>
-                        <div className="mt-4 flex items-center gap-2 text-xs font-bold text-brand-blue group-hover:text-brand-green transition-colors">
+                        <div className="flex items-center justify-between mb-4">
+                            <div className={`p-3 rounded-2xl ${stat.bg} ${stat.color}`}>
+                                {stat.icon}
+                            </div>
+                            <div className="flex items-center gap-1 text-[10px] font-bold text-[#019977] bg-[#E6F4F1] px-2 py-1 rounded-full uppercase tracking-wider">
+                                <TrendingUp className="w-3 h-3" />
+                                Updated
+                            </div>
+                        </div>
+                        <div>
+                            <p className="text-xs font-bold text-[#00000066] uppercase tracking-widest">
+                                {stat.label}
+                            </p>
+                            <div className="flex items-baseline gap-2 mt-1">
+                                <span className="text-3xl font-bold text-black">{stat.value}</span>
+                                <span className="text-[10px] font-bold text-[#00000066] uppercase tracking-wider">published</span>
+                            </div>
+                        </div>
+                        <div className="mt-6 flex items-center gap-2 text-[10px] font-bold text-brand-blue group-hover:gap-3 transition-all uppercase tracking-widest">
                             {dict.dashboard.overview.viewAll}
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3 h-3 translate-x-0 group-hover:translate-x-1 transition-transform">
-                                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                            </svg>
+                            <ArrowRight className="w-3.5 h-3.5" />
                         </div>
                     </Link>
                 ))}
             </div>
 
-            {/* Main Sections (Brief list) */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                {/* Active Programs Snippet */}
-                <div className="p-6 rounded-2xl border border-border-stroke bg-white space-y-4">
-                    <div className="flex items-center justify-between">
-                        <h3 className="font-bold text-black">{dict.dashboard.sidebar.programs}</h3>
-                        <Link href={`/${lang}/programs`} className="text-xs font-bold text-brand-blue hover:text-brand-green">
-                            {dict.dashboard.overview.viewAll}
-                        </Link>
-                    </div>
-                    <div className="space-y-3">
-                        <div className="p-4 rounded-xl bg-[#F7FAF9] border border-border-stroke flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-bold text-black">UAE Government Leadership Program</p>
-                                <p className="text-[10px] text-[#00000099]">Progress: 60%</p>
+            {/* Main Content Grid */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+                {/* Left Column: Articles & News */}
+                <div className="lg:col-span-8 space-y-8">
+
+                    {/* Recent Articles */}
+                    <section className="bg-white rounded-3xl border border-border-stroke p-8 space-y-6">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 rounded-xl bg-brand-blue/5 text-brand-blue">
+                                    <FileText className="w-5 h-5" />
+                                </div>
+                                <h3 className="font-bold text-black text-lg">{dict.dashboard.overview.recentArticles}</h3>
                             </div>
-                            <div className="w-10 h-1 rounded-full bg-black/5 overflow-hidden">
-                                <div className="h-full w-3/5 bg-brand-gradient"></div>
-                            </div>
+                            <Link href={`/${lang}/dashboard/articles`} className="text-xs font-bold text-brand-blue hover:text-brand-blue/80 transition-all flex items-center gap-1 group">
+                                {dict.dashboard.overview.viewAll}
+                                <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                            </Link>
                         </div>
-                        <div className="p-4 rounded-xl bg-[#F7FAF9] border border-border-stroke flex items-center justify-between">
-                            <div>
-                                <p className="text-sm font-bold text-black">Nafis Leadership Program</p>
-                                <p className="text-[10px] text-[#00000099]">Progress: 15%</p>
-                            </div>
-                            <div className="w-10 h-1 rounded-full bg-black/5 overflow-hidden">
-                                <div className="h-full w-1/5 bg-brand-gradient"></div>
-                            </div>
+                        <div className="space-y-4">
+                            {recentArticles.map((article, i) => (
+                                <div key={i} className="group p-4 rounded-2xl bg-[#F7FAF9] border border-transparent hover:border-brand-blue/20 hover:bg-white hover:shadow-lg hover:shadow-brand-blue/5 transition-all cursor-pointer">
+                                    <h4 className="font-bold text-black group-hover:text-brand-blue transition-colors mb-2">
+                                        {article.title}
+                                    </h4>
+                                    <div className="flex items-center gap-4 text-[10px] font-bold text-[#00000066] uppercase tracking-wider">
+                                        <div className="flex items-center gap-1.5">
+                                            <Calendar className="w-3 h-3" />
+                                            {article.date}
+                                        </div>
+                                        <div className="flex items-center gap-1.5">
+                                            <Clock className="w-3 h-3" />
+                                            {article.readTime}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
                         </div>
-                    </div>
+                    </section>
+
+                    {/* Latest News */}
+                    <section className="bg-white rounded-3xl border border-border-stroke p-8 space-y-6">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 rounded-xl bg-brand-green/5 text-brand-green">
+                                    <Newspaper className="w-5 h-5" />
+                                </div>
+                                <h3 className="font-bold text-black text-lg">{dict.dashboard.overview.latestNews}</h3>
+                            </div>
+                            <Link href={`/${lang}/dashboard/news`} className="text-xs font-bold text-brand-blue hover:text-brand-blue/80 transition-all flex items-center gap-1 group">
+                                {dict.dashboard.overview.viewAll}
+                                <ChevronRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+                            </Link>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            {recentNews.map((news, i) => (
+                                <div key={i} className="p-4 rounded-2xl border border-border-stroke space-y-3 relative overflow-hidden group hover:border-brand-blue/20 transition-all">
+                                    <span className="absolute top-0 right-0 w-16 h-16 bg-brand-green/5 rounded-bl-[40px]"></span>
+                                    <h4 className="font-bold text-black text-sm line-clamp-1 pr-4">
+                                        {news.topic}
+                                    </h4>
+                                    <div className="flex items-center justify-between">
+                                        <p className="text-[10px] font-medium text-[#00000066]">
+                                            {news.expiry}
+                                        </p>
+                                        <span className="px-2 py-0.5 bg-[#E6F4F1] text-[#019977] text-[8px] font-bold uppercase rounded-full">
+                                            {news.status}
+                                        </span>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </section>
                 </div>
 
-                {/* Recent Articles Snippet */}
-                <div className="p-6 rounded-2xl border border-border-stroke bg-white space-y-4">
-                    <div className="flex items-center justify-between">
-                        <h3 className="font-bold text-black">{dict.dashboard.sidebar.articles}</h3>
-                        <Link href={`/${lang}/articles`} className="text-xs font-bold text-brand-blue hover:text-brand-green">
-                            {dict.dashboard.overview.viewAll}
-                        </Link>
-                    </div>
-                    <div className="space-y-4">
-                        {[1, 2].map((i) => (
-                            <div key={i} className="flex gap-4">
-                                <div className="w-16 h-12 rounded-lg bg-gray-100 shrink-0 overflow-hidden relative">
-                                    <div className="absolute inset-0 bg-brand-gradient opacity-10"></div>
+                {/* Right Column: Testimonials */}
+                <div className="lg:col-span-4 h-full">
+                    <section className="bg-white rounded-3xl border border-border-stroke p-8 space-y-6 h-full flex flex-col">
+                        <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                                <div className="p-2 rounded-xl bg-brand-blue/5 text-brand-blue">
+                                    <MessageSquare className="w-5 h-5" />
                                 </div>
-                                <div className="space-y-1">
-                                    <p className="text-sm font-bold text-black leading-tight line-clamp-1">
-                                        The Future of AI in Government Leadership
-                                    </p>
-                                    <p className="text-[10px] text-[#00000099]">2 hours ago • 5 min read</p>
-                                </div>
+                                <h3 className="font-bold text-black text-lg">{dict.dashboard.overview.latestTestimonials}</h3>
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                        <div className="flex-1 space-y-4">
+                            {recentTestimonials.map((t, i) => (
+                                <div key={i} className="p-5 rounded-2xl bg-[#F7FAF9] border border-border-stroke space-y-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue">
+                                            <User className="w-5 h-5" />
+                                        </div>
+                                        <div>
+                                            <p className="text-sm font-bold text-black">{t.name}</p>
+                                            <p className="text-[10px] text-[#00000066] font-medium">{t.profession}</p>
+                                        </div>
+                                    </div>
+                                    <p className="text-xs italic leading-relaxed text-[#00000099]">
+                                        "UAEGLP has been a transformative experience for my leadership journey..."
+                                    </p>
+                                </div>
+                            ))}
+                        </div>
+                        <Link href={`/${lang}/dashboard/testimonials`} className="mt-6 w-full py-4 bg-[#F7FAF9] rounded-2xl text-xs font-bold text-black hover:bg-[#E6F4F1] transition-all flex items-center justify-center gap-2 group cursor-pointer border border-border-stroke">
+                            Explore All Testimonials
+                            <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                        </Link>
+                    </section>
                 </div>
+
             </div>
         </div>
     );

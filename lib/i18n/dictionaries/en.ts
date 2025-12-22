@@ -17,7 +17,7 @@ export default {
     login: 'Log in',
     description: 'UAE Government Leaders Program - Empowering the next generation of Emirati leaders.'
   },
-   glm: {
+  glm: {
     hero: {
       title1: "UAE’s Government",
       title2Bold: "Leadership",
@@ -635,7 +635,7 @@ export default {
           text2: " Real ",
           highlight2: "application.",
           text3: "",
-          highlight3:"",
+          highlight3: "",
         },
         line2: {
           text3: "Real ",
@@ -1023,12 +1023,16 @@ export default {
       resources: 'Resources',
       articles: 'Articles',
       programs: 'Programs',
+      news: 'News/Announcements',
+      testimonials: 'Testimonials',
       logout: 'Logout',
     },
     overview: {
       welcome: 'Welcome back,',
       activePrograms: 'Active Programs',
       recentArticles: 'Recent Articles',
+      latestNews: 'Latest News',
+      latestTestimonials: 'New Testimonials',
       newResources: 'New Resources',
       viewAll: 'View All',
     },
