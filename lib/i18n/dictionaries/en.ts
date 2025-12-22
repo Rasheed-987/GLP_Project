@@ -994,7 +994,43 @@ export default {
         "Media & Press"
       ]
     }
-  }
-
-
+  },
+  auth: {
+    signIn: {
+      title: 'Sign In',
+      email: 'Email address',
+      password: 'Password',
+      signInBtn: 'Sign In',
+      forgotPassword: 'Forgot Password?',
+      noAccount: "Don't have an account?",
+      signUp: 'Sign Up',
+    },
+    signUp: {
+      title: 'Create Account',
+      fullName: 'Full Name',
+      email: 'Email address',
+      phone: 'Phone Number',
+      password: 'Password',
+      confirmPassword: 'Confirm Password',
+      signUpBtn: 'Sign Up',
+      haveAccount: 'Already have an account?',
+      signIn: 'Sign In',
+    },
+  },
+  dashboard: {
+    sidebar: {
+      dashboard: 'Dashboard',
+      resources: 'Resources',
+      articles: 'Articles',
+      programs: 'Programs',
+      logout: 'Logout',
+    },
+    overview: {
+      welcome: 'Welcome back,',
+      activePrograms: 'Active Programs',
+      recentArticles: 'Recent Articles',
+      newResources: 'New Resources',
+      viewAll: 'View All',
+    },
+  },
 }
