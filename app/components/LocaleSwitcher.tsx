@@ -36,8 +36,8 @@ export default function LocaleSwitcher({
         group relative flex items-center gap-2 h-9 rounded-full bg-white
         transition-all duration-300 ease-out
         ${isMenuOpen
-          ? 'px-3 border border-black/10'
-          : 'px-3 border border-black/10 hover:border-transparent'
+          ? 'px-3 border border-black/10 hover:border-transparent hover:gap-0'
+          : 'px-3 border border-black/10 hover:border-transparent hover:gap-0'
         }
         ${className ?? ''}
       `}
@@ -50,8 +50,8 @@ export default function LocaleSwitcher({
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         className={`
-          flex-shrink-0 text-black transition-opacity duration-300
-          ${isMenuOpen ? 'opacity-100' : 'group-hover:opacity-0'}
+          flex-shrink-0 text-black transition-all duration-300
+          ${isMenuOpen ? 'group-hover:w-0 group-hover:opacity-0' : 'group-hover:w-0 group-hover:opacity-0'}
         `}
       >
         <path
@@ -72,7 +72,7 @@ export default function LocaleSwitcher({
       </svg>
 
       {/* Locale Text */}
-      <span className="text-xs font-bold text-black whitespace-nowrap">
+      <span className="text-xs font-bold text-black whitespace-nowrap transition-all duration-300 group-hover:scale-105">
         {currentLocale === 'en' ? 'AR' : 'EN'}
       </span>
     </Link>
