@@ -247,6 +247,7 @@ export default {
       titleSuffix: " of leaders",
       description: "Discover national leadership programs to prepare Emirati talent for the future, in line with the UAE's vision and excellence agenda.",
       button1: "Explore Programmes",
+
       button2: "Partner with us",
     },
     partnerWithUs: "Partner with us",
@@ -254,8 +255,8 @@ export default {
     about: {
       pill: 'ABOUT',
       title: {
-        part1: 'The UAE Government Leaders Programme (UAE GLP)',
-        part2: ' is a national initiative dedicated to cultivating ',
+        part1: 'The UAE Government Leaders Programme ',
+        part2: ' (UAE GLP) is a national initiative dedicated to cultivating ',
         part3: 'Emirati talent for leadership',
         part4: ' roles across government and beyond',
       },
@@ -502,6 +503,8 @@ export default {
           highlight1: "learning.",
           text2: " Real ",
           highlight2: "application.",
+          text3: "",
+          highlight3:"",
         },
         line2: {
           text3: "Real ",

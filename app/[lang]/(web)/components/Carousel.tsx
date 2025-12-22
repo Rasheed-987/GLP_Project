@@ -65,7 +65,7 @@ export default function Carousel({ items, lang }: CarouselProps) {
               <div className="lg:w-8/12 bg-[#E6EFEA] rounded-[32px] p-8 md:p-12 lg:p-14 flex flex-col justify-between relative lg:h-[600px] overflow-hidden">
                 <div>
                   <div className="text-brand-green text-5xl font-serif mb-4 leading-none">“</div>
-                  <p className="text-xl md:text-2xl leading-tight text-brand-blue font-medium mb-8">
+                  <p className="text-xl md:text-2xl leading-tight gradient-text font-medium mb-8">
                     {item.quote}
                   </p>
 

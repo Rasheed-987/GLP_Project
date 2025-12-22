@@ -30,16 +30,16 @@ export default async function ApproachPage({
 
                             {/* Heading */}
                             <h1 className="text-black mb-4 md:mb-28 leading-tight">
-                                <span className="block text-3xl md:text-[3.5rem] font-normal mb-1 ">
+                                <span className="block text-2xl md:text-[3rem] font-normal mb-1 ">
                                     {dict.approach.hero.title}
                                 </span>
-                                <span className="block text-4xl md:text-[3.5rem] font-extrabold">
+                                <span className="block text-3xl md:text-[3rem] font-extrabold">
                                     {dict.approach.hero.subtitle}
                                 </span>
                             </h1>
 
                             {/* Description */}
-                            <p className="text-[#00000099] text-sm md:text-base leading-[1.2] md:mb-8 lg:mb-0 max-w-lg">
+                            <p className="text-[#00000099] text-xs md:text-[15px] leading-[1.2] md:mb-8 lg:mb-0 max-w-lg">
                                 {dict.approach.hero.description}
                             </p>
                             <div className="w-full hidden md:block lg:w-4/12 order-3 lg:order-1 mt-3 lg:mt-8">
@@ -80,7 +80,7 @@ export default async function ApproachPage({
                         <div className="flex flex-col lg:flex-row gap-2 lg:gap-4 mb-8 md:mb-16 items-start">
                             {/* Left Side: Title */}
                             <div className="w-full lg:w-3/4 ">
-                                <h2 className="text-[1.43rem] max-w-2xl md:text-[1.75rem] leading-[1.1] md:leading-[1.2] font-medium bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent">
+                                <h2 className="text-[1.25rem] max-w-2xl md:text-[1.5rem] leading-[1.1] md:leading-[1.2] font-medium bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent">
                                     <span className="font-extrabold">{dict.approach.methodology.title.highlight1}</span>
                                     {dict.approach.methodology.title.text1}
                                     <span className="font-extrabold">{dict.approach.methodology.title.highlight2}</span>
@@ -91,10 +91,10 @@ export default async function ApproachPage({
 
                             {/* Right Side: Description */}
                             <div className="w-full lg:w-1/4 flex flex-col gap-6">
-                                <p className="text-[#00000099] leading-[1.2] text-sm md:text-base">
+                                <p className="text-[#00000099] leading-[1.2] text-xs md:text-[15px]">
                                     {dict.approach.methodology.description1}
                                 </p>
-                                <p className="text-[#00000099] leading-[1.2] text-sm md:text-base">
+                                <p className="text-[#00000099] leading-[1.2] text-xs md:text-[15px]">
                                     {dict.approach.methodology.description2}
                                 </p>
                             </div>
@@ -113,7 +113,7 @@ export default async function ApproachPage({
                                         className="object-contain transition-transform duration-[1500ms] ease-in-out group-hover:-rotate-[360deg]" // laptop often represents learning formats
                                     />
                                 </div>
-                                <span className="text-sm md:text-base text-[#00000099] font-medium leading-tight tracking-tight">
+                                <span className="text-xs md:text-[15px] text-[#00000099] font-medium leading-tight tracking-tight">
                                     {dict.approach.methodology.cards.format}
                                 </span>
                             </div>
@@ -129,7 +129,7 @@ export default async function ApproachPage({
                                         className="object-contain transition-transform duration-[1500ms] ease-in-out group-hover:-rotate-[360deg]" // target usually represents strategy/goals/frameworks
                                     />
                                 </div>
-                                <span className="text-sm md:text-base text-[#00000099] font-medium leading-tight tracking-tight">
+                                <span className="text-xs md:text-[15px] text-[#00000099] font-medium leading-tight tracking-tight">
                                     {dict.approach.methodology.cards.frameworks}
                                 </span>
                             </div>
@@ -145,7 +145,7 @@ export default async function ApproachPage({
                                         className="object-contain transition-transform duration-[1500ms] ease-in-out group-hover:-rotate-[360deg]" // users represent mentorship/people
                                     />
                                 </div>
-                                <span className="text-sm md:text-base text-[#00000099] font-medium leading-tight tracking-tight">
+                                <span className="text-xs md:text-[15px] text-[#00000099] font-medium leading-tight tracking-tight">
                                     {dict.approach.methodology.cards.mentorship}
                                 </span>
                             </div>
@@ -160,7 +160,7 @@ export default async function ApproachPage({
                 <Container className="px-4">
                     <div className="flex flex-col items-center text-center max-w-4xl mx-auto">
                         {/* Label */}
-                        <span className="text-brand-blue text-[13px] md:text-[16px] font-semibold uppercase tracking-[1] md:tracking-[1.6] mb-2">
+                        <span className="text-brand-blue text-[12px] md:text-[14px] font-semibold uppercase tracking-[1] md:tracking-[1.6] mb-2">
                             {dict.approach.learningMethodology.label}
                         </span>
 
@@ -171,12 +171,15 @@ export default async function ApproachPage({
 
 
                         {/* Title - Gradient applied to whole block */}
-                        <h2 className="text-[1.5rem] md:text-[2.5rem] leading-[0.9] md:leading-[0.8] mb-4 md:mb-7 bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent">
+                        <h2 className="text-[1.25rem] md:text-[2rem] leading-[0.9] md:leading-[0.8] mb-4 md:mb-7 bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent">
                             <span className="block mb-1 md:mb-2">
                                 <span className="font-normal">{dict.approach.learningMethodology.title.line1.text1}</span>
-                                <span className="font-extrabold">{dict.approach.learningMethodology.title.line1.highlight1}</span>
+                                <span className="font-bold">{dict.approach.learningMethodology.title.line1.highlight1}</span>
                                 <span className="font-normal">{dict.approach.learningMethodology.title.line1.text2}</span>
-                                <span className="font-extrabold">{dict.approach.learningMethodology.title.line1.highlight2}</span>
+                                <span className="font-bold">{dict.approach.learningMethodology.title.line1.highlight2}</span>
+                                <span className="font-bold">{dict.approach.learningMethodology.title.line1.highlight3}</span>
+                                   <span className="font-normal">{dict.approach.learningMethodology.title.line1.text3}</span>
+                                    
                             </span>
                             <span className="block">
                                 <span className="font-normal">{dict.approach.learningMethodology.title.line2.text3}</span>
@@ -185,7 +188,7 @@ export default async function ApproachPage({
                         </h2>
 
                         {/* Description */}
-                        <p className="text-[#00000099] text-[15px] md:text-[16px] leading-[1.2] max-w-2xl">
+                        <p className="text-[#00000099] text-[14px] md:text-[15px] leading-[1.2] max-w-2xl">
                             {dict.approach.learningMethodology.description}
                         </p>
                     </div>
@@ -198,7 +201,7 @@ export default async function ApproachPage({
                     <div className="flex flex-wrap lg:flex-nowrap gap-3 md:gap-8 lg:gap-16 items-center">
                         {/* Title and List */}
                         <div className="w-full md:ps-16 lg:w-6/12 order-1">
-                            <h3 className="text-[#045A86] font-bold text-xs md:text-base uppercase mb-3 md:mb-8 tracking-[1.2]">
+                            <h3 className="text-[#045A86] font-bold text-[11px] md:text-[14px] uppercase mb-3 md:mb-8 tracking-[1.2]">
                                 {dict.approach.learningMethodologyPart2.title}
                             </h3>
 
@@ -221,7 +224,7 @@ export default async function ApproachPage({
                                                     className="object-contain"
                                                 />
                                             </div>
-                                            <span className="text-[#00000099] text-sm md:text-[16px] leading-[1.2]">
+                                            <span className="text-[#00000099] text-xs md:text-[15px] leading-[1.2]">
                                                 {item}
                                             </span>
                                         </li>
@@ -229,7 +232,7 @@ export default async function ApproachPage({
                                 })}
                             </ul>
                             <div className="w-full md:block hidden  ">
-                                <p className="text-[#00000099] leading-[1.2] text-sm md:text-[16px] max-w-sm">
+                                <p className="text-[#00000099] leading-[1.2] text-xs md:text-[15px] max-w-sm">
                                     {dict.approach.learningMethodologyPart2.description}
                                 </p>
                             </div>
@@ -249,7 +252,7 @@ export default async function ApproachPage({
 
                         {/* Description - appears after image on small screens, with title/list on large screens */}
                         <div className="w-full md:hidden block order-3 ">
-                            <p className="text-[#00000099] leading-[1.2] text-sm md:text-[16px] max-w-sm">
+                            <p className="text-[#00000099] leading-[1.2] text-xs md:text-[15px] max-w-sm">
                                 {dict.approach.learningMethodologyPart2.description}
                             </p>
                         </div>
@@ -265,7 +268,7 @@ export default async function ApproachPage({
                         {/* Left Column: Label, Line, Title */}
                         <div className="w-full lg:w-1/2">
                             {/* Label */}
-                            <span className="text-brand-blue text-[12px] md:text-[15px] font-semibold uppercase tracking-[1.2] md:tracking-[1.6] mb-2 md:mb-4 block">
+                            <span className="text-brand-blue text-[11px] md:text-[14px] font-semibold uppercase tracking-[1.2] md:tracking-[1.6] mb-2 md:mb-4 block">
                                 {dict.approach.aboutUAELGM.label}
                             </span>
 
@@ -275,7 +278,7 @@ export default async function ApproachPage({
                             </div>
 
                             {/* Title with Gradient */}
-                            <h2 className="text-[1.2rem] md:text-[1.55rem] leading-[1.2] md:leading-[1.1]    bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent">
+                            <h2 className="text-[1.1rem] md:text-[1.35rem] leading-[1.2] md:leading-[1.1]    bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent">
                                 <span className="font-normal">{dict.approach.aboutUAELGM.title.text1}</span>
                                 <span className="font-extrabold">{dict.approach.aboutUAELGM.title.highlight1}</span>
                                 <span className="font-normal">{dict.approach.aboutUAELGM.title.text2}</span>
@@ -286,7 +289,7 @@ export default async function ApproachPage({
 
                         {/* Right Column: Description and Button */}
                         <div className="w-full lg:w-1/2 flex flex-col md:ps-32 justify-start md:pt-18 gap-6">
-                            <p className="text-[#00000099] text-[14px] md:text-[16px] leading-[1.2]">
+                            <p className="text-[#00000099] text-[13px] md:text-[15px] leading-[1.2]">
                                 {dict.approach.aboutUAELGM.description}
                             </p>
                             <div>
@@ -301,7 +304,7 @@ export default async function ApproachPage({
                     <div className="border border-gray-200 rounded-3xl md:rounded-2xl overflow-hidden">
                         {/* Pillars Title */}
                         <div className="border-b border-gray-200 py-6">
-                            <h3 className="text-center text-brand-blue font-bold text-sm md:text-base uppercase tracking-[1.2]">
+                            <h3 className="text-center text-brand-blue font-bold text-xs md:text-[15px] uppercase tracking-[1.2]">
                                 {dict.approach.aboutUAELGM.pillarsTitle}
                             </h3>
                         </div>
@@ -314,12 +317,12 @@ export default async function ApproachPage({
                                     className={`bg-white p-5 text-center ${idx !== 2 ? 'border-b md:border-b-0 md:border-r border-gray-200' : ''}`}
                                 >
                                     <h4
-                                        className="font-extrabold text-lg md:text-[1.3rem] bg-gradient-to-r from-[#045A86] to-[#019977]  bg-clip-text text-transparent "
+                                        className="font-extrabold text-base md:text-[1.1rem] bg-gradient-to-r from-[#045A86] to-[#019977]  bg-clip-text text-transparent "
                                     >
                                         {pillar.title}
                                     </h4>
 
-                                    <p className="text-[#00000099] text-sm md:text-[15px] leading-[1.2]">
+                                    <p className="text-[#00000099] text-xs md:text-[14px] leading-[1.2]">
                                         {pillar.description}
                                     </p>
                                 </div>
@@ -371,7 +374,7 @@ export default async function ApproachPage({
                             {/* Right Column: Content */}
                             <div className="w-full lg:w-1/2">
                                 {/* Label */}
-                                <span className="text-brand-blue text-[13px] md:text-[15px] font-semibold uppercase tracking-[1.6] mb-2 md:mb-4 block">
+                                <span className="text-brand-blue text-[12px] md:text-[14px] font-semibold uppercase tracking-[1.6] mb-2 md:mb-4 block">
                                     {dict.approach.alumniNetwork.label}
                                 </span>
 
@@ -381,18 +384,18 @@ export default async function ApproachPage({
                                 </div>
 
                                 {/* Title with Gradient */}
-                                <h2 className="text-[1.4rem] max-w-sm md:text-[1.75rem] leading-[1.2] mb-6 bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent">
+                                <h2 className="text-[1.2rem] max-w-sm md:text-[1.5rem] leading-[1.2] mb-6 bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent">
                                     <span className="font-normal ">{dict.approach.alumniNetwork.title.text1}</span>
                                     <span className="font-extrabold">{dict.approach.alumniNetwork.title.highlight1}</span>
                                 </h2>
 
                                 {/* Description */}
-                                <p className="text-[#00000099] text-base md:text-[16px] leading-[1.2] mb-5 md:mb-44">
+                                <p className="text-[#00000099] text-sm md:text-[15px] leading-[1.2] mb-5 md:mb-44">
                                     {dict.approach.alumniNetwork.description}
                                 </p>
 
                                 {/* Benefits Title */}
-                                <h3 className="text-brand-blue font-bold text-[12px] md:text-[15px] uppercase tracking-[1.2] mb-4">
+                                <h3 className="text-brand-blue font-bold text-[11px] md:text-[14px] uppercase tracking-[1.2] mb-4">
                                     {dict.approach.alumniNetwork.benefitsTitle}
                                 </h3>
 
@@ -410,7 +413,7 @@ export default async function ApproachPage({
                                                         className="object-contain"
                                                     />
                                                 </div>
-                                                <span className="text-[#00000099] text-[14px] md:text-[15px] leading-[1.2]">
+                                                <span className="text-[#00000099] text-[13px] md:text-[14px] leading-[1.2]">
                                                     {benefit}
                                                 </span>
                                             </li>
@@ -439,7 +442,7 @@ export default async function ApproachPage({
                                         />
                                     </div>
                                 </div>
-                                <p className="text-[#00000099] text-sm md:text-[14px] leading-[1.2]">
+                                <p className="text-[#00000099] text-xs md:text-[13px] leading-[1.2]">
                                     {feature.text}
                                 </p>
                             </div>
@@ -451,6 +454,7 @@ export default async function ApproachPage({
             {/* Contact Section */}
             <ContactSection
                 titleLine1={dict.approach.contact.titleLine1}
+                titlehighlight={dict.approach.contact.titlehighlight}
                 titleLine2={dict.approach.contact.titleLine2}
                 description={dict.approach.contact.description}
                 button={dict.approach.contact.button}

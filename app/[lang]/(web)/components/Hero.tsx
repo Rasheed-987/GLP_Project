@@ -27,14 +27,14 @@ export default function Hero({ title, description, backgroundImage, buttons }: H
   return (
     <div className="flex flex-col md:block relative w-full md:rounded-[32px] md:overflow-hidden md:h-[600px] lg:h-[700px]">
       {/* 1. Header & Description (Order 1 on mobile) */}
-      <div className="order-1 md:absolute md:inset-0 md:z-20 flex items-center pointer-events-none">
-        <div className="w-full max-w-2xl md:px-12 py-6 md:py-0 pointer-events-auto">
-          <h1 className="text-[40px] mt-10 md:text-6xl font-normal leading-[1.1] text-zinc-900 md:text-white tracking-tight">
+      <div className="order-1 md:absolute md:inset-0 md:z-20 flex items-end pointer-events-none">
+        <div className="w-full max-w-2xl md:px-12 py-6 md:pb-14 pointer-events-auto">
+          <h1 className="text-[32px] mt-10 md:mt-6 md:mt-0 md:text-5xl lg:text-[56px] font-normal leading-[1.0] text-zinc-900 md:text-white tracking-wide">
             {title.prefix}
             <span className="font-bold block md:inline">{title.highlight}</span>
             {title.suffix}
           </h1>
-          <p className="mt-6 text-zinc-600 md:text-white/90 text-lg md:text-xl leading-relaxed max-w-lg">
+          <p className="mt-4 text-zinc-600 md:text-white/90 text-base md:text-lg leading-relaxed max-w-lg tracking-wide">
             {description}
           </p>
           
