@@ -34,7 +34,7 @@ export default async function HomePage({
           buttons={{
             primary: {
               text: dict.home.hero.button1,
-              href: `/${lang}/programmes`,
+              href: `/${lang}/programs`,
             },
             secondary: {
               text: dict.home.partnerWithUs,
@@ -49,7 +49,7 @@ export default async function HomePage({
             {dict.home.features.map((feature) => (
               <div key={feature.text} className="flex flex-col items-center">
                 <div className="mb-4 flex h-15 w-15 ">
-                  <Image src={feature.icon} alt="" width={56} height={56} />
+                  <Image src={feature.icon} alt="" width={56} height={46} />
                 </div>
                 <p className="text-sm text-gray-600">{feature.text}</p>
               </div>
@@ -70,7 +70,7 @@ export default async function HomePage({
                   <Image src="/images/bar.png" alt="bar" width={80} height={4} className="w-20 h-auto" />
                 </div>
               </div>
-              <h2 className="mt-4 text-[28px] md:text-[32px] leading-tight font-normal">
+              <h2 className="mt-4 text-[24px] md:text-[28px] leading-tight font-normal">
                 <span className="bg-brand-gradient bg-clip-text text-transparent inline-block">
                   <span className="font-bold">{dict.home.about.title.part1}</span>
                   {dict.home.about.title.part2}
@@ -79,7 +79,7 @@ export default async function HomePage({
                 </span>
               </h2>
             </div>
-            <p className="text-gray-600 max-w-[500px] lg:mt-12">{dict.home.about.description}</p>
+            <p className="text-gray-600 max-w-[500px] lg:justify-self-end lg:mt-12">{dict.home.about.description}</p>
           </div>
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {programs.map((program, index) => {
@@ -115,8 +115,8 @@ export default async function HomePage({
           <div className="bg-[#E6EFEA] rounded-[32px] px-6 py-12 md:p-16 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             {/* Mobile: Quote text first */}
             <div className="w-full lg:hidden flex flex-col justify-center order-1">
-              <p className="text-4xl md:text-5xl text-brand-green font-serif mb-6">&quot;</p>
-              <p className="text-[28px] md:text-[36px] leading-tight font-normal mb-8">
+              <p className="text-3xl md:text-4xl text-brand-green font-serif mb-6">&quot;</p>
+              <p className="text-[24px] md:text-[30px] leading-tight font-normal mb-8">
                 <span className="bg-brand-gradient bg-clip-text text-transparent inline-block">
                   {dict.home.quote.text}
                   <span className="font-bold">{dict.home.quote.highlight}</span>
@@ -139,8 +139,8 @@ export default async function HomePage({
             <div className="w-full lg:w-7/12 flex flex-col justify-center order-3 lg:order-2">
               {/* Desktop only */}
               <div className="hidden lg:block">
-                <p className="text-4xl md:text-5xl text-brand-green font-serif mb-6">&quot;</p>
-                <p className="text-[28px] md:text-[36px] leading-tight font-normal mb-8">
+                <p className="text-3xl md:text-4xl text-brand-green font-serif mb-6">&quot;</p>
+                <p className="text-[24px] md:text-[30px] leading-tight font-normal mb-8">
                   <span className="bg-brand-gradient bg-clip-text text-transparent inline-block">
                     {dict.home.quote.text}
                     <span className="font-bold">{dict.home.quote.highlight}</span>
@@ -150,16 +150,16 @@ export default async function HomePage({
 
               {/* Mobile: Author at bottom */}
               <div className="w-full lg:hidden">
-                <div className="h-1 w-10 bg-brand-dark-brand-blue mb-4"></div>
-                <p className="text-xs md:text-sm font-bold tracking-widest text-brand-dark-brand-blue uppercase">
+                <div className="h-1 w-10 bg-[#006A8E] mb-4"></div>
+                <p className="text-xs md:text-sm font-bold tracking-widest text-[#006A8E] uppercase">
                   {dict.home.quote.author}
                 </p>
               </div>
 
               {/* Desktop: Author */}
               <div className="hidden lg:block">
-                <div className="h-1 w-10 bg-brand-dark-brand-blue mb-4"></div>
-                <p className="text-xs md:text-sm font-bold tracking-widest text-brand-dark-brand-blue uppercase">
+                <div className="h-1 w-10 bg-[#006A8E] mb-4"></div>
+                <p className="text-xs md:text-sm font-bold tracking-widest text-[#006A8E] uppercase">
                   {dict.home.quote.author}
                 </p>
               </div>
@@ -185,38 +185,38 @@ export default async function HomePage({
       </section>
       {/* Nomination Section: Information and form for recommending potential leaders */}
       <section className="bg-white pb-32">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
             {/* Left Column: Text Content */}
-            <div className="lg:max-w-xl">
-              <div className="leading-[1.1] mb-8">
-                <h2 className="text-1xl md:text-2xl font-bold">
+            <div className="lg:max-w-lg">
+              <div className="leading-[1.1] mb-6">
+                <h2 className="text-lg md:text-xl font-bold">
                   <span className="bg-brand-gradient bg-clip-text text-transparent">
                     {dict.home.nomination.title}
                   </span>
                 </h2>
-                <h2 className="text-2xl md:text-4xl font-bold">
+                <h2 className="text-xl md:text-3xl font-bold">
                   <span className="bg-brand-gradient bg-clip-text text-transparent">
                     {dict.home.nomination.titleHighlight}
                   </span>
                   {/* commet */}
                 </h2>
               </div>
-              <p className="text-[#6B7280] text-lg leading-relaxed mb-16">
+              <p className="text-[#6B7280] text-base leading-relaxed mb-10">
                 {dict.home.nomination.description}
               </p>
 
-              <div className="mt-25">
-                <h3 className="text-[13px] font-bold tracking-[0.1em] text-[#006A8E] mb-10">
+              <div className="mt-12">
+                <h3 className="text-[12px] font-bold tracking-[0.1em] text-[#006A8E] mb-6">
                   {dict.home.nomination.recommendTitle}
                 </h3>
-                <div className="space-y-8">
+                <div className="space-y-5">
                   {dict.home.nomination.recommendList.map((item: { icon: string; text: string }, i: number) => (
-                    <div key={i} className="flex gap-5 items-start">
-                      <div className="flex-shrink-0 w-6 h-6 mt-0.5">
-                        <Image src={item.icon} alt="" width={24} height={24} className="object-contain" />
+                    <div key={i} className="flex gap-4 items-start">
+                      <div className="flex-shrink-0 w-5 h-5 mt-0.5">
+                        <Image src={item.icon} alt="" width={20} height={20} className="object-contain" />
                       </div>
-                      <p className="text-[#4B5563] text-[17px] leading-relaxed">
+                      <p className="text-[#4B5563] text-[15px] leading-relaxed">
                         {item.text}
                       </p>
                     </div>
@@ -226,60 +226,60 @@ export default async function HomePage({
             </div>
 
             {/* Right Column: Nomination Form */}
-            <div className="bg-[#E9F1EE] rounded-[32px] p-8 md:p-12">
-              <form className="space-y-5">
+            <div className="bg-[#E9F1EE] rounded-[24px] p-6 md:p-10">
+              <form className="space-y-4">
                 <div>
-                  <h4 className="text-medium font-bold tracking-widest text-brand-blue mb-6">
+                  <h4 className="text-sm font-bold tracking-widest text-brand-blue mb-4">
                     {dict.home.nomination.form.yourDetails}
                   </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <input
                       type="text"
                       placeholder={dict.home.nomination.form.fullName}
-                      className="w-full px-6 py-4 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20"
+                      className="w-full px-5 py-3 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
                     />
                     <input
                       type="text"
                       placeholder={dict.home.nomination.form.organization}
-                      className="w-full px-6 py-4 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20"
+                      className="w-full px-5 py-3 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
                     />
                   </div>
                   <input
                     type="email"
                     placeholder={dict.home.nomination.form.email}
-                    className="w-full mt-4 px-6 py-4 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20"
+                    className="w-full mt-3 px-5 py-3 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
                   />
                 </div>
 
                 <div>
-                  <h4 className="text-medium font-bold tracking-widest text-brand-blue mb-6">
+                  <h4 className="text-sm font-bold tracking-widest text-brand-blue mb-4">
                     {dict.home.nomination.form.nomineeDetails}
                   </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <input
                       type="text"
                       placeholder={dict.home.nomination.form.nomineeName}
-                      className="w-full px-6 py-4 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20"
+                      className="w-full px-5 py-3 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
                     />
                     <input
                       type="text"
                       placeholder={dict.home.nomination.form.nomineeOrg}
-                      className="w-full px-6 py-4 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20"
+                      className="w-full px-5 py-3 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
                     />
                   </div>
                   <input
                     type="email"
                     placeholder={dict.home.nomination.form.nomineeEmail}
-                    className="w-full mt-4 px-6 py-4 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20"
+                    className="w-full mt-3 px-5 py-3 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
                   />
                   <textarea
                     placeholder={dict.home.nomination.form.reason}
                     rows={4}
-                    className="w-full mt-4 px-6 py-4 rounded-[20px] bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 resize-none"
+                    className="w-full mt-3 px-5 py-3 rounded-[20px] bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 resize-none text-sm"
                   />
                 </div>
 
-                <Button className="w-full py-5 rounded-full tracking-widest uppercase">
+                <Button className="w-full py-4 rounded-full tracking-widest uppercase text-sm">
                   {dict.home.nomination.form.submit}
                 </Button>
               </form>
@@ -304,7 +304,7 @@ export default async function HomePage({
                   </div>
                 </div>
 
-                <h2 className="text-[28px] md:text-[36px] leading-tight font-normal">
+                <h2 className="text-[24px] md:text-[30px] leading-tight font-normal">
                   <span className="bg-brand-gradient bg-clip-text text-transparent inline-block">
                     {dict.home.partners.title}{" "}
                     <span className="font-bold">{dict.home.partners.titleHighlight}</span>
@@ -314,7 +314,7 @@ export default async function HomePage({
               </div>
 
               <div className="mt-20">
-                <p className="text-[14px] text-[#4B5563]/70 mb-8">
+                <p className="text-[13px] text-[#4B5563]/70 mb-8">
                   {dict.home.partners.subTitle}
                 </p>
                 <Marquee speed={50} gradient={true} gradientColor="#E9F1EE" gradientWidth={60} pauseOnHover={true}>

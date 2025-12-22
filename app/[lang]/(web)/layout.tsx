@@ -18,13 +18,13 @@ export default async function WebLayout({
 
   return (
     <>
-      <div className="sticky top-0 z-[100] bg-white">
+      <div className="sticky top-0  mb-1 z-[100] bg-white">
         <Container className="px-4">
           <TopBar locale={lang} dict={dict} />
         </Container>
       </div>
       <div className="relative">
-        <header className="absolute top-0 left-0 right-0 z-50 w-full">
+        <header className="absolute top-10 left-0 right-0 z-50 w-full">
           <Container className="px-10">
             <Navbar locale={lang} dict={dict} />
           </Container>

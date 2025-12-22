@@ -76,8 +76,18 @@ export default function Navbar({ locale, dict }: NavbarProps) {
   }, [open]);
 
   return (
-    <div className={`w-full  fixed left-0 right-0 transition-colors duration-200 ${open ? 'bg-white h-screen inset-0 z-50 overflow-y-auto' : 'z-40 bg-transparent'}`}>
-      <header className={`w-full ${open ? 'fixed top-0 z-60 bg-white' : 'top-0 z-60'}`}>
+    <div
+      className={`w-full fixed left-0 right-0 transition-colors duration-200 ${open ? 'bg-white z-50 overflow-y-auto' : 'z-40 bg-transparent'}`}
+      style={{
+        top: 'var(--topbar-height, 52px)',
+        height: open ? 'calc(100vh - var(--topbar-height, 52px))' : 'auto'
+      }}
+    >
+      <header className={`w-full ${open ? 'fixed z-60 bg-white' : 'z-60'}`}
+        style={{
+          top: 'var(--topbar-height, 52px)'
+        }}
+      >
         <div className="flex h-16 md:h-20 items-center justify-between px-4 md:px-6">
           {/* Left: logo and locale switcher */}
           <div className="flex items-center gap-2 md:gap-3">
@@ -115,7 +125,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="group inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 bg-white text-zinc-900 hover:bg-black/5 hover:border-transparent transition-all duration-300 md:px-4 gap-2 hover:gap-0"
+                className="group inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 bg-white text-zinc-900 hover:bg-black/5 hover:border-transparent transition-all duration-300 md:px-4 gap-2 hover:gap-0 cursor-pointer"
                 aria-label="Close menu"
               >
                 <span aria-hidden className="font-normal text-xl md:text-sm transition-all duration-300 group-hover:w-0 group-hover:opacity-0 group-hover:scale-0 overflow-hidden">✕</span>
@@ -128,7 +138,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
 
       {/* Fullscreen Menu Content */}
       {open && (
-        <div className="bg-white pt-16  min-h-screen flex flex-col">
+        <div className="bg-white pt-16  min-h-full flex flex-col">
           {/* MOBILE MENU (md:hidden) */}
           <div className="flex-1 overflow-y-auto md:hidden px-4 py-6">
             <div className="flex flex-col">
@@ -165,11 +175,11 @@ export default function Navbar({ locale, dict }: NavbarProps) {
           </div>
 
           {/* DESKTOP MENU (hidden md:grid) */}
-          <div className="hidden md:grid z-50 grid-cols-3 h-[calc(100vh-64px)]">
+          <div className="hidden md:grid z-50 grid-cols-3 flex-1">
             {/* Left Image Section */}
             <div className="flex flex-col justify-between p-6 border-r border-border-stroke h-full">
               <div
-                className="relative flex-1 w-full rounded-lg overflow-hidden mb-4 min-h-0 cursor-pointer"
+                className="relative w-full max-w-[320px] h-[350px] rounded-[24px] overflow-hidden mb-4 cursor-pointer"
                 onMouseEnter={() => setIsHovered(true)}
                 onMouseLeave={() => setIsHovered(false)}
               >
@@ -179,7 +189,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
                     src={src}
                     alt="Leader Image"
                     fill
-                    sizes="(min-width: 768px) 33vw, 100vw"
+                    sizes="(min-width: 424px) 33vw, 100vw"
                     priority={i === 0}
                     className={`object-cover transition-opacity duration-300 ease-out ${i === activeImageIndex ? 'opacity-100' : 'opacity-0'
                       }`}
@@ -187,7 +197,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
                 ))}
               </div>
               <div className="mt-2 shrink-0">
-                <Image src="/images/logo2.png" alt="UGLP logo" width={48} height={48} className="mb-3" />
+                <Image src="/images/logo2.png" alt="UGLP logo" width={70} height={70} className="mb-3" />
                 <p className="text-sm text-zinc-600 leading-relaxed max-w-xs">{dict.nav.description}</p>
               </div>
             </div>
@@ -199,7 +209,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
                     key={item.href}
                     href={item.href}
                     onClick={() => setOpen(false)}
-                    className="block border-b border-border-stroke pb-2 text-[32px] font-medium text-black hover: transition-colors uppercase"
+                    className="block border-b border-border-stroke pb-2 text-[30px] font-medium text-black hover-gradient-text transition-colors uppercase"
                   >
                     {item.label}
                   </Link>
@@ -231,7 +241,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
                   key={item.href}
                   href={item.href}
                   onClick={() => setOpen(false)}
-                  className="block border-b border-border-stroke pb-2 text-[32px] font-medium text-black hover:text-brand-green transition-colors uppercase"
+                  className="block border-b border-border-stroke pb-2 text-[30px] font-medium text-black hover-gradient-text transition-colors uppercase"
                 >
                   {item.label}
                 </Link>

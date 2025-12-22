@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import type { Locale } from "@/lib/i18n/config";
 import Marquee from "react-fast-marquee";
 
@@ -12,6 +15,19 @@ type TopBarProps = {
 };
 
 export default function TopBar({ locale, dict }: TopBarProps) {
+  const [isVisible, setIsVisible] = useState(true);
+
+  useEffect(() => {
+    const root = document.documentElement;
+    if (isVisible) {
+      root.style.setProperty("--topbar-height", "52px");
+    } else {
+      root.style.setProperty("--topbar-height", "0px");
+    }
+  }, [isVisible]);
+
+  if (!isVisible) return null;
+
   return (
     <div role="region" aria-label="announcement" className="w-full pt-2 px-2 md:px-0">
       <div className="bg-brand-gradient text-white rounded-full h-10  px-2 sm:px-6 flex items-center justify-between gap-2 md:gap-3 overflow-hidden">
@@ -40,7 +56,8 @@ export default function TopBar({ locale, dict }: TopBarProps) {
 
         {/* Close button pushed to right */}
         <button
-          className="inline-flex items-center justify-center w-6 h-6 md:w-7 md:h-7 hover:bg-white/10 rounded-full transition-colors flex-shrink-0"
+          onClick={() => setIsVisible(false)}
+          className="inline-flex items-center justify-center w-6 h-6 md:w-7 md:h-7 hover:bg-white/10 rounded-full transition-colors flex-shrink-0 cursor-pointer"
           aria-label="Close announcement"
         >
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
