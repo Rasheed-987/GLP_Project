@@ -44,7 +44,7 @@ export default function VideoTile({ card }: { card: VideoCard }) {
 
                 {/* title */}
                 <div className="absolute left-8 bottom-8 right-14">
-                    <p className="text-white text-[13px] md:text-[20px] lg:text-[25px] mr-12 font-bold leading-snug drop-shadow whitespace-pre-line">
+                    <p className="text-white text-left text-[13px] md:text-[20px] lg:text-[25px] mr-12 font-bold leading-snug drop-shadow whitespace-pre-line">
                         {card.title}
                     </p>
                 </div>
@@ -52,7 +52,7 @@ export default function VideoTile({ card }: { card: VideoCard }) {
                 {/* action circle */}
                 <div className="absolute right-8 bottom-8">
                     <div className="rounded-full bg-white/25 backdrop-blur border border-white/25 grid place-items-center text-white">
-                        <Image src={arrow} alt="arrow" className="w-[60px] h-[60px]" />
+                        <Image src={arrow} alt="arrow" className="w-[40px] h-[40px] lg:w-[60px] lg:h-[60px]" />
                     </div>
                 </div>
             </div>

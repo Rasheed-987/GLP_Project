@@ -33,7 +33,7 @@ export default async function ResourcesPage({
   return (
     <>
       {/* HERO */}
-      <section className="pt-10 md:pt-12 pb-10 md:pb-12 px-12">
+      <section className="pt-10 md:pt-12 pb-10 md:pb-12 px-6 lg:px-12">
         <Container className="px-4 mt-20">
           <div className="flex flex-col items-center text-center">
             <TagPill label={t.hero.pill} />
@@ -74,9 +74,9 @@ export default async function ResourcesPage({
               subtitle={t.subtitle}
               videoCards={t.videoCards ?? []}
               articles={tArticle?.articles ?? []}
-              reports={[]} // add later
               seeMoreText={t.seeMore}
               lang={lang}
+              reportsData={t.reportsData}
             />
           </div>
         </Container>

@@ -17,8 +17,139 @@ export default {
     login: 'Log in',
     description: 'UAE Government Leaders Program - Empowering the next generation of Emirati leaders.'
   },
+   glm: {
+    hero: {
+      title1: "UAE’s Government",
+      title2Bold: "Leadership",
+      title3: "Model",
+      suffix: "(GLM)",
+    },
+
+    leadershipSpirit: {
+      title: "Leadership spirit",
+      items: [
+        {
+          title: "Enabler of people",
+          description:
+            "Inspires, encourages, and motivates others; reinforces human capabilities and talents through empowerment; effectively leverages others’ capabilities and demonstrates emotional intelligence.",
+        },
+        {
+          title: "Open to the world",
+          description:
+            "Open-minded to different experiences; embraces the values of peace, tolerance and coexistence; enjoys an extensive network of relations and is well-versed in global culture.",
+        },
+        {
+          title: "Role model",
+          description:
+            "Shows values of integrity, humility and respect; embraces and promotes happiness and positivity; makes substantial contributions in representing the country in a positive way.",
+        },
+      ],
+    },
+
+    futureOutlook: {
+      title: "Future outlook",
+      items: [
+        {
+          title: "Well-versed in Advanced Technology",
+          description:
+            "Awareness of new technologies and trends such as 4IR and AI, and how to get the most benefit out of these technologies to transform the way we live and work in the future.",
+        },
+        {
+          title: "Futuristic",
+          description:
+            "Well-informed about global trends; able to imagine the future; anticipate and analyze opportunities through developing future scenarios and proactive plans.",
+        },
+        {
+          title: "Life-long Learner",
+          description:
+            "Seeks self-development to acquire and enhance diverse skills; passionate for knowledge, research and exploration.",
+        },
+        {
+          title: "Innovative and disruptive",
+          description:
+            "Catalyst for change at the individual and institutional level; entrepreneurial and adventurous for whom nothing is impossible.",
+        },
+      ],
+    },
+
+    achievementsImpact: {
+      title: "Achievements and impact",
+      items: [
+        {
+          title: "Agile and fast",
+          description:
+            "Creates an environment which promotes and empowers change, achieving goals quickly and making efficient use of available resources.",
+        },
+        {
+          title: "Smart, effective and efficient decision maker",
+          description:
+            "Adopts a critical, analytical style of thinking; mindful and gutsy decision parameters in achieving the most desirable outcome.",
+        },
+        {
+          title: "Focuses on the government’s ultimate goals and achievements",
+          description:
+            "Strong advocate in achieving the government’s objectives; adds value in all aspects of work performance relating to national goals.",
+        },
+      ],
+    },
+  },
   // en dictionary (where you keep export default {...})
   resources: {
+    "reportsData": {
+      "featured": {
+        "badge": "2024 GRADUATE",
+        "image": "/images/pro3.png",
+        "href": "#",
+        "quote": "Through the Strategic Leaders Programme, I developed the strategic vision to launch Dubai's first carbon-neutral district. This initiative now serves as a model for sustainable urban development across the region.",
+        "name": "AHMED AL ZAABI",
+        "role": "HEAD OF SUSTAINABILITY INITIATIVES",
+        "logoImage": "/images/pr.png",
+        "stats": [
+          { "value": "100%", "label": "Carbon neutral district" },
+          { "value": "25M", "label": "AED investment secured" },
+          { "value": "5", "label": "Regional partnerships" }
+        ]
+      },
+      "cards": [
+        {
+          "id": 1,
+          "date": "09/03/2019",
+          "title": "Digital Transformation Platform",
+          "description": "Redesigned GLP’s digital ecosystem to centralize leadership programmes and streamline participant journeys.",
+          "image": "/images/pro1.png",
+          "href": "#",
+          "stats": [
+            { "value": "40%", "label": "faster onboarding" },
+            { "value": "3×", "label": "engagement" },
+            { "value": "+60%", "label": "brand recognition" }
+          ]
+        },
+        {
+          "id": 2,
+          "date": "09/03/2019",
+          "title": "National Leadership Portal",
+          "description": "A unified collaboration and learning platform for government and private-sector leaders.",
+          "image": "/images/pro2.png",
+          "href": "#",
+          "stats": [
+            { "value": "20%", "label": "faster completion rates" },
+            { "value": "25M", "label": "AED investment secured" }
+          ]
+        },
+        {
+          "id": 3,
+          "date": "09/03/2019",
+          "title": "Brand Identity Revamp",
+          "description": "A refreshed visual and communication system built around GLP’s mission of future-ready leadership.",
+          "image": "/images/pro3.png",
+          "href": "#",
+          "stats": [
+            { "value": "+60%", "label": "brand recognition" },
+            { "value": "7M", "label": "AED campaign funding" }
+          ]
+        }
+      ]
+    },
     hero: {
       pill: "RESOURCES",
       titleLine1Prefix: "Stay ",
@@ -46,22 +177,22 @@ export default {
     videoCards: [
       {
         title: "Strategic partnership between Egypt and UAE\nin government modernization",
-        image: "/images/resources/v1.png",
-        href: "#",
+        image: "/images/casestudymbl1.png",
+        href: "../",
       },
       {
         title: "Session with Professor James Robinson",
-        image: "/images/resources/v2.png",
-        href: "#",
+        image: "/images/casestudymbl2.png",
+        href: "",
       },
       {
         title: "UAEGLP session with Mr. Masood Ahmed from\nIMF",
-        image: "/images/resources/v3.png",
+        image: "/images/casestudymbl1.png",
         href: "#",
       },
       {
         title: "Roadshow by UAEGLP Alumni",
-        image: "/images/resources/v4.png",
+        image: "/images/casestudymbl2.png",
         href: "#",
       },
     ],
