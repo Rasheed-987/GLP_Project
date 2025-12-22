@@ -13,8 +13,8 @@ type TopBarProps = {
 
 export default function TopBar({ locale, dict }: TopBarProps) {
   return (
-    <div role="region" aria-label="announcement" className="w-full py-2 px-2 md:px-0">
-      <div className="bg-brand-gradient text-white rounded-full h-10 md:h-12 px-2 sm:px-6 flex items-center justify-between gap-2 md:gap-3 overflow-hidden">
+    <div role="region" aria-label="announcement" className="w-full pt-2 px-2 md:px-0">
+      <div className="bg-brand-gradient text-white rounded-full h-10  px-2 sm:px-6 flex items-center justify-between gap-2 md:gap-3 overflow-hidden">
         {/* Left Spacer to help center text on desktop */}
         <div className="w-6 h-6 hidden md:block flex-shrink-0"></div>
 
@@ -28,8 +28,8 @@ export default function TopBar({ locale, dict }: TopBarProps) {
               <span className="text-xs md:text-sm font-bold whitespace-nowrap">
                 14 days 07:00:51
               </span>
-              <a 
-                href="#apply" 
+              <a
+                href="#apply"
                 className="inline-flex items-center rounded-full bg-white text-black hover:bg-white/90 transition-colors px-4 py-1.5 text-[10px] md:text-xs font-semibold whitespace-nowrap"
               >
                 {dict.topBar.applyNow}
@@ -39,8 +39,8 @@ export default function TopBar({ locale, dict }: TopBarProps) {
         </div>
 
         {/* Close button pushed to right */}
-        <button 
-          className="inline-flex items-center justify-center w-6 h-6 md:w-8 md:h-8 hover:bg-white/10 rounded-full transition-colors flex-shrink-0" 
+        <button
+          className="inline-flex items-center justify-center w-6 h-6 md:w-7 md:h-7 hover:bg-white/10 rounded-full transition-colors flex-shrink-0"
           aria-label="Close announcement"
         >
           <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">

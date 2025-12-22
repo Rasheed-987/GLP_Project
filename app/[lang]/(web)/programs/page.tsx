@@ -46,7 +46,7 @@ export default async function ProgramsPage({
                     return (
                         <div
                             key={item.id}
-                            className={`${isLast ? "relative" : "sticky md:top-4 top-32"} w-full`}
+                            className={`${isLast ? "relative" : "sticky  top-32"} w-full`}
                             style={{ zIndex: index + 1 }}
                         >
                             <ProgramCard
