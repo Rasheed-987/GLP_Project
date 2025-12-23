@@ -120,8 +120,14 @@ export default async function AboutPage({
                   <p className="text-[#045A86] tracking-[1px] text-large font-bold uppercase mb-3">
                     {dict.about.role.pill}
                   </p>
-                  <div className="w-16 h-[2px] bg-[#045A8633] overflow-hidden rounded-full">
-                    <div className="w-1/2 h-full bg-[#185a84]"></div>
+                  <div className="mt-1">
+                    <Image
+                      src="/images/bar.png"
+                      alt="bar"
+                      width={80}
+                      height={4}
+                      className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
+                    />
                   </div>
                 </div>
 
@@ -198,8 +204,14 @@ export default async function AboutPage({
               <span className="text-brand-blue text-xs font-bold uppercase tracking-[0.8px] mb-4 block">
                 {dict.about.missionVision.mission.pill}
               </span>
-              <div className="w-16 h-1 bg-brand-blue/20 rounded-full mx-auto mb-6 flex">
-                <div className="w-1/2 h-full bg-brand-blue rounded-full"></div>
+              <div className="mb-6 flex justify-center">
+                <Image
+                  src="/images/bar.png"
+                  alt="bar"
+                  width={80}
+                  height={4}
+                  className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
+                />
               </div>
               <p className="text-[#00000099] text-[14px] max-w-md md:text-[15px] leading-[1.2] ">
                 {dict.about.missionVision.mission.text}
@@ -213,8 +225,14 @@ export default async function AboutPage({
                 <span className="text-brand-blue text-xs font-bold uppercase tracking-[0.8px] mb-4 block">
                   {dict.about.missionVision.vision.pill}
                 </span>
-                <div className="w-16 h-1 bg-brand-blue/20 rounded-full mx-auto mb-6 flex">
-                  <div className="w-1/2 h-full bg-brand-blue rounded-full"></div>
+                <div className="mb-6 flex justify-center">
+                  <Image
+                    src="/images/bar.png"
+                    alt="bar"
+                    width={80}
+                    height={4}
+                    className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
+                  />
                 </div>
                 <p className="text-[#00000099] text-[14px] md:text-[15px] leading-[1.2] max-w-md mx-auto">
                   {dict.about.missionVision.vision.text}
@@ -226,8 +244,14 @@ export default async function AboutPage({
                 <span className="text-brand-blue text-xs font-bold uppercase tracking-[0.8px] mb-4 block">
                   {dict.about.missionVision.why.pill}
                 </span>
-                <div className="w-24 h-1 bg-brand-blue/20 rounded-full mx-auto mb-6 flex">
-                  <div className="w-1/2 h-full bg-brand-blue rounded-full"></div>
+                <div className="mb-3 flex justify-center">
+                  <Image
+                    src="/images/bar.png"
+                    alt="bar"
+                    width={80}
+                    height={4}
+                    className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
+                  />
                 </div>
                 <p className="text-[#00000099] text-[14px] md:text-[15px] leading-[1.2] max-w-md mx-auto">
                   {dict.about.missionVision.why.text}

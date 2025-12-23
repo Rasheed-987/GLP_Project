@@ -427,6 +427,7 @@ export default {
       author: "H.H. SHEIKH MOHAMMED BIN RASHID AL MAKTOUM"
     },
     alumni: {
+      pill: "CASE STUDIES",
       items: [
         {
           tag: "2024 GRADUATE",

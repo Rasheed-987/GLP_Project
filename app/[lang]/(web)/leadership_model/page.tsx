@@ -357,31 +357,37 @@ export default async function GLMPage({
       </section>
 
       {/* MAIN LAYOUT */}
-      <section className="pb-16 md:pb-24">
-        <Container className="px-4">
-          <div className="flex flex-col lg:flex-row gap-10 lg:gap-14 items-start">
-            {/* LEFT: Globe */}
-            <div className="w-full lg:w-[38%] flex justify-center lg:justify-start relative ">
-              <div className="relative w-[320px] md:w-[380px] lg:w-[750px] aspect-square overflow-visible">
-                <div className="absolute inset-0 rounded-full overflow-hidden bg-white">
-                  <Image src={earth} alt="Globe" fill className="object-cover" priority />
+      <section className="pb-16 md:pb-24 lg:overflow-hidden">
+        <Container className="px-4 lg:overflow-visible">
+          <div className="flex flex-col lg:flex-row gap-10 lg:gap-0 items-start relative lg:min-h-[800px]">
+            {/* LEFT: Globe - Half visible, clipped on the left */}
+            <div className="w-full lg:w-auto flex justify-center lg:justify-start lg:absolute lg:-left-[200px] lg:top-0">
+              <div className="relative w-[320px] md:w-[380px] lg:w-[400px] aspect-square overflow-visible">
+                <div className="absolute inset-0 rounded-full overflow-hidden bg-white shadow-lg">
+                  <Image src={earth} alt="Globe" fill className="object-cover animate-spin-slow" priority />
                 </div>
-                <div className="absolute -inset-5 rounded-full border border-black/10" />
+                {/* Outer ring border */}
+                <div className="absolute -inset-5 rounded-full border-2 border-black/10" />
+                
+                {/* Connector dots on the globe outer ring */}
+                {/* Red dot - top right */}
+                <div className="hidden lg:block absolute w-3 h-3 rounded-full bg-[#E11D48] z-10" style={{ top: '12%', right: '10%', transform: 'translate(50%, -50%)' }} />
+                {/* Black dot - middle right */}
+                <div className="hidden lg:block absolute w-3 h-3 rounded-full bg-[#111827] z-10" style={{ top: '42%', right: '-4%', transform: 'translate(50%, -50%)' }} />
+                {/* Green dot - bottom right */}
+                <div className="hidden lg:block absolute w-3 h-3 rounded-full bg-[#059669] z-10" style={{ top: '72%', right: '-0%', transform: 'translate(50%, -50%)' }} />
               </div>
             </div>
 
             {/* RIGHT: Content */}
-            <div className="w-full lg:w-[92%]">
+            <div className="w-full lg:ml-[400px]">
               
               {/* Mobile Globe Connector */}
               <MobileGlobeConnector />
 
               {/* Leadership spirit */}
               {/* Desktop */}
-              <div className="hidden lg:grid lg:grid-cols-[220px_1fr] lg:-ml-[140px]">
-                <div className="hidden lg:flex justify-start pt-2">
-                  <ConnectorElbow color={RED} dotX={45} dotY={105} endY={38} />
-                </div>
+              <div className="hidden lg:block">
                 <AccordionSection title={glm.leadershipSpirit.title} color={RED} defaultOpen>
                   {leadershipContent}
                 </AccordionSection>
@@ -394,12 +400,8 @@ export default async function GLMPage({
                 </AccordionSection>
               </MobileSectionLayout>
 
-              {/* Future outlook */}
               {/* Desktop */}
-              <div className="hidden lg:grid lg:grid-cols-[220px_1fr] lg:-ml-[140px]">
-                <div className="hidden lg:flex justify-start pt-2">
-                  <ConnectorElbow color={BLACK} dotX={80} dotY={10} endY={38} />
-                </div>
+              <div className="hidden lg:block">
                 <AccordionSection title={glm.futureOutlook.title} color={BLACK} defaultOpen>
                   {futureContent}
                 </AccordionSection>
@@ -412,12 +414,8 @@ export default async function GLMPage({
                 </AccordionSection>
               </MobileSectionLayout>
 
-              {/* Achievements and impact */}
               {/* Desktop */}
-              <div className="hidden lg:grid lg:grid-cols-[220px_1fr] lg:-ml-[140px]">
-                <div className="hidden lg:flex justify-start pt-2">
-                  <ConnectorElbow color={GREEN} dotX={45} dotY={-60} endY={38} />
-                </div>
+              <div className="hidden lg:block">
                 <AccordionSection title={glm.achievementsImpact.title} color={GREEN} defaultOpen>
                   {achievementsContent}
                 </AccordionSection>

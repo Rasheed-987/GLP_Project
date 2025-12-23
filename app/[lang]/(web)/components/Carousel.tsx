@@ -45,7 +45,7 @@ export default function Carousel({ items, lang }: CarouselProps) {
       <div className="overflow-visible" ref={emblaRef}>
         <div className="flex -ml-4 lg:-ml-10">
           {items.map((item, index) => (
-            <div key={index} className="flex-[0_0_100%] lg:flex-[0_0_92%] min-w-0 flex flex-col lg:flex-row gap-6 pl-4 lg:pl-10">
+            <div key={index} className="flex-[0_0_85%] lg:flex-[0_0_92%] min-w-0 flex flex-col lg:flex-row gap-6 pl-4 lg:pl-10">
               {/* Left Image Side */}
               <div className="lg:w-4/12 relative aspect-square lg:aspect-auto lg:h-[600px] rounded-[32px] overflow-hidden">
                 <Image
@@ -62,20 +62,36 @@ export default function Carousel({ items, lang }: CarouselProps) {
               </div>
 
               {/* Right Content Side */}
-              <div className="lg:w-8/12 bg-[#E6EFEA] rounded-[32px] p-8 md:p-12 lg:p-14 flex flex-col justify-between relative lg:h-[600px] overflow-hidden">
+              <div className="lg:w-8/12 bg-[#E6EFEA] rounded-[32px] p-8 md:p-12 lg:p-14 flex flex-col justify-between relative flex-1 lg:h-[600px] overflow-hidden">
                 <div>
-                  <div className="text-brand-green text-5xl font-serif mb-4 leading-none">“</div>
+                  <div className="mb-4">
+                    <Image
+                      src={lang === "ar" ? "/images/casearabicqoute.png" : "/images/caseenglishqoute.png"}
+                      alt="quote"
+                      width={8}
+                      height={8}
+                      className="w-3 h-auto"
+                    />
+                  </div>
                   <p className="text-xl md:text-2xl leading-tight gradient-text font-medium mb-8">
                     {item.quote}
                   </p>
 
                   <div className="flex justify-between items-end">
                     <div>
-                      <div className="h-1 w-12 bg-brand-blue mb-4" />
-                      <h4 className="text-lg font-bold text-brand-blue uppercase tracking-tight">
+                     <div className="mb-3">
+                                       <Image
+                                         src="/images/bar.png"
+                                         alt="bar"
+                                         width={80}
+                                         height={4}
+                                         className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
+                                       />
+                                     </div>
+                      <h4 className="text-xs font-bold text-brand-blue uppercase tracking-tight">
                         {item.author}
                       </h4>
-                      <p className="text-xs text-[#00000099] font-medium uppercase tracking-widest mt-1">
+                      <p className="text-xs text-[#00000099] font-medium uppercase  mt-1">
                         {item.role}
                       </p>
                     </div>
@@ -91,13 +107,13 @@ export default function Carousel({ items, lang }: CarouselProps) {
                 </div>
 
                 <div className="mt-8 pt-8 border-t border-[#0000001A]">
-                  <div className="grid grid-cols-3 gap-8">
+                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8">
                     {item.stats.map((stat, sIndex) => (
-                      <div key={sIndex} className="text-center lg:text-left">
-                        <div className="text-4xl md:text-5xl font-bold gradient-text mb-2">
+                      <div key={sIndex} className="flex items-center lg:block ">
+                        <div className="text-4xl md:text-5xl font-bold text-center gradient-text mb-0 lg:mb-2 w-28 lg:w-auto shrink-0">
                           {stat.value}
                         </div>
-                        <div className="text-xs text-[#00000099] uppercase font-medium leading-tight">
+                        <div className="text-xs text-[#00000099] text-right md:text-center text-nowrap uppercase font-medium leading-tight">
                           {stat.label}
                         </div>
                       </div>
@@ -113,7 +129,7 @@ export default function Carousel({ items, lang }: CarouselProps) {
       {/* Navigation Arrows */}
       <button
         onClick={scrollPrev}
-        className="absolute left-0 lg:left-8 top-[20.6rem] md:top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-white shadow-xl flex items-center justify-center text-brand-green transition-all transform hover:scale-110 active:scale-95 border border-gray-100"
+        className="absolute left-0 lg:left-8 rtl:left-auto rtl:right-0 rtl:lg:right-8 top-[20.6rem] md:top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-white shadow-xl flex items-center justify-center text-brand-green transition-all transform hover:scale-110 active:scale-95 border border-gray-100"
         aria-label="Previous slide"
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5 rtl:rotate-180">
@@ -122,7 +138,7 @@ export default function Carousel({ items, lang }: CarouselProps) {
       </button>
       <button
         onClick={scrollNext}
-        className="absolute right-0 lg:right-8   top-[20.6rem] md:top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-white shadow-xl flex items-center justify-center text-brand-green transition-all transform hover:scale-110 active:scale-95 border border-gray-100"
+        className="absolute right-0 lg:right-8 rtl:right-auto rtl:left-0 rtl:lg:left-8 top-[20.6rem] md:top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-white shadow-xl flex items-center justify-center text-brand-green transition-all transform hover:scale-110 active:scale-95 border border-gray-100"
         aria-label="Next slide"
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5 rtl:rotate-180">

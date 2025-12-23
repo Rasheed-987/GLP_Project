@@ -8,6 +8,7 @@ import Carousel from "./components/Carousel";
 import ContactSection from "./components/ContactSection";
 import Marquee from "react-fast-marquee";
 import InteractiveProgramCard from "./components/InteractiveProgramCard";
+import Container from "@/app/components/Container";
 
 export default async function HomePage({
   params,
@@ -66,8 +67,14 @@ export default async function HomePage({
                 <p className="text-xs font-bold tracking-widest bg-brand-gradient bg-clip-text text-transparent uppercase leading-none">
                   {dict.home.about.pill}
                 </p>
-                <div className="mt-1">
-                  <Image src="/images/bar.png" alt="bar" width={80} height={4} className="w-20 h-auto" />
+                <div className="mb-3">
+                  <Image
+                    src="/images/bar.png"
+                    alt="bar"
+                    width={80}
+                    height={4}
+                    className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
+                  />
                 </div>
               </div>
               <h2 className="mt-4 text-[24px] md:text-[28px] leading-tight font-normal">
@@ -109,13 +116,20 @@ export default async function HomePage({
         </div>
       </section>
 
-      {/* Leadership Quote Section: Inspirational message from H.H. Sheikh Mohammed Bin Rashid Al Maktoum */}
       <section className="bg-white pb-32">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 ">
           <div className="bg-[#E6EFEA] rounded-[32px] px-6 py-12 md:p-16 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             {/* Mobile: Quote text first */}
             <div className="w-full lg:hidden flex flex-col justify-center order-1">
-              <p className="text-3xl md:text-4xl text-brand-green font-serif mb-6">&quot;</p>
+              <div className="mb-3">
+                <Image
+                  src={lang === "ar" ? "/images/arabicqoute.png" : "/images/englishqoute.png"}
+                  alt="quote"
+                  width={8}
+                  height={8}
+                  className="w-3 h-auto"
+                />
+              </div>
               <p className="text-[24px] md:text-[30px] leading-tight font-normal mb-8">
                 <span className="bg-brand-gradient bg-clip-text text-transparent inline-block">
                   {dict.home.quote.text}
@@ -139,7 +153,15 @@ export default async function HomePage({
             <div className="w-full lg:w-7/12 flex flex-col justify-center order-3 lg:order-2">
               {/* Desktop only */}
               <div className="hidden lg:block">
-                <p className="text-3xl md:text-4xl text-brand-green font-serif mb-6">&quot;</p>
+                <div className="mb-2">
+                  <Image
+                    src={lang === "ar" ? "/images/arabicqoute.png" : "/images/englishqoute.png"}
+                    alt="quote"
+                    width={8}
+                    height={8}
+                    className="w-3 h-auto"
+                  />
+                </div>
                 <p className="text-[24px] md:text-[30px] leading-tight font-normal mb-8">
                   <span className="bg-brand-gradient bg-clip-text text-transparent inline-block">
                     {dict.home.quote.text}
@@ -150,7 +172,15 @@ export default async function HomePage({
 
               {/* Mobile: Author at bottom */}
               <div className="w-full lg:hidden">
-                <div className="h-1 w-10 bg-[#006A8E] mb-4"></div>
+                <div className="mb-3">
+                  <Image
+                    src="/images/bar.png"
+                    alt="bar"
+                    width={80}
+                    height={4}
+                    className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
+                  />
+                </div>
                 <p className="text-xs md:text-sm font-bold tracking-widest text-[#006A8E] uppercase">
                   {dict.home.quote.author}
                 </p>
@@ -158,7 +188,15 @@ export default async function HomePage({
 
               {/* Desktop: Author */}
               <div className="hidden lg:block">
-                <div className="h-1 w-10 bg-[#006A8E] mb-4"></div>
+               <div className="mb-3">
+                  <Image
+                    src="/images/bar.png"
+                    alt="bar"
+                    width={80}
+                    height={4}
+                    className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
+                  />
+                </div>
                 <p className="text-xs md:text-sm font-bold tracking-widest text-[#006A8E] uppercase">
                   {dict.home.quote.author}
                 </p>
@@ -170,7 +208,23 @@ export default async function HomePage({
 
       {/* Alumni Testimonials Section: Carousel displaying success stories from previous graduates */}
       <section className="bg-white pb-32">
+         
+          <Container className="flex flex-col items-start gap-2 mb-6 px-4 sm:px-6 lg:px-8">
+             <p className="text-xs font-bold tracking-widest bg-brand-gradient bg-clip-text text-transparent uppercase leading-none">
+                  {dict.home.alumni.pill}
+                </p>
+                <div className="mt-1">
+                  <Image
+                    src="/images/bar.png"
+                    alt="bar"
+                    width={80}
+                    height={4}
+                    className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
+                  />
+                </div>
+          </Container>
         <div className="">
+       
           <Carousel items={dict.home.alumni.items} lang={lang} />
         </div>
       </section>
@@ -226,7 +280,7 @@ export default async function HomePage({
             </div>
 
             {/* Right Column: Nomination Form */}
-            <div className="bg-[#E9F1EE] rounded-[24px] p-6 md:p-10">
+            <div className="bg-[#E6EFEA] rounded-[24px] p-6 md:p-10">
               <form className="space-y-4">
                 <div>
                   <h4 className="text-sm font-bold tracking-widest text-brand-blue mb-4">
@@ -236,18 +290,18 @@ export default async function HomePage({
                     <input
                       type="text"
                       placeholder={dict.home.nomination.form.fullName}
-                      className="w-full px-5 py-3 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
+                      className="w-full px-5 py-3 rounded-full bg-[#E6EFEA] border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
                     />
                     <input
                       type="text"
                       placeholder={dict.home.nomination.form.organization}
-                      className="w-full px-5 py-3 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
+                      className="w-full px-5 py-3 rounded-full bg-[#E6EFEA] border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
                     />
                   </div>
                   <input
                     type="email"
                     placeholder={dict.home.nomination.form.email}
-                    className="w-full mt-3 px-5 py-3 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
+                    className="w-full mt-3 px-5 py-3 rounded-full bg-[#E6EFEA] border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
                   />
                 </div>
 
@@ -259,23 +313,23 @@ export default async function HomePage({
                     <input
                       type="text"
                       placeholder={dict.home.nomination.form.nomineeName}
-                      className="w-full px-5 py-3 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
+                      className="w-full px-5 py-3 rounded-full bg-[#E6EFEA] border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
                     />
                     <input
                       type="text"
                       placeholder={dict.home.nomination.form.nomineeOrg}
-                      className="w-full px-5 py-3 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
+                      className="w-full px-5 py-3 rounded-full bg-[#E6EFEA] border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
                     />
                   </div>
                   <input
                     type="email"
                     placeholder={dict.home.nomination.form.nomineeEmail}
-                    className="w-full mt-3 px-5 py-3 rounded-full bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
+                    className="w-full mt-3 px-5 py-3 rounded-full bg-[#E6EFEA] border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
                   />
                   <textarea
                     placeholder={dict.home.nomination.form.reason}
                     rows={4}
-                    className="w-full mt-3 px-5 py-3 rounded-[20px] bg-white/50 border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 resize-none text-sm"
+                    className="w-full mt-3 px-5 py-3 rounded-[20px] bg-[#E6EFEA] border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 resize-none text-sm"
                   />
                 </div>
 
@@ -300,7 +354,13 @@ export default async function HomePage({
                     {dict.home.partners.pill}
                   </p>
                   <div className="mt-1">
-                    <Image src="/images/bar.png" alt="bar" width={80} height={4} className="w-20 h-auto" />
+                    <Image
+                      src="/images/bar.png"
+                      alt="bar"
+                      width={80}
+                      height={4}
+                      className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
+                    />
                   </div>
                 </div>
 
