@@ -4,7 +4,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
 import { Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
-import { Plus, ChevronLeft, ChevronRight, Edit2, Trash2, Calendar, Clock, CheckCircle, XCircle, ChevronDown, Image as ImageIcon, Type, AlignLeft, FileText, Layout, X } from "lucide-react";
+import { Plus, Edit2, Trash2, Calendar, Clock, CheckCircle, XCircle, ChevronDown, Image as ImageIcon, Type, AlignLeft, FileText, X } from "lucide-react";
+import Image from "next/image";
 
 interface ContentSection {
     id: string;
@@ -41,12 +42,41 @@ interface Article {
     createdAt: string;
 }
 
+// Mock data
+const mockArticles: Article[] = [
+    {
+        id: "1",
+        title: {
+            en: "UAE Government Leaders Programme opens registration for UAE Nationals",
+            ar: "برنامج قيادات حكومة الإمارات يفتح باب التسجيل لمواطني الدولة"
+        },
+        subtitle: {
+            en: "From rising professionals to senior decision-makers, our programmes help shape future-ready leaders.",
+            ar: "من المهنيين الصاعدين إلى كبار صناع القرار، تساعد برامجنا في تشكيل قادة مستعدين للمستقبل."
+        },
+        date: { en: "2025-04-07", ar: "٢٠٢٥-٠٤-٠٧" },
+        mainImage: "https://via.placeholder.com/800x400",
+        sections: [
+            {
+                id: "s1",
+                heading: { en: "New heading", ar: "عنوان جديد" },
+                content: {
+                    en: "The UAE Government Leaders Programme is inviting UAE nationals to register for its 2020 cohort across three categories – Executive Leaders Programme, Future Leaders Programme, and UAE Youth Leaders Programme.",
+                    ar: "يدعو برنامج قيادات حكومة الإمارات مواطني الدولة للتسجيل في دفعة 2020 ضمن ثلاث فئات – برنامج القيادات التنفيذية، وبرنامج قادة المستقبل، وبرنامج شباب الإمارات."
+                }
+            }
+        ],
+        status: { en: "active", ar: "active" },
+        createdAt: new Date().toISOString()
+    }
+];
+
 export default function ArticlesPage() {
     const params = useParams();
     const lang = params.lang as Locale;
     const [dict, setDict] = useState<any>(null);
-    const [articles, setArticles] = useState<Article[]>([]);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [articles, setArticles] = useState<Article[]>(mockArticles);
+    const [currentPage] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingArticle, setEditingArticle] = useState<Article | null>(null);
 
@@ -63,54 +93,10 @@ export default function ArticlesPage() {
 
     useEffect(() => {
         getDictionary(lang).then(setDict);
-        // Mock data
-        const mockArticles: Article[] = [
-            {
-                id: "1",
-                title: {
-                    en: "UAE Government Leaders Programme opens registration for UAE Nationals",
-                    ar: "برنامج قيادات حكومة الإمارات يفتح باب التسجيل لمواطني الدولة"
-                },
-                subtitle: {
-                    en: "From rising professionals to senior decision-makers, our programmes help shape future-ready leaders.",
-                    ar: "من المهنيين الصاعدين إلى كبار صناع القرار، تساعد برامجنا في تشكيل قادة مستعدين للمستقبل."
-                },
-                date: { en: "2025-04-07", ar: "٢٠٢٥-٠٤-٠٧" },
-                mainImage: "https://via.placeholder.com/800x400",
-                sections: [
-                    {
-                        id: "s1",
-                        heading: { en: "New heading", ar: "عنوان جديد" },
-                        content: {
-                            en: "The UAE Government Leaders Programme is inviting UAE nationals to register for its 2020 cohort across three categories – Executive Leaders Programme, Future Leaders Programme, and UAE Youth Leaders Programme.",
-                            ar: "يدعو برنامج قيادات حكومة الإمارات مواطني الدولة للتسجيل في دفعة 2020 ضمن ثلاث فئات – برنامج القيادات التنفيذية، وبرنامج قادة المستقبل، وبرنامج شباب الإمارات."
-                        }
-                    }
-                ],
-                status: { en: "active", ar: "active" },
-                createdAt: new Date().toISOString()
-            }
-        ];
-        setArticles(mockArticles);
     }, [lang]);
-
-    useEffect(() => {
-        if (editingArticle) {
-            setImagePreview(editingArticle.mainImage);
-            setSections(editingArticle.sections);
-            setSelectedStatusEn(editingArticle.status.en);
-            setSelectedStatusAr(editingArticle.status.ar);
-        } else {
-            setImagePreview(null);
-            setSections([{ id: Date.now().toString(), heading: { en: "", ar: "" }, content: { en: "", ar: "" } }]);
-            setSelectedStatusEn("active");
-            setSelectedStatusAr("active");
-        }
-    }, [editingArticle]);
 
     if (!dict) return null;
 
-    const totalPages = Math.ceil(articles.length / itemsPerPage);
     const currentArticles = articles.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -170,6 +156,10 @@ export default function ArticlesPage() {
                 <button
                     onClick={() => {
                         setEditingArticle(null);
+                        setImagePreview(null);
+                        setSections([{ id: Date.now().toString(), heading: { en: "", ar: "" }, content: { en: "", ar: "" } }]);
+                        setSelectedStatusEn("active");
+                        setSelectedStatusAr("active");
                         setIsModalOpen(true);
                     }}
                     className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gradient text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all group cursor-pointer"
@@ -199,7 +189,7 @@ export default function ArticlesPage() {
                                         <div className="flex items-center gap-3">
                                             <div className="w-12 h-12 rounded-lg bg-brand-blue/5 border border-border-stroke flex items-center justify-center shrink-0 overflow-hidden">
                                                 {item.mainImage ? (
-                                                    <img src={item.mainImage} alt="Main" className="w-full h-full object-cover" />
+                                                    <Image src={item.mainImage} alt="Main" width={48} height={48} className="w-full h-full object-cover" />
                                                 ) : (
                                                     <FileText className="w-5 h-5 text-brand-blue" />
                                                 )}
@@ -241,7 +231,14 @@ export default function ArticlesPage() {
                                     <td className="px-6 py-4 text-right">
                                         <div className="flex items-center justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                                             <button
-                                                onClick={() => { setEditingArticle(item); setIsModalOpen(true); }}
+                                                onClick={() => {
+                                                    setEditingArticle(item);
+                                                    setImagePreview(item.mainImage);
+                                                    setSections(item.sections);
+                                                    setSelectedStatusEn(item.status.en);
+                                                    setSelectedStatusAr(item.status.ar);
+                                                    setIsModalOpen(true);
+                                                }}
                                                 className="p-2 text-[#00000066] hover:text-brand-blue hover:bg-brand-blue/5 rounded-lg transition-all cursor-pointer"
                                             >
                                                 <Edit2 className="w-4 h-4" />
@@ -374,7 +371,7 @@ export default function ArticlesPage() {
                                         <div className={`w-full aspect-[21/9] rounded-3xl border-2 border-dashed border-border-stroke bg-[#F7FAF9] flex flex-col items-center justify-center overflow-hidden transition-all ${!imagePreview ? "hover:border-brand-blue/50" : ""}`}>
                                             {imagePreview ? (
                                                 <>
-                                                    <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                                                    <Image src={imagePreview} alt="Preview" width={800} height={400} className="w-full h-full object-cover" />
                                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                                                         <button type="button" onClick={() => fileInputRef.current?.click()} className="bg-white text-black px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2">
                                                             <ImageIcon className="w-4 h-4" /> Change Image

@@ -4,7 +4,9 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
-import { Plus, ChevronLeft, ChevronRight, MoreVertical, Edit2, Trash2, Calendar, Clock, CheckCircle, XCircle, ChevronDown } from "lucide-react";
+import { Plus, ChevronLeft, ChevronRight, Edit2, Trash2, Calendar, Clock, CheckCircle, XCircle, ChevronDown } from "lucide-react";
+import clientApi from "@/lib/axios";
+import toast from "react-hot-toast";
 
 interface NewsItem {
     id: string;
@@ -21,6 +23,10 @@ interface NewsItem {
         ar: "active" | "inactive";
     };
     expiryDate: {
+        en: string;
+        ar: string;
+    };
+    applyNowUrl: {
         en: string;
         ar: string;
     };
@@ -42,41 +48,23 @@ export default function NewsPage() {
 
     const itemsPerPage = 10;
 
-    useEffect(() => {
-        getDictionary(lang).then(setDict);
-        // Mock data for initial UI
-        const mockNews: NewsItem[] = Array.from({ length: 25 }, (_, i) => ({
-            id: `${i + 1}`,
-            topic: {
-                en: `Update on Leadership Program ${i + 1}`,
-                ar: `تحديث لبرنامج القيادة ${i + 1}`,
-            },
-            content: {
-                en: `This is the main content for the announcement ${i + 1}. It contains important details about the program updates and upcoming events.`,
-                ar: `هذا هو المحتوى الرئيسي للإعلان ${i + 1}. يحتوي على تفاصيل مهمة حول تحديثات البرنامج والفعاليات القادمة.`,
-            },
-            status: {
-                en: i % 3 === 0 ? "inactive" : "active",
-                ar: i % 3 === 0 ? "inactive" : "active",
-            },
-            expiryDate: {
-                en: new Date(Date.now() + 1000 * 60 * 60 * 24 * (i + 1)).toISOString().split('T')[0],
-                ar: new Date(Date.now() + 1000 * 60 * 60 * 24 * (i + 1)).toISOString().split('T')[0],
-            },
-            createdAt: new Date().toISOString(),
-        }));
-        setNews(mockNews);
-    }, [lang]);
+    const fetchNews = async () => {
+        try {
+            const response = await clientApi.get("/api/news");
+            setNews(response.data);
+        } catch {
+            toast.error("Failed to fetch news");
+        }
+    };
 
     useEffect(() => {
-        if (editingNews) {
-            setSelectedStatusEn(editingNews.status.en);
-            setSelectedStatusAr(editingNews.status.ar);
-        } else {
-            setSelectedStatusEn("active");
-            setSelectedStatusAr("active");
-        }
-    }, [editingNews]);
+        const initData = () => {
+            getDictionary(lang).then(setDict);
+            void fetchNews();
+        };
+        initData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [lang]);
 
     if (!dict) return null;
 
@@ -87,25 +75,33 @@ export default function NewsPage() {
         setCurrentPage(page);
     };
 
-    const toggleStatus = (id: string) => {
-        setNews(prev => prev.map(item => {
-            if (item.id === id) {
-                const newStatus = item.status[lang] === "active" ? "inactive" : "active";
-                return {
-                    ...item,
-                    status: {
-                        ...item.status,
-                        [lang]: newStatus
-                    }
-                };
-            }
-            return item;
-        }));
+    const toggleStatus = async (id: string, currentStatus: any) => {
+        try {
+            const newStatusEn = currentStatus.en === "active" ? "inactive" : "active";
+            const newStatusAr = currentStatus.ar === "active" ? "inactive" : "active";
+
+            await clientApi.put(`/api/news/${id}`, {
+                status: {
+                    en: newStatusEn,
+                    ar: newStatusAr
+                }
+            });
+            fetchNews();
+            toast.success("Status updated successfully");
+        } catch (error) {
+            toast.error("Failed to update status");
+        }
     };
 
-    const deleteNews = (id: string) => {
+    const deleteNews = async (id: string) => {
         if (confirm("Are you sure you want to delete this news?")) {
-            setNews(prev => prev.filter(item => item.id !== id));
+            try {
+                await clientApi.delete(`/api/news/${id}`);
+                fetchNews();
+                toast.success("News deleted successfully");
+            } catch (error) {
+                toast.error("Failed to delete news");
+            }
         }
     };
 
@@ -118,12 +114,14 @@ export default function NewsPage() {
                         {dict.dashboard.sidebar.news}
                     </h1>
                     <p className="text-[#00000099] text-sm mt-1">
-                        Manage official announcements and news updates.
+                        {dict.dashboard.news.subtitle}
                     </p>
                 </div>
                 <button
                     onClick={() => {
                         setEditingNews(null);
+                        setSelectedStatusEn("active");
+                        setSelectedStatusAr("active");
                         setIsModalOpen(true);
                         setStatusDropdownOpenEn(false);
                         setStatusDropdownOpenAr(false);
@@ -131,7 +129,7 @@ export default function NewsPage() {
                     className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gradient text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all group"
                 >
                     <Plus className="w-4 h-4 transition-transform group-hover:rotate-90" />
-                    Add New Announcement
+                    {dict.dashboard.news.addBtn}
                 </button>
             </div>
 
@@ -141,11 +139,11 @@ export default function NewsPage() {
                     <table className="w-full text-left border-collapse">
                         <thead>
                             <tr className="bg-[#F7FAF9] border-b border-border-stroke">
-                                <th className="px-6 py-4 text-xs font-bold text-[#00000066] uppercase tracking-wider whitespace-nowrap">Topic</th>
-                                <th className="px-6 py-4 text-xs font-bold text-[#00000066] uppercase tracking-wider whitespace-nowrap">Status</th>
-                                <th className="px-6 py-4 text-xs font-bold text-[#00000066] uppercase tracking-wider whitespace-nowrap">Expiry Date</th>
-                                <th className="px-6 py-4 text-xs font-bold text-[#00000066] uppercase tracking-wider whitespace-nowrap">Created</th>
-                                <th className="px-6 py-4 text-xs font-bold text-[#00000066] uppercase tracking-wider whitespace-nowrap text-right">Actions</th>
+                                <th className="px-6 py-4 text-xs font-bold text-[#00000066] uppercase tracking-wider whitespace-nowrap">{dict.dashboard.news.table.topic}</th>
+                                <th className="px-6 py-4 text-xs font-bold text-[#00000066] uppercase tracking-wider whitespace-nowrap">{dict.dashboard.news.table.status}</th>
+                                <th className="px-6 py-4 text-xs font-bold text-[#00000066] uppercase tracking-wider whitespace-nowrap">{dict.dashboard.news.table.expiry}</th>
+                                <th className="px-6 py-4 text-xs font-bold text-[#00000066] uppercase tracking-wider whitespace-nowrap">{dict.dashboard.news.table.created}</th>
+                                <th className="px-6 py-4 text-xs font-bold text-[#00000066] uppercase tracking-wider whitespace-nowrap text-right">{dict.dashboard.news.table.actions}</th>
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border-stroke">
@@ -163,7 +161,7 @@ export default function NewsPage() {
                                     </td>
                                     <td className="px-6 py-4">
                                         <button
-                                            onClick={() => toggleStatus(item.id)}
+                                            onClick={() => toggleStatus(item.id, item.status)}
                                             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wider transition-all
                                                 ${item.status[lang] === "active"
                                                     ? "bg-[#E6F4F1] text-[#019977] hover:bg-[#019977] hover:text-white"
@@ -190,6 +188,8 @@ export default function NewsPage() {
                                             <button
                                                 onClick={() => {
                                                     setEditingNews(item);
+                                                    setSelectedStatusEn(item.status.en);
+                                                    setSelectedStatusAr(item.status.ar);
                                                     setIsModalOpen(true);
                                                     setStatusDropdownOpenEn(false);
                                                     setStatusDropdownOpenAr(false);
@@ -254,25 +254,63 @@ export default function NewsPage() {
                     <div className="bg-white w-full max-w-2xl rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in zoom-in-95 duration-300 max-h-[96vh]">
                         <div className="p-8 border-b border-border-stroke flex items-center justify-between bg-[#F7FAF9] shrink-0">
                             <div>
-                                <h3 className="text-xl font-bold text-black">{editingNews ? "Edit Announcement" : "Add New Announcement"}</h3>
-                                <p className="text-[#00000099] text-xs mt-1">Fill in the details for the official news in both English and Arabic.</p>
+                                <h3 className="text-xl font-bold text-black">{editingNews ? dict.dashboard.news.editBtn : dict.dashboard.news.addBtn}</h3>
+                                <p className="text-[#00000099] text-xs mt-1">{dict.dashboard.news.subtitle}</p>
                             </div>
                             <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-black/5 rounded-full text-[#00000066] transition-colors">
                                 <Plus className="w-6 h-6 rotate-45" />
                             </button>
                         </div>
 
-                        <form className="flex-1 overflow-y-auto no-scrollbar p-8 space-y-6" onSubmit={(e) => {
+                        <form className="flex-1 overflow-y-auto no-scrollbar p-8 space-y-6" onSubmit={async (e) => {
                             e.preventDefault();
-                            setIsModalOpen(false);
+                            const formData = new FormData(e.currentTarget);
+
+                            const payload = {
+                                topic: {
+                                    en: formData.get('topicEn'),
+                                    ar: formData.get('topicAr')
+                                },
+                                content: {
+                                    en: formData.get('contentEn'),
+                                    ar: formData.get('contentAr')
+                                },
+                                status: {
+                                    en: selectedStatusEn,
+                                    ar: selectedStatusAr
+                                },
+                                expiryDate: {
+                                    en: formData.get('expiryEn'),
+                                    ar: formData.get('expiryAr')
+                                },
+                                applyNowUrl: {
+                                    en: formData.get('applyUrlEn'),
+                                    ar: formData.get('applyUrlAr')
+                                }
+                            };
+
+                            try {
+                                if (editingNews) {
+                                    await clientApi.put(`/api/news/${editingNews.id}`, payload);
+                                    toast.success("News updated successfully");
+                                } else {
+                                    await clientApi.post("/api/news", payload);
+                                    toast.success("News created successfully");
+                                }
+                                setIsModalOpen(false);
+                                fetchNews();
+                            } catch (error) {
+                                toast.error("Failed to save news");
+                            }
                         }}>
                             <div className="space-y-6">
                                 {/* Topic Fields */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Topic / Title (ENG)</label>
+                                        <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">{dict.dashboard.news.form.topicEn}</label>
                                         <input
                                             type="text"
+                                            name="topicEn"
                                             placeholder="Enter English topic..."
                                             defaultValue={editingNews?.topic.en}
                                             className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
@@ -280,10 +318,11 @@ export default function NewsPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">الموضوع / العنوان (AR)</label>
+                                        <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">{dict.dashboard.news.form.topicAr}</label>
                                         <input
                                             type="text"
                                             dir="rtl"
+                                            name="topicAr"
                                             placeholder="أدخل الموضوع بالعربية..."
                                             defaultValue={editingNews?.topic.ar}
                                             className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
@@ -295,9 +334,10 @@ export default function NewsPage() {
                                 {/* Content Fields */}
                                 <div className="space-y-4">
                                     <div>
-                                        <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Content (ENG)</label>
+                                        <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">{dict.dashboard.news.form.contentEn}</label>
                                         <textarea
                                             rows={3}
+                                            name="contentEn"
                                             placeholder="Enter English content..."
                                             defaultValue={editingNews?.content.en}
                                             className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none"
@@ -305,10 +345,11 @@ export default function NewsPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">المحتوى (AR)</label>
+                                        <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">{dict.dashboard.news.form.contentAr}</label>
                                         <textarea
                                             rows={3}
                                             dir="rtl"
+                                            name="contentAr"
                                             placeholder="أدخل المحتوى بالعربية..."
                                             defaultValue={editingNews?.content.ar}
                                             className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none"
@@ -409,22 +450,47 @@ export default function NewsPage() {
                                     </div>
                                     <div className="space-y-4">
                                         <div>
-                                            <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Expiry Date (ENG)</label>
+                                            <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">{dict.dashboard.news.form.expiryEn}</label>
                                             <input
                                                 type="date"
+                                                name="expiryEn"
                                                 defaultValue={editingNews?.expiryDate.en}
                                                 className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
                                                 required
                                             />
                                         </div>
                                         <div>
-                                            <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">تاريخ الانتهاء (AR)</label>
+                                            <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">{dict.dashboard.news.form.expiryAr}</label>
                                             <input
                                                 type="date"
                                                 dir="rtl"
+                                                name="expiryAr"
                                                 defaultValue={editingNews?.expiryDate.ar}
                                                 className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
                                                 required
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="space-y-4">
+                                        <div>
+                                            <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">{dict.dashboard.news.form.applyUrlEn}</label>
+                                            <input
+                                                type="url"
+                                                name="applyUrlEn"
+                                                placeholder="https://example.com/apply"
+                                                defaultValue={editingNews?.applyNowUrl?.en}
+                                                className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                                            />
+                                        </div>
+                                        <div>
+                                            <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">{dict.dashboard.news.form.applyUrlAr}</label>
+                                            <input
+                                                type="url"
+                                                dir="rtl"
+                                                name="applyUrlAr"
+                                                placeholder="https://example.com/apply"
+                                                defaultValue={editingNews?.applyNowUrl?.ar}
+                                                className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
                                             />
                                         </div>
                                     </div>
@@ -437,13 +503,13 @@ export default function NewsPage() {
                                     onClick={() => setIsModalOpen(false)}
                                     className="flex-1 cursor-pointer py-4 text-sm font-bold text-[#00000099] hover:bg-black/5 rounded-2xl transition-all"
                                 >
-                                    Cancel
+                                    {dict.dashboard.news.form.cancel}
                                 </button>
                                 <button
                                     type="submit"
                                     className="flex-[2] cursor-pointer py-4 bg-brand-gradient text-white rounded-2xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all"
                                 >
-                                    {editingNews ? "Update Announcement" : "Create Announcement"}
+                                    {editingNews ? dict.dashboard.news.updateBtn : dict.dashboard.news.createBtn}
                                 </button>
                             </div>
                         </form>

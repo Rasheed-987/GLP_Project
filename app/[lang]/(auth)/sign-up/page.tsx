@@ -2,10 +2,12 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Locale } from "@/lib/i18n/config";
 import Button from "../../(web)/components/Button";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import clientApi from "@/lib/axios";
+import toast from "react-hot-toast";
 
 const EyeIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -22,14 +24,50 @@ const EyeSlashIcon = () => (
 
 export default function SignUpPage() {
     const params = useParams();
+    const router = useRouter();
     const lang = params.lang as Locale;
     const [dict, setDict] = React.useState<any>(null);
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const [formData, setFormData] = useState({
+        fullName: "",
+        email: "",
+        phone: "",
+        password: "",
+        confirmPassword: ""
+    });
 
     React.useEffect(() => {
         getDictionary(lang).then(setDict);
     }, [lang]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        if (formData.password !== formData.confirmPassword) {
+            toast.error("Passwords do not match");
+            return;
+        }
+
+        setLoading(true);
+        try {
+            const { confirmPassword, ...registerData } = formData;
+            const response = await clientApi.post("/api/auth/register", registerData);
+
+            toast.success(response.data.message || "Account created successfully!");
+            router.push(`/${lang}/sign-in`);
+        } catch (error: any) {
+            toast.error(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     if (!dict) return null;
 
@@ -44,7 +82,7 @@ export default function SignUpPage() {
                 </div>
 
                 {/* Form */}
-                <form className="mt-8 space-y-4" onSubmit={(e) => e.preventDefault()}>
+                <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
                     <div className="space-y-4">
                         {/* Full Name */}
                         <div>
@@ -56,6 +94,8 @@ export default function SignUpPage() {
                                 name="fullName"
                                 type="text"
                                 required
+                                value={formData.fullName}
+                                onChange={handleChange}
                                 className="appearance-none relative block w-full px-4 py-3 border border-border-stroke placeholder-[#00000066] text-black rounded-xl focus:outline-none focus:ring-brand-blue focus:border-brand-blue focus:z-10 sm:text-sm bg-[#F7FAF9]"
                                 placeholder={dict.auth.signUp.fullName}
                             />
@@ -72,6 +112,8 @@ export default function SignUpPage() {
                                 type="email"
                                 autoComplete="email"
                                 required
+                                value={formData.email}
+                                onChange={handleChange}
                                 className="appearance-none relative block w-full px-4 py-3 border border-border-stroke placeholder-[#00000066] text-black rounded-xl focus:outline-none focus:ring-brand-blue focus:border-brand-blue focus:z-10 sm:text-sm bg-[#F7FAF9]"
                                 placeholder={dict.auth.signUp.email}
                             />
@@ -87,6 +129,8 @@ export default function SignUpPage() {
                                 name="phone"
                                 type="tel"
                                 required
+                                value={formData.phone}
+                                onChange={handleChange}
                                 className="appearance-none relative block w-full px-4 py-3 border border-border-stroke placeholder-[#00000066] text-black rounded-xl focus:outline-none focus:ring-brand-blue focus:border-brand-blue focus:z-10 sm:text-sm bg-[#F7FAF9]"
                                 placeholder={dict.auth.signUp.phone}
                             />
@@ -103,6 +147,8 @@ export default function SignUpPage() {
                                 type={showPassword ? "text" : "password"}
                                 autoComplete="new-password"
                                 required
+                                value={formData.password}
+                                onChange={handleChange}
                                 className="appearance-none relative block w-full px-4 py-3 border border-border-stroke placeholder-[#00000066] text-black rounded-xl focus:outline-none focus:ring-brand-blue focus:border-brand-blue focus:z-10 sm:text-sm bg-[#F7FAF9]"
                                 placeholder={dict.auth.signUp.password}
                             />
@@ -126,6 +172,8 @@ export default function SignUpPage() {
                                 type={showConfirmPassword ? "text" : "password"}
                                 autoComplete="new-password"
                                 required
+                                value={formData.confirmPassword}
+                                onChange={handleChange}
                                 className="appearance-none relative block w-full px-4 py-3 border border-border-stroke placeholder-[#00000066] text-black rounded-xl focus:outline-none focus:ring-brand-blue focus:border-brand-blue focus:z-10 sm:text-sm bg-[#F7FAF9]"
                                 placeholder={dict.auth.signUp.confirmPassword}
                             />
@@ -141,8 +189,8 @@ export default function SignUpPage() {
 
                     {/* Submit Button */}
                     <div className="pt-4">
-                        <Button type="submit" className="w-full">
-                            {dict.auth.signUp.signUpBtn}
+                        <Button type="submit" className="w-full" disabled={loading}>
+                            {loading ? "Creating Account..." : dict.auth.signUp.signUpBtn}
                         </Button>
                     </div>
 

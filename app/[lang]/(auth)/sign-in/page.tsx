@@ -2,20 +2,57 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Locale } from "@/lib/i18n/config";
 import Button from "../../(web)/components/Button";
 import { getDictionary } from "@/lib/i18n/dictionaries";
+import clientApi from "@/lib/axios";
+import toast from "react-hot-toast";
 
 export default function SignInPage() {
     const params = useParams();
+    const router = useRouter();
     const lang = params.lang as Locale;
     const [dict, setDict] = React.useState<any>(null);
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const [formData, setFormData] = useState({
+        email: "",
+        password: ""
+    });
 
     React.useEffect(() => {
         getDictionary(lang).then(setDict);
     }, [lang]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            const response = await clientApi.post("/api/auth/login", formData);
+
+            // Combine user and token as requested
+            const userData = {
+                ...response.data.user,
+                token: response.data.token
+            };
+
+            localStorage.setItem("user", JSON.stringify(userData));
+
+            toast.success(response.data.message || "Logged in successfully!");
+
+            router.push(`/${lang}/dashboard/home`);
+        } catch (error: any) {
+            toast.error(error.message);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     if (!dict) return null;
 
@@ -30,7 +67,7 @@ export default function SignInPage() {
                 </div>
 
                 {/* Form */}
-                <form className="mt-8 space-y-6" onSubmit={(e) => e.preventDefault()}>
+                <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
                     <div className="space-y-4">
                         {/* Email Field */}
                         <div>
@@ -43,6 +80,8 @@ export default function SignInPage() {
                                 type="email"
                                 autoComplete="email"
                                 required
+                                value={formData.email}
+                                onChange={handleChange}
                                 className="appearance-none relative block w-full px-4 py-3 border border-border-stroke placeholder-[#00000066] text-black rounded-xl focus:outline-none focus:ring-brand-blue focus:border-brand-blue focus:z-10 sm:text-sm bg-[#F7FAF9]"
                                 placeholder={dict.auth.signIn.email}
                             />
@@ -59,6 +98,8 @@ export default function SignInPage() {
                                 type={showPassword ? "text" : "password"}
                                 autoComplete="current-password"
                                 required
+                                value={formData.password}
+                                onChange={handleChange}
                                 className="appearance-none relative block w-full px-4 py-3 border border-border-stroke placeholder-[#00000066] text-black rounded-xl focus:outline-none focus:ring-brand-blue focus:border-brand-blue focus:z-10 sm:text-sm bg-[#F7FAF9]"
                                 placeholder={dict.auth.signIn.password}
                             />
@@ -93,8 +134,8 @@ export default function SignInPage() {
 
                     {/* Submit Button */}
                     <div>
-                        <Button type="submit" className="w-full">
-                            {dict.auth.signIn.signInBtn}
+                        <Button type="submit" className="w-full" disabled={loading}>
+                            {loading ? "Signing in..." : dict.auth.signIn.signInBtn}
                         </Button>
                     </div>
 

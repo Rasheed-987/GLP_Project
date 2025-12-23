@@ -1,10 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { Plus, ChevronLeft, ChevronRight, Edit2, Trash2, Calendar, Clock, CheckCircle, XCircle, ChevronDown, User, Briefcase, Award, Image as ImageIcon } from "lucide-react";
+import clientApi from "@/lib/axios";
+import toast from "react-hot-toast";
 
 interface Achievement {
     value: {
@@ -53,6 +55,8 @@ export default function TestimonialsPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingTestimonial, setEditingTestimonial] = useState<Testimonial | null>(null);
     const [logoPreview, setLogoPreview] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
     const fileInputRef = React.useRef<HTMLInputElement>(null);
 
     const [statusDropdownOpenEn, setStatusDropdownOpenEn] = useState(false);
@@ -62,50 +66,19 @@ export default function TestimonialsPage() {
 
     const itemsPerPage = 10;
 
+    const fetchTestimonials = useCallback(async () => {
+        try {
+            const response = await clientApi.get("/api/testimonials");
+            setTestimonials(response.data);
+        } catch (error) {
+            toast.error("Failed to fetch testimonials");
+        }
+    }, []);
+
     useEffect(() => {
         getDictionary(lang).then(setDict);
-        // Mock data for initial UI
-        const mockTestimonials: Testimonial[] = Array.from({ length: 15 }, (_, i) => ({
-            id: `${i + 1}`,
-            name: {
-                en: `John Doe ${i + 1}`,
-                ar: `جون دو ${i + 1}`,
-            },
-            profession: {
-                en: `Senior Leadership Consultant`,
-                ar: `استشاري قيادة أول`,
-            },
-            description: {
-                en: `The program provided exceptional insights into modern leadership strategies. It has been a transformative experience for my career.`,
-                ar: `قدم البرنامج رؤى استثنائية حول استراتيجيات القيادة الحديثة. لقد كانت تجربة تحول في مسيرتي المهنية.`,
-            },
-            graduateDate: {
-                en: `Oct 2023`,
-                ar: `أكتوبر 2023`,
-            },
-            companyLogo: "https://via.placeholder.com/100",
-            achievements: [
-                {
-                    value: { en: "100%", ar: "100%" },
-                    label: { en: "Course Completion", ar: "إكمال الدورة" }
-                },
-                {
-                    value: { en: "25M", ar: "25 مليون" },
-                    label: { en: "Investment Secured", ar: "تأمين الاستثمار" }
-                },
-                {
-                    value: { en: "Net Zero", ar: "صافي الصفر" },
-                    label: { en: "Carbon Impact", ar: "تأثير الكربون" }
-                }
-            ],
-            status: {
-                en: i % 2 === 0 ? "active" : "inactive",
-                ar: i % 2 === 0 ? "active" : "inactive",
-            },
-            createdAt: new Date().toISOString(),
-        }));
-        setTestimonials(mockTestimonials);
-    }, [lang]);
+        fetchTestimonials();
+    }, [lang, fetchTestimonials]);
 
     useEffect(() => {
         if (editingTestimonial) {
@@ -128,25 +101,36 @@ export default function TestimonialsPage() {
         setCurrentPage(page);
     };
 
-    const toggleStatus = (id: string) => {
-        setTestimonials(prev => prev.map(item => {
-            if (item.id === id) {
-                const newStatus = item.status[lang] === "active" ? "inactive" : "active";
-                return {
-                    ...item,
-                    status: {
-                        ...item.status,
-                        [lang]: newStatus
-                    }
-                };
-            }
-            return item;
-        }));
+    const toggleStatus = async (id: string, currentStatus: any) => {
+        try {
+            const newStatusEn = currentStatus.en === "active" ? "inactive" : "active";
+            const newStatusAr = currentStatus.ar === "active" ? "inactive" : "active";
+
+            await clientApi.put(`/api/testimonials/${id}`, {
+                status: {
+                    en: newStatusEn,
+                    ar: newStatusAr
+                }
+            });
+            fetchTestimonials();
+            toast.success("Status updated successfully");
+        } catch (error) {
+            toast.error("Failed to update status");
+        }
     };
 
-    const deleteTestimonial = (id: string) => {
+    const deleteTestimonial = async (id: string) => {
         if (confirm("Are you sure you want to delete this testimonial?")) {
-            setTestimonials(prev => prev.filter(item => item.id !== id));
+            setDeletingId(id);
+            try {
+                await clientApi.delete(`/api/testimonials/${id}`);
+                fetchTestimonials();
+                toast.success("Testimonial deleted successfully");
+            } catch (error) {
+                toast.error("Failed to delete testimonial");
+            } finally {
+                setDeletingId(null);
+            }
         }
     };
 
@@ -225,7 +209,7 @@ export default function TestimonialsPage() {
                                     </td>
                                     <td className="px-6 py-4">
                                         <button
-                                            onClick={() => toggleStatus(item.id)}
+                                            onClick={() => toggleStatus(item.id, item.status)}
                                             className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wider transition-all
                                                 ${item.status[lang] === "active"
                                                     ? "bg-[#E6F4F1] text-[#019977] hover:bg-[#019977] hover:text-white"
@@ -262,9 +246,14 @@ export default function TestimonialsPage() {
                                             </button>
                                             <button
                                                 onClick={() => deleteTestimonial(item.id)}
-                                                className="p-2 text-[#00000066] hover:text-red-600 hover:bg-red-50 rounded-lg transition-all cursor-pointer"
+                                                disabled={deletingId === item.id}
+                                                className="p-2 text-[#00000066] hover:text-red-600 hover:bg-red-50 rounded-lg transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                             >
-                                                <Trash2 className="w-4 h-4" />
+                                                {deletingId === item.id ? (
+                                                    <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></div>
+                                                ) : (
+                                                    <Trash2 className="w-4 h-4" />
+                                                )}
                                             </button>
                                         </div>
                                     </td>
@@ -324,10 +313,64 @@ export default function TestimonialsPage() {
                             </button>
                         </div>
 
-                        <form className="flex-1 overflow-y-auto no-scrollbar p-8 space-y-8" onSubmit={(e) => {
+                        <form className="flex-1 overflow-y-auto no-scrollbar p-8 space-y-8" onSubmit={async (e) => {
                             e.preventDefault();
-                            // In a real app, we would send the logoPreview (base64) or the file to the server
-                            setIsModalOpen(false);
+                            if (isLoading) return;
+                            setIsLoading(true);
+                            const formData = new FormData(e.currentTarget);
+
+                            const achievements = [0, 1, 2].map(idx => ({
+                                value: {
+                                    en: formData.get(`achievement_val_en_${idx}`),
+                                    ar: formData.get(`achievement_val_ar_${idx}`)
+                                },
+                                label: {
+                                    en: formData.get(`achievement_lbl_en_${idx}`),
+                                    ar: formData.get(`achievement_lbl_ar_${idx}`)
+                                }
+                            }));
+
+                            // Prepare payload
+                            const payload = {
+                                name: {
+                                    en: formData.get('nameEn'),
+                                    ar: formData.get('nameAr')
+                                },
+                                profession: {
+                                    en: formData.get('professionEn'),
+                                    ar: formData.get('professionAr')
+                                },
+                                description: {
+                                    en: formData.get('descEn'),
+                                    ar: formData.get('descAr')
+                                },
+                                graduateDate: {
+                                    en: formData.get('dateEn'),
+                                    ar: formData.get('dateAr')
+                                },
+                                companyLogo: logoPreview || '',
+                                achievements,
+                                status: {
+                                    en: selectedStatusEn,
+                                    ar: selectedStatusAr
+                                }
+                            };
+
+                            try {
+                                if (editingTestimonial) {
+                                    await clientApi.put(`/api/testimonials/${editingTestimonial.id}`, payload);
+                                    toast.success("Testimonial updated successfully");
+                                } else {
+                                    await clientApi.post("/api/testimonials", payload);
+                                    toast.success("Testimonial created successfully");
+                                }
+                                setIsModalOpen(false);
+                                fetchTestimonials();
+                            } catch (error) {
+                                toast.error("Failed to save testimonial");
+                            } finally {
+                                setIsLoading(false);
+                            }
                         }}>
                             <div className="space-y-8">
                                 {/* Basic Info Section */}
@@ -341,25 +384,25 @@ export default function TestimonialsPage() {
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Participant Name (ENG)</label>
                                                 <div className="relative">
                                                     <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#00000066]" />
-                                                    <input type="text" placeholder="Full Name..." defaultValue={editingTestimonial?.name.en} className="w-full pl-11 pr-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" required />
+                                                    <input type="text" name="nameEn" placeholder="Full Name..." defaultValue={editingTestimonial?.name.en} className="w-full pl-11 pr-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" required />
                                                 </div>
                                             </div>
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Job Profession / Subtitle (ENG)</label>
                                                 <div className="relative">
                                                     <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#00000066]" />
-                                                    <input type="text" placeholder="e.g. Senior Consultant..." defaultValue={editingTestimonial?.profession.en} className="w-full pl-11 pr-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" required />
+                                                    <input type="text" name="professionEn" placeholder="e.g. Senior Consultant..." defaultValue={editingTestimonial?.profession.en} className="w-full pl-11 pr-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" required />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="space-y-4">
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">اسم المشارك (AR)</label>
-                                                <input type="text" dir="rtl" placeholder="الاسم الكامل..." defaultValue={editingTestimonial?.name.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" required />
+                                                <input type="text" dir="rtl" name="nameAr" placeholder="الاسم الكامل..." defaultValue={editingTestimonial?.name.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" required />
                                             </div>
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">المهنة / المسمى الوظيفي (AR)</label>
-                                                <input type="text" dir="rtl" placeholder="مثال: استشاري أول..." defaultValue={editingTestimonial?.profession.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" required />
+                                                <input type="text" dir="rtl" name="professionAr" placeholder="مثال: استشاري أول..." defaultValue={editingTestimonial?.profession.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" required />
                                             </div>
                                         </div>
                                     </div>
@@ -403,11 +446,11 @@ export default function TestimonialsPage() {
                                         <div className="grid grid-cols-2 gap-4">
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-[10px]">Graduate Date (EN)</label>
-                                                <input type="text" placeholder="e.g. Oct 2023" defaultValue={editingTestimonial?.graduateDate.en} className="w-full px-3 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all text-xs" required />
+                                                <input type="text" name="dateEn" placeholder="e.g. Oct 2023" defaultValue={editingTestimonial?.graduateDate.en} className="w-full px-3 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all text-xs" required />
                                             </div>
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-[10px] text-right">تاريخ التخرج (AR)</label>
-                                                <input type="text" dir="rtl" placeholder="مثال: أكتوبر 2023" defaultValue={editingTestimonial?.graduateDate.ar} className="w-full px-3 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all text-xs" required />
+                                                <input type="text" dir="rtl" name="dateAr" placeholder="مثال: أكتوبر 2023" defaultValue={editingTestimonial?.graduateDate.ar} className="w-full px-3 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all text-xs" required />
                                             </div>
                                         </div>
                                     </div>
@@ -468,11 +511,11 @@ export default function TestimonialsPage() {
                                     <div className="space-y-6">
                                         <div>
                                             <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Description / Experience (ENG)</label>
-                                            <textarea rows={4} placeholder="What did they say about the program?" defaultValue={editingTestimonial?.description.en} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" required />
+                                            <textarea rows={4} name="descEn" placeholder="What did they say about the program?" defaultValue={editingTestimonial?.description.en} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" required />
                                         </div>
                                         <div>
                                             <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">الوصف / التجربة (AR)</label>
-                                            <textarea rows={4} dir="rtl" placeholder="ماذا قالوا عن البرنامج؟" defaultValue={editingTestimonial?.description.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" required />
+                                            <textarea rows={4} dir="rtl" name="descAr" placeholder="ماذا قالوا عن البرنامج؟" defaultValue={editingTestimonial?.description.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" required />
                                         </div>
                                     </div>
                                 </div>
@@ -491,12 +534,12 @@ export default function TestimonialsPage() {
                                                 </div>
                                                 <div className="space-y-4">
                                                     <div className="grid grid-cols-2 gap-2">
-                                                        <input type="text" placeholder="Val (EN)" defaultValue={editingTestimonial?.achievements[idx].value.en} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white" required />
-                                                        <input type="text" dir="rtl" placeholder="القيمة (AR)" defaultValue={editingTestimonial?.achievements[idx].value.ar} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white" required />
+                                                        <input type="text" name={`achievement_val_en_${idx}`} placeholder="Val (EN)" defaultValue={editingTestimonial?.achievements[idx]?.value.en} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white" required />
+                                                        <input type="text" dir="rtl" name={`achievement_val_ar_${idx}`} placeholder="القيمة (AR)" defaultValue={editingTestimonial?.achievements[idx]?.value.ar} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white" required />
                                                     </div>
                                                     <div className="space-y-2">
-                                                        <input type="text" placeholder="Label (EN)" defaultValue={editingTestimonial?.achievements[idx].label.en} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white" required />
-                                                        <input type="text" dir="rtl" placeholder="التسمية (AR)" defaultValue={editingTestimonial?.achievements[idx].label.ar} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white" required />
+                                                        <input type="text" name={`achievement_lbl_en_${idx}`} placeholder="Label (EN)" defaultValue={editingTestimonial?.achievements[idx]?.label.en} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white" required />
+                                                        <input type="text" dir="rtl" name={`achievement_lbl_ar_${idx}`} placeholder="التسمية (AR)" defaultValue={editingTestimonial?.achievements[idx]?.label.ar} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white" required />
                                                     </div>
                                                 </div>
                                             </div>
@@ -506,8 +549,9 @@ export default function TestimonialsPage() {
                             </div>
 
                             <div className="flex items-center gap-3 pt-6 border-t border-border-stroke">
-                                <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 cursor-pointer py-4 text-sm font-bold text-[#00000099] hover:bg-black/5 rounded-2xl transition-all">Cancel</button>
-                                <button type="submit" className="flex-[2] cursor-pointer py-4 bg-brand-gradient text-white rounded-2xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all font-outfit">
+                                <button type="button" onClick={() => setIsModalOpen(false)} disabled={isLoading} className="flex-1 cursor-pointer py-4 text-sm font-bold text-[#00000099] hover:bg-black/5 rounded-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed">Cancel</button>
+                                <button type="submit" disabled={isLoading} className="flex-[2] cursor-pointer py-4 bg-brand-gradient text-white rounded-2xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all font-outfit disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2">
+                                    {isLoading && <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>}
                                     {editingTestimonial ? "Update Testimonial" : "Create Testimonial"}
                                 </button>
                             </div>

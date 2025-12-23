@@ -91,7 +91,7 @@ export default function DashboardPage() {
                     {dict.dashboard.overview.welcome} <span className="text-brand-blue">Admin</span>
                 </h1>
                 <p className="text-[#00000099] text-sm mt-1.5 font-medium">
-                    Here's what's happening across your modules today.
+                    Here&apos;s what&apos;s happening across your modules today.
                 </p>
             </div>
 
@@ -229,7 +229,7 @@ export default function DashboardPage() {
                                         </div>
                                     </div>
                                     <p className="text-xs italic leading-relaxed text-[#00000099]">
-                                        "UAEGLP has been a transformative experience for my leadership journey..."
+                                        &quot;UAEGLP has been a transformative experience for my leadership journey...&quot;
                                     </p>
                                 </div>
                             ))}
