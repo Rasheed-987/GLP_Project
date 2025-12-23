@@ -74,7 +74,7 @@ export default function Sidebar({ lang, dict }: SidebarProps) {
     ];
 
     return (
-        <aside className="w-64 h-screen bg-[#F7FAF9] border-r border-border-stroke flex flex-col fixed left-0 top-0 z-50">
+        <aside className={`w-64 h-screen bg-[#F7FAF9] border-r border-border-stroke flex flex-col fixed top-0 z-50 transition-all duration-300 ${lang === 'ar' ? 'right-0 border-l border-r-0' : 'left-0 border-r border-l-0'}`}>
             {/* Logo */}
             <div className="p-6">
                 <Link href={`/${lang}/dashboard`} className="flex items-center gap-3">

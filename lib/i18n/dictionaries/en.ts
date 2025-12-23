@@ -511,7 +511,7 @@ export default {
       subTitle: "Proud partners of:"
     },
     contact: {
-      
+
       titleLine1: "Ready to take the next step",
       titleLine2: "in your leadership journey?",
       description: "Apply now or explore which program fits your path",
@@ -809,10 +809,10 @@ export default {
       description: "GLP has partnered with various entities to deliver programmes across strategy, performance, innovation, and leadership"
     },
     contact: {
-      title1:"",
-      title2:"",
-      button1:"",
-      button2:"",
+      title1: "",
+      title2: "",
+      button1: "",
+      button2: "",
       titleLine1: "Ready to invest in your",
       titleLine2Bold: "next generation",
       titleLine2: " of leaders?",
@@ -1053,6 +1053,36 @@ export default {
       latestTestimonials: 'New Testimonials',
       newResources: 'New Resources',
       viewAll: 'View All',
+    },
+    news: {
+      title: 'News/Announcements',
+      subtitle: 'Manage official announcements and news updates.',
+      addBtn: 'Add New Announcement',
+      editBtn: 'Edit Announcement',
+      createBtn: 'Create Announcement',
+      updateBtn: 'Update Announcement',
+      deleteTitle: 'Delete Announcement',
+      deleteMessage: 'Are you sure you want to delete this announcement?',
+      table: {
+        topic: 'Topic',
+        status: 'Status',
+        expiry: 'Expiry Date',
+        created: 'Created',
+        actions: 'Actions'
+      },
+      form: {
+        topicEn: 'Topic / Title (ENG)',
+        topicAr: 'Topic / Title (AR)',
+        contentEn: 'Content (ENG)',
+        contentAr: 'Content (AR)',
+        statusEn: 'Status (ENG)',
+        statusAr: 'Status (AR)',
+        expiryEn: 'Expiry Date (ENG)',
+        expiryAr: 'Expiry Date (AR)',
+        applyUrlEn: 'Apply Now URL (ENG)',
+        applyUrlAr: 'Apply Now URL (AR)',
+        cancel: 'Cancel'
+      }
     },
   },
 }

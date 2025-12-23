@@ -1,5 +1,6 @@
 import './globals.css'
 import localFont from 'next/font/local'
+import { Toaster } from 'react-hot-toast'
 
 const frutiger = localFont({
   src: [
@@ -40,7 +41,10 @@ export default async function RootLayout({
 
   return (
     <html>
-      <body className={`${frutiger.variable} font-sans antialiased`}>{children}</body>
+      <body className={`${frutiger.variable} font-sans antialiased`}>
+        <Toaster position="top-center" />
+        {children}
+      </body>
     </html>
   )
 }
