@@ -77,15 +77,15 @@ export default function Navbar({ locale, dict }: NavbarProps) {
 
   return (
     <div
-      className={`w-full fixed left-0 right-0 transition-colors duration-200 ${open ? 'bg-white z-50 overflow-y-auto' : 'z-40 bg-transparent'}`}
+      className={`w-full transition-colors duration-200 ${open ? 'fixed left-1/2 -translate-x-1/2 w-full max-w-[1800px] bg-white z-50 overflow-y-auto' : 'relative z-40 w-full bg-transparent'}`}
       style={{
-        top: 'var(--topbar-height, 52px)',
+        top: open ? 'var(--topbar-height, 52px)' : 'auto',
         height: open ? 'calc(100vh - var(--topbar-height, 52px))' : 'auto'
       }}
     >
-      <header className={`w-full ${open ? 'fixed z-60 bg-white' : 'z-60'}`}
+      <header className={`w-full ${open ? 'fixed left-1/2 -translate-x-1/2 w-full max-w-[1800px] z-60 bg-white' : 'z-60'}`}
         style={{
-          top: 'var(--topbar-height, 52px)'
+          top: open ? 0 : 'var(--topbar-height, 52px)'
         }}
       >
         <div className="flex h-16 md:h-20 items-center justify-between px-4 md:px-6">
@@ -138,7 +138,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
 
       {/* Fullscreen Menu Content */}
       {open && (
-        <div className="bg-white pt-16  min-h-full flex flex-col">
+        <div className="bg-white pt-16 md:pt-20 min-h-full flex flex-col">
           {/* MOBILE MENU (md:hidden) */}
           <div className="flex-1 overflow-y-auto md:hidden px-4 py-6">
             <div className="flex flex-col">

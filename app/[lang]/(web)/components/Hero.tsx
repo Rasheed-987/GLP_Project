@@ -29,7 +29,7 @@ export default function Hero({ title, description, backgroundImage, buttons }: H
       {/* 1. Header & Description (Order 1 on mobile) */}
       <div className="order-1 md:absolute md:inset-0 md:z-20 flex items-end pointer-events-none">
         <div className="w-full max-w-2xl md:px-12 py-6 md:pb-14 pointer-events-auto">
-          <h1 className="text-[32px] mt-10 md:mt-6 md:mt-0 md:text-5xl lg:text-[56px] font-normal leading-[1.0] text-zinc-900 md:text-white tracking-wide">
+          <h1 className="text-[32px] mt-10 md:mt-6 md:mt-0 md:text-5xl lg:text-[56px] font-normal leading-[1.2] text-zinc-900 md:text-white tracking-wide">
             {title.prefix}
             <span className="font-bold block md:inline">{title.highlight}</span>
             {title.suffix}

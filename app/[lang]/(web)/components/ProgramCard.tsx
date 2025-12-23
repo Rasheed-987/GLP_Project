@@ -56,7 +56,7 @@ export default function ProgramCard({ item, reversed }: ProgramCardProps) {
     const bgColor = isGreenTheme ? 'bg-[#E4F3EF]' : 'bg-[#F7FAF9]';
 
     return (
-        <div className={`w-full max-w-7xl mx-auto p-3 md:p-5 rounded-2xl md:rounded-3xl overflow-hidden ${bgColor} `}>
+        <div className={`w-full  mx-auto  p-5 rounded-2xl md:rounded-3xl overflow-hidden ${bgColor} `}>
             <div className={`flex flex-col-reverse ${reversed ? 'lg:flex-row-reverse' : 'lg:flex-row'}`}>
                 {/* Content Section */}
                 <div className="w-full lg:w-1/2 md:px-4 lg:px-8 xl:px-12 self-start">

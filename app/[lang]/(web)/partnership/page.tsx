@@ -124,7 +124,7 @@ export default async function PartnershipPage({
                                 <span className="font-extrabold">{dict.partnership.approach.title.highlight1}</span>
                                 <span className="font-normal">{dict.partnership.approach.title.text2}</span>
                             </h2>
-                            <div className="relative -ms-14 w-full aspect-[4/3] md:min-h-[400px]">
+                            <div className="relative -ms-14 xl:ms-0 w-full aspect-[4/3] md:min-h-[400px]">
                                 <Image
                                     src="/images/glp_arrow.png"
                                     alt="GLP Arrow"

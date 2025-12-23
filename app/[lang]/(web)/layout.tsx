@@ -24,8 +24,11 @@ export default async function WebLayout({
         </Container>
       </div>
       <div className="relative">
-        <header className="absolute top-10 left-0 right-0 z-50 w-full">
-          <Container className="px-10">
+        <header 
+          className="fixed left-0 right-0 z-50 w-full"
+          style={{ top: 'var(--topbar-height, 52px)' }}
+        >
+          <Container className="">
             <Navbar locale={lang} dict={dict} />
           </Container>
         </header>

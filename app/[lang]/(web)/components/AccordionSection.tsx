@@ -7,11 +7,13 @@ export default function AccordionSection({
   color,
   defaultOpen = true,
   children,
+  showConnector = false,
 }: {
   title: string;
   color: string;
   defaultOpen?: boolean;
   children: React.ReactNode;
+  showConnector?: boolean;
 }) {
   const [open, setOpen] = useState(defaultOpen);
   const icon = useMemo(() => (open ? "−" : "+"), [open]);
@@ -19,6 +21,22 @@ export default function AccordionSection({
   return (
     <div className="pb-10">
       <div className="relative">
+        {/* Connector line and dot - only on desktop */}
+        {showConnector && (
+          <div className="hidden lg:flex items-center absolute right-full top-1/2 -translate-y-1/2 pr-2">
+            {/* Dot */}
+            <div 
+              className="w-3 h-3 rounded-full shrink-0"
+              style={{ backgroundColor: color }}
+            />
+            {/* Line */}
+            <div 
+              className="w-20 h-[2px]"
+              style={{ backgroundColor: color }}
+            />
+          </div>
+        )}
+        
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
