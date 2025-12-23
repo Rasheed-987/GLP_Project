@@ -6,6 +6,7 @@ import { getDictionary } from "@/lib/i18n/dictionaries";
 import type { Locale } from "@/lib/i18n/config";
 import AccordionSection from "../components/AccordionSection";
 import ConnectorElbow from "../components/ConnectorElbow";
+import GLMContent from "./GLMContent";
 
 import earth from "./earth.png";
 import sp1 from "../../../../public/images/sp1.png";
@@ -248,18 +249,21 @@ function safeGLM(dictGlm: Partial<GLMDict> | undefined): GLMDict {
 }
 
 const Item = ({ color, item }: { color: string; item: GLMItem }) => (
-  <div className="flex gap-3">
-    <div className="shrink-0 w-12 h-7 flex items-center justify-center">
+  <div className="flex gap-4">
+    <div 
+      className="shrink-0 w-11 h-11 md:w-12 md:h-12 rounded-full border-[1.5px] flex items-center justify-center bg-white shadow-sm" 
+      style={{ borderColor: color }}
+    >
       {item.icon ? (
-        <Image src={item.icon} alt={item.title} width={40} height={40} className="object-contain" />
+        <Image src={item.icon} alt={item.title} width={24} height={24} className="object-contain" />
       ) : null}
     </div>
 
-    <div className="min-w-0">
-      <p className="text-[13px] md:text-[15px] font-semibold leading-tight" style={{ color }}>
+    <div className="min-w-0 flex-1 pt-1">
+      <p className="text-[14.5px] md:text-[16px] font-bold leading-tight" style={{ color }}>
         {item.title}
       </p>
-      <p className="text-[#00000099] text-[12.5px] md:text-[13px] leading-[1.35] mt-1 max-w-[85%]">
+      <p className="text-[#000000b3] text-[12.5px] md:text-[13.5px] leading-[1.6] mt-2.5 max-w-[95%]">
         {item.description}
       </p>
     </div>
@@ -359,76 +363,14 @@ export default async function GLMPage({
       {/* MAIN LAYOUT */}
       <section className="pb-16 md:pb-24 lg:overflow-hidden">
         <Container className="px-4 lg:overflow-visible">
-          <div className="flex flex-col lg:flex-row gap-10 lg:gap-0 items-start relative lg:min-h-[800px]">
-            {/* LEFT: Globe - Half visible, clipped on the left */}
-            <div className="w-full lg:w-auto flex justify-center lg:justify-start lg:absolute lg:-left-[200px] lg:top-0">
-              <div className="relative w-[320px] md:w-[380px] lg:w-[400px] aspect-square overflow-visible">
-                <div className="absolute inset-0 rounded-full overflow-hidden bg-white shadow-lg">
-                  <Image src={earth} alt="Globe" fill className="object-cover animate-spin-slow" priority />
-                </div>
-                {/* Outer ring border */}
-                <div className="absolute -inset-5 rounded-full border-2 border-black/10" />
-                
-                {/* Connector dots on the globe outer ring */}
-                {/* Red dot - top right */}
-                <div className="hidden lg:block absolute w-3 h-3 rounded-full bg-[#E11D48] z-10" style={{ top: '12%', right: '10%', transform: 'translate(50%, -50%)' }} />
-                {/* Black dot - middle right */}
-                <div className="hidden lg:block absolute w-3 h-3 rounded-full bg-[#111827] z-10" style={{ top: '42%', right: '-4%', transform: 'translate(50%, -50%)' }} />
-                {/* Green dot - bottom right */}
-                <div className="hidden lg:block absolute w-3 h-3 rounded-full bg-[#059669] z-10" style={{ top: '72%', right: '-0%', transform: 'translate(50%, -50%)' }} />
-              </div>
-            </div>
-
-            {/* RIGHT: Content */}
-            <div className="w-full lg:ml-[400px]">
-              
-              {/* Mobile Globe Connector */}
-              <MobileGlobeConnector />
-
-              {/* Leadership spirit */}
-              {/* Desktop */}
-              <div className="hidden lg:block">
-                <AccordionSection title={glm.leadershipSpirit.title} color={RED} defaultOpen>
-                  {leadershipContent}
-                </AccordionSection>
-              </div>
-              
-              {/* Mobile */}
-              <MobileSectionLayout activeColor={RED}>
-                <AccordionSection title={glm.leadershipSpirit.title} color={RED} defaultOpen>
-                  {leadershipContent}
-                </AccordionSection>
-              </MobileSectionLayout>
-
-              {/* Desktop */}
-              <div className="hidden lg:block">
-                <AccordionSection title={glm.futureOutlook.title} color={BLACK} defaultOpen>
-                  {futureContent}
-                </AccordionSection>
-              </div>
-
-              {/* Mobile */}
-              <MobileSectionLayout activeColor={BLACK}>
-                <AccordionSection title={glm.futureOutlook.title} color={BLACK} defaultOpen>
-                  {futureContent}
-                </AccordionSection>
-              </MobileSectionLayout>
-
-              {/* Desktop */}
-              <div className="hidden lg:block">
-                <AccordionSection title={glm.achievementsImpact.title} color={GREEN} defaultOpen>
-                  {achievementsContent}
-                </AccordionSection>
-              </div>
-
-              {/* Mobile */}
-              <MobileSectionLayout activeColor={GREEN}>
-                <AccordionSection title={glm.achievementsImpact.title} color={GREEN} defaultOpen>
-                  {achievementsContent}
-                </AccordionSection>
-              </MobileSectionLayout>
-            </div>
-          </div>
+          <GLMContent 
+            glm={glm} 
+            earth={earth}
+            leadershipContent={leadershipContent}
+            futureContent={futureContent}
+            achievementsContent={achievementsContent}
+            lang={lang}
+          />
         </Container>
       </section>
     </>
