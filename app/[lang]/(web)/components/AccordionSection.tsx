@@ -23,7 +23,7 @@ export default function AccordionSection({
           type="button"
           onClick={() => setOpen((v) => !v)}
           className="w-full flex items-center justify-between text-left gap-4 pb-4"
-          style={{ borderBottom: `2px solid ${color}33` }}
+          style={{ borderBottom: `2px solid ${color}` }}
         >
           <h2 className="text-[18px] md:text-[20px] font-semibold" style={{ color }}>
             {title}
