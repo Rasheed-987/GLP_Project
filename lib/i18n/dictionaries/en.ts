@@ -510,6 +510,7 @@ export default {
       subTitle: "Proud partners of:"
     },
     contact: {
+      
       titleLine1: "Ready to take the next step",
       titleLine2: "in your leadership journey?",
       description: "Apply now or explore which program fits your path",
@@ -724,6 +725,7 @@ export default {
     contact: {
       titleLine1: "Find out where our leadership",
       titleLine2: "journey takes you",
+      titlehighlight: "",
       description: "Explore our programmes and find the one that fits your path",
       button: "Explore programmes"
     }
@@ -813,6 +815,7 @@ export default {
       titleLine1: "Ready to invest in your",
       titleLine2Bold: "next generation",
       titleLine2: " of leaders?",
+      titlehighlight: "",
       description: "Let's build a programme that reflects your vision",
       button: "Send an inquiry"
     }

@@ -353,10 +353,10 @@ export default async function HomePage({
       </section>
       {/* Final Contact Section: Closing global call-to-action for the entire page */}
       <ContactSection
-        titleLine1={dict.home.contact.title1}
-        titleLine2={dict.home.contact.title2}
+        titleLine1={dict.home.contact.titleLine1}
+        titleLine2={dict.home.contact.titleLine2}
         description={dict.home.contact.description}
-        button={dict.home.contact.button1}
+        button={dict.home.contact.button}
         button2={dict.home.contact.button2}
       />
     </>

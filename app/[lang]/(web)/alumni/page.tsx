@@ -34,7 +34,7 @@ export default async function AlumniPage({
 
 
                             {/* Title with Gradient */}
-                            <h2 className="text-[1.85rem] md:text-[2.8rem] leading-[1] md:leading-[1] tracking-[1.5] text-black ">
+                            <h2 className="text-[1.75rem] md:text-[2.6rem] leading-[1] md:leading-[1] tracking-[1.5] text-black ">
                                 <span className="font-medium">{dict.alumniPage.title.text1}</span>
                                 <span className="font-extrabold">{dict.alumniPage.title.highlight1}</span>
                                 <br className="hidden md:block" />
@@ -44,7 +44,7 @@ export default async function AlumniPage({
 
                         {/* Right Column: Description and Button */}
                         <div className="w-full lg:w-1/2 flex flex-col md:ps-32 justify-end md:pt-10 gap-6">
-                            <p className="text-[#00000099] text-[14px] md:text-[16px] leading-[1.2]">
+                            <p className="text-[#00000099] text-[14px] md:text-[15px] leading-[1.2]">
                                 {dict.alumniPage.description}
                             </p>
                         </div>
@@ -83,7 +83,7 @@ export default async function AlumniPage({
                                 {/* Left Column: Title */}
                                 <div className="w-full lg:w-1/2">
                                     {/* Title with Gradient */}
-                                    <h2 className="text-[1.2rem] max-w-md md:text-[1.75rem] leading-[1.3] md:leading-[1.2] bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent">
+                                    <h2 className="text-[1.15rem] max-w-md md:text-[1.6rem] leading-[1.3] md:leading-[1.2] bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent">
                                         <span className="font-normal">{dict.alumniPage.community.title.text1}</span>
                                         <span className="font-extrabold">{dict.alumniPage.community.title.highlight1}</span>
                                         <span className="font-normal">{dict.alumniPage.community.title.text2}</span>
@@ -141,7 +141,7 @@ export default async function AlumniPage({
             {/* Impact Section */}
             <section className="bg-white pt-10 md:pt-28 pb-10">
                 <Container className="px-4 flex flex-col items-center text-center">
-                    <h2 className="text-[1.85rem] md:text-[2rem] gradient-text leading-[1.2] md:leading-[1.2] mb-6 max-w-2xl">
+                    <h2 className="text-[1.75rem] md:text-[1.9rem] gradient-text leading-[1.2] md:leading-[1.2] mb-6 max-w-2xl">
                         <span className="font-medium text-[#047D75]">{dict.alumniPage.impactSection.title.text1}</span>
                         <br className="" />
                         <span className="font-bold gradient-text ">

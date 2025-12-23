@@ -22,13 +22,13 @@ export default async function AboutPage({
             <TagPill label={dict.about.hero.pill} />
           </div>
 
-          <h1 className="text-[1.75rem] md:text-[2rem] lg:text-[3rem] leading-[1.1] font-normal text-black mb-5 max-w-lg mx-auto tracking-tight">
+          <h1 className="text-[1.65rem] md:text-[1.9rem] lg:text-[2.8rem] leading-[1.1] font-normal text-black mb-5 max-w-lg mx-auto tracking-tight">
             {dict.about.hero.title.text1} <br />
             {dict.about.hero.title.text2}
             <span className="font-extrabold">{dict.about.hero.title.highlight}</span>
           </h1>
 
-          <p className="text-[#00000099] text-[15px] md:text-[16px] max-w-lg mx-auto leading-[1.2]">
+          <p className="text-[#00000099] text-[14px] md:text-[15px] max-w-lg mx-auto leading-[1.2]">
             {dict.about.hero.description}
           </p>
         </div>
@@ -82,7 +82,7 @@ export default async function AboutPage({
             {/* Left Column: Title and bottom Description */}
             <div className="lg:col-span-4 flex flex-col justify-between items-start min-h-[500px]">
               <div className="w-full">
-                <h2 className="text-[24px] gradient-text md:text-[32px] leading-[1.15] font-normal  tracking-tight max-w-xl">
+                <h2 className="text-[22px] gradient-text md:text-[30px] leading-[1.15] font-normal  tracking-tight max-w-xl">
                   <span className="font-extrabold">{dict.about.role.title.part1}</span>
                   {dict.about.role.title.part2}
                   <span className="font-extrabold">{dict.about.role.title.part3}</span>
@@ -201,7 +201,7 @@ export default async function AboutPage({
               <div className="w-16 h-1 bg-brand-blue/20 rounded-full mx-auto mb-6 flex">
                 <div className="w-1/2 h-full bg-brand-blue rounded-full"></div>
               </div>
-              <p className="text-[#00000099] text-[15px] max-w-md md:text-[16px] leading-[1.2] ">
+              <p className="text-[#00000099] text-[14px] max-w-md md:text-[15px] leading-[1.2] ">
                 {dict.about.missionVision.mission.text}
               </p>
             </div>
@@ -216,7 +216,7 @@ export default async function AboutPage({
                 <div className="w-16 h-1 bg-brand-blue/20 rounded-full mx-auto mb-6 flex">
                   <div className="w-1/2 h-full bg-brand-blue rounded-full"></div>
                 </div>
-                <p className="text-[#00000099] text-[15px] md:text-[16px] leading-[1.2] max-w-md mx-auto">
+                <p className="text-[#00000099] text-[14px] md:text-[15px] leading-[1.2] max-w-md mx-auto">
                   {dict.about.missionVision.vision.text}
                 </p>
               </div>
@@ -229,7 +229,7 @@ export default async function AboutPage({
                 <div className="w-24 h-1 bg-brand-blue/20 rounded-full mx-auto mb-6 flex">
                   <div className="w-1/2 h-full bg-brand-blue rounded-full"></div>
                 </div>
-                <p className="text-[#00000099] text-[15px] md:text-[16px] leading-[1.2] max-w-md mx-auto">
+                <p className="text-[#00000099] text-[14px] md:text-[15px] leading-[1.2] max-w-md mx-auto">
                   {dict.about.missionVision.why.text}
                 </p>
               </div>
