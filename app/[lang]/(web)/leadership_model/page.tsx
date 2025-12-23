@@ -129,6 +129,94 @@ const ICONS = {
   achievementsImpact: [ai1, ai2, ai3],
 };
 
+// NEW: Mobile Components
+const MobileLine = ({
+  color,
+  type,
+}: {
+  color: string;
+  type: "full" | "start" | "none";
+}) => {
+  if (type === "none") return <div className="w-[2px]" />;
+  
+  return (
+    <div className="w-[2px] relative flex flex-col items-center h-full">
+      <div 
+        className="w-full" 
+        style={{ 
+          backgroundColor: color, 
+          height: type === "full" ? "100%" : "28px", 
+          flexGrow: type === "full" ? 1 : 0
+        }} 
+      />
+      {type === "start" && (
+        <div 
+          className="absolute top-[24px] w-[9px] h-[9px] rounded-full z-10" 
+          style={{ backgroundColor: color }} 
+        />
+      )}
+      {type === "full" && <div className="w-full flex-1" style={{ backgroundColor: color }} />}
+    </div>
+  );
+};
+
+const MobileSectionLayout = ({
+  children,
+  activeColor,
+}: {
+  children: React.ReactNode;
+  activeColor: string;
+}) => {
+  const RED = "#E11D48";
+  const BLACK = "#111827";
+  const GREEN = "#059669";
+  
+  const lines = [
+    { color: GREEN, type: activeColor === GREEN ? "start" : "full" },
+    { color: BLACK, type: activeColor === BLACK ? "start" : activeColor === GREEN ? "none" : "full" },
+    { color: RED, type: activeColor === RED ? "start" : "none" },
+  ];
+
+  return (
+    <div className="flex gap-4 lg:hidden">
+      <div className="flex gap-3 pt-1 shrink-0">
+         {lines.map((l, i) => (
+           <MobileLine key={i} color={l.color} type={l.type as any} />
+         ))}
+      </div>
+      <div className="flex-1 min-w-0">
+        {children}
+      </div>
+    </div>
+  );
+};
+
+const MobileGlobeConnector = () => {
+  return (
+    <div className="lg:hidden flex gap-3 pt-4 pb-0 justify-start px-0 h-[60px] items-end">
+       <div className="flex gap-3 shrink-0">
+          {/* Green Line - Longest */}
+          <div className="w-[2px] relative h-[60px] bg-transparent">
+             <div className="absolute bottom-0 w-full bg-[#059669] h-full" />
+             <div className="absolute top-0 -left-[3px] w-[8px] h-[8px] rounded-full bg-[#059669]" />
+          </div>
+          
+          {/* Black Line - Medium */}
+          <div className="w-[2px] relative h-[60px] bg-transparent">
+             <div className="absolute bottom-0 w-full bg-[#111827] h-[75%]" />
+             <div className="absolute top-[25%] -left-[3px] w-[8px] h-[8px] rounded-full bg-[#111827]" />
+          </div>
+
+          {/* Red Line - Shortest */}
+          <div className="w-[2px] relative h-[60px] bg-transparent">
+             <div className="absolute bottom-0 w-full bg-[#E11D48] h-[50%]" />
+             <div className="absolute top-[50%] -left-[3px] w-[8px] h-[8px] rounded-full bg-[#E11D48]" />
+          </div>
+       </div>
+    </div>
+  )
+}
+
 function safeGLM(dictGlm: Partial<GLMDict> | undefined): GLMDict {
   // merge dict with default, but keep arrays safe
   const merged: GLMDict = {
@@ -219,6 +307,32 @@ export default async function GLMPage({
   const BLACK = "#111827";
   const GREEN = "#059669";
 
+  const leadershipContent = (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-9 pt-4">
+      <Item color={RED} item={glm.leadershipSpirit.items[0]} />
+      <Item color={RED} item={glm.leadershipSpirit.items[1]} />
+      <div className="md:col-span-2 max-w-[520px]">
+        <Item color={RED} item={glm.leadershipSpirit.items[2]} />
+      </div>
+    </div>
+  );
+
+  const futureContent = (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-9 pt-4">
+      {glm.futureOutlook.items.map((it: GLMItem, idx: number) => (
+        <Item key={idx} color={BLACK} item={it} />
+      ))}
+    </div>
+  );
+
+  const achievementsContent = (
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-9 pt-4">
+      <Item color={GREEN} item={glm.achievementsImpact.items[0]} />
+      <Item color={GREEN} item={glm.achievementsImpact.items[1]} />
+      <Item color={GREEN} item={glm.achievementsImpact.items[2]} />
+    </div>
+  );
+
   return (
     <>
       {/* HERO */}
@@ -258,52 +372,63 @@ export default async function GLMPage({
 
             {/* RIGHT: Content */}
             <div className="w-full lg:w-[92%]">
-              {/* Leadership spirit */}
-              <div className="lg:grid lg:grid-cols-[220px_1fr] lg:-ml-[140px]">
-                <div className="hidden lg:flex justify-start pt-2">
-                  <ConnectorElbow color={RED} dotY={90} endY={38} />
-                </div>
+              
+              {/* Mobile Globe Connector */}
+              <MobileGlobeConnector />
 
+              {/* Leadership spirit */}
+              {/* Desktop */}
+              <div className="hidden lg:grid lg:grid-cols-[220px_1fr] lg:-ml-[140px]">
+                <div className="hidden lg:flex justify-start pt-2">
+                  <ConnectorElbow color={RED} dotX={45} dotY={105} endY={38} />
+                </div>
                 <AccordionSection title={glm.leadershipSpirit.title} color={RED} defaultOpen>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-9 pt-4">
-                    <Item color={RED} item={glm.leadershipSpirit.items[0]} />
-                    <Item color={RED} item={glm.leadershipSpirit.items[1]} />
-                    <div className="md:col-span-2 max-w-[520px]">
-                      <Item color={RED} item={glm.leadershipSpirit.items[2]} />
-                    </div>
-                  </div>
+                  {leadershipContent}
                 </AccordionSection>
               </div>
+              
+              {/* Mobile */}
+              <MobileSectionLayout activeColor={RED}>
+                <AccordionSection title={glm.leadershipSpirit.title} color={RED} defaultOpen>
+                  {leadershipContent}
+                </AccordionSection>
+              </MobileSectionLayout>
 
               {/* Future outlook */}
-              <div className="lg:grid lg:grid-cols-[220px_1fr] lg:-ml-[140px]">
+              {/* Desktop */}
+              <div className="hidden lg:grid lg:grid-cols-[220px_1fr] lg:-ml-[140px]">
                 <div className="hidden lg:flex justify-start pt-2">
-                  <ConnectorElbow color={BLACK} dotY={34} endY={38} />
+                  <ConnectorElbow color={BLACK} dotX={80} dotY={10} endY={38} />
                 </div>
-
                 <AccordionSection title={glm.futureOutlook.title} color={BLACK} defaultOpen>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-9 pt-4">
-                    {glm.futureOutlook.items.map((it: GLMItem, idx: number) => (
-                      <Item key={idx} color={BLACK} item={it} />
-                    ))}
-                  </div>
+                  {futureContent}
                 </AccordionSection>
               </div>
+
+              {/* Mobile */}
+              <MobileSectionLayout activeColor={BLACK}>
+                <AccordionSection title={glm.futureOutlook.title} color={BLACK} defaultOpen>
+                  {futureContent}
+                </AccordionSection>
+              </MobileSectionLayout>
 
               {/* Achievements and impact */}
-              <div className="lg:grid lg:grid-cols-[220px_1fr] lg:-ml-[140px]">
+              {/* Desktop */}
+              <div className="hidden lg:grid lg:grid-cols-[220px_1fr] lg:-ml-[140px]">
                 <div className="hidden lg:flex justify-start pt-2">
-                  <ConnectorElbow color={GREEN} dotY={-40} endY={38} />
+                  <ConnectorElbow color={GREEN} dotX={45} dotY={-60} endY={38} />
                 </div>
-
                 <AccordionSection title={glm.achievementsImpact.title} color={GREEN} defaultOpen>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-9 pt-4">
-                    <Item color={GREEN} item={glm.achievementsImpact.items[0]} />
-                    <Item color={GREEN} item={glm.achievementsImpact.items[1]} />
-                    <Item color={GREEN} item={glm.achievementsImpact.items[2]} />
-                  </div>
+                  {achievementsContent}
                 </AccordionSection>
               </div>
+
+              {/* Mobile */}
+              <MobileSectionLayout activeColor={GREEN}>
+                <AccordionSection title={glm.achievementsImpact.title} color={GREEN} defaultOpen>
+                  {achievementsContent}
+                </AccordionSection>
+              </MobileSectionLayout>
             </div>
           </div>
         </Container>
