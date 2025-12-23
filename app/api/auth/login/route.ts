@@ -7,6 +7,7 @@ import User from '@/models/User';
 const JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret_here';
 
 export async function POST(req: Request) {
+    console.log('Login request received');
     try {
         const { email, password } = await req.json();
 
@@ -15,23 +16,25 @@ export async function POST(req: Request) {
         }
 
         await dbConnect();
+        console.log('Database connected successfully');
 
         const user = await User.findOne({ email }).select('+password');
         if (!user) {
             return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
         }
-
+        console.log('User found successfully', user);
         const isMatch = await bcrypt.compare(password, user.password);
+        console.log('Password match result', isMatch);
         if (!isMatch) {
             return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
         }
-
+        console.log('Password match result', isMatch);
         const token = jwt.sign(
             { userId: user._id, email: user.email },
             JWT_SECRET,
             { expiresIn: '1d' }
         );
-
+        console.log('Token generated successfully', token);
         // Remove password from response
         const userResponse = {
             _id: user._id,
