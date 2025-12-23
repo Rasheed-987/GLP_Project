@@ -45,6 +45,8 @@ export default function NewsPage() {
     const [statusDropdownOpenAr, setStatusDropdownOpenAr] = useState(false);
     const [selectedStatusEn, setSelectedStatusEn] = useState<"active" | "inactive">("active");
     const [selectedStatusAr, setSelectedStatusAr] = useState<"active" | "inactive">("active");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [actionId, setActionId] = useState<string | null>(null);
 
     const itemsPerPage = 10;
 
@@ -76,6 +78,8 @@ export default function NewsPage() {
     };
 
     const toggleStatus = async (id: string, currentStatus: any) => {
+        setActionId(id);
+        setIsSubmitting(true);
         try {
             const newStatusEn = currentStatus.en === "active" ? "inactive" : "active";
             const newStatusAr = currentStatus.ar === "active" ? "inactive" : "active";
@@ -86,27 +90,35 @@ export default function NewsPage() {
                     ar: newStatusAr
                 }
             });
-            fetchNews();
+            await fetchNews();
             toast.success("Status updated successfully");
-        } catch (error) {
+        } catch {
             toast.error("Failed to update status");
+        } finally {
+            setIsSubmitting(false);
+            setActionId(null);
         }
     };
 
     const deleteNews = async (id: string) => {
         if (confirm("Are you sure you want to delete this news?")) {
+            setActionId(id);
+            setIsSubmitting(true);
             try {
                 await clientApi.delete(`/api/news/${id}`);
-                fetchNews();
+                await fetchNews();
                 toast.success("News deleted successfully");
-            } catch (error) {
+            } catch {
                 toast.error("Failed to delete news");
+            } finally {
+                setIsSubmitting(false);
+                setActionId(null);
             }
         }
     };
 
     return (
-        <div className="space-y-8 py-10  text-[#00000099] animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="space-y-8 pb-10  text-[#00000099] animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
@@ -162,12 +174,17 @@ export default function NewsPage() {
                                     <td className="px-6 py-4">
                                         <button
                                             onClick={() => toggleStatus(item.id, item.status)}
-                                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wider transition-all
+                                            disabled={isSubmitting && actionId === item.id}
+                                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wider transition-all disabled:opacity-50
                                                 ${item.status[lang] === "active"
                                                     ? "bg-[#E6F4F1] text-[#019977] hover:bg-[#019977] hover:text-white"
                                                     : "bg-red-50 text-red-600 hover:bg-red-600 hover:text-white"}`}
                                         >
-                                            {item.status[lang] === "active" ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
+                                            {isSubmitting && actionId === item.id ? (
+                                                <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                                            ) : (
+                                                item.status[lang] === "active" ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />
+                                            )}
                                             {item.status[lang]}
                                         </button>
                                     </td>
@@ -200,9 +217,14 @@ export default function NewsPage() {
                                             </button>
                                             <button
                                                 onClick={() => deleteNews(item.id)}
-                                                className="p-2 text-[#00000066] hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                                                disabled={isSubmitting && actionId === item.id}
+                                                className="p-2 text-[#00000066] hover:text-red-600 hover:bg-red-50 rounded-lg transition-all disabled:opacity-50"
                                             >
-                                                <Trash2 className="w-4 h-4" />
+                                                {isSubmitting && actionId === item.id ? (
+                                                    <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
+                                                ) : (
+                                                    <Trash2 className="w-4 h-4" />
+                                                )}
                                             </button>
                                         </div>
                                     </td>
@@ -264,6 +286,8 @@ export default function NewsPage() {
 
                         <form className="flex-1 overflow-y-auto no-scrollbar p-8 space-y-6" onSubmit={async (e) => {
                             e.preventDefault();
+                            if (isSubmitting) return;
+                            setIsSubmitting(true);
                             const formData = new FormData(e.currentTarget);
 
                             const payload = {
@@ -299,8 +323,10 @@ export default function NewsPage() {
                                 }
                                 setIsModalOpen(false);
                                 fetchNews();
-                            } catch (error) {
+                            } catch {
                                 toast.error("Failed to save news");
+                            } finally {
+                                setIsSubmitting(false);
                             }
                         }}>
                             <div className="space-y-6">
@@ -501,15 +527,18 @@ export default function NewsPage() {
                                 <button
                                     type="button"
                                     onClick={() => setIsModalOpen(false)}
-                                    className="flex-1 cursor-pointer py-4 text-sm font-bold text-[#00000099] hover:bg-black/5 rounded-2xl transition-all"
+                                    disabled={isSubmitting}
+                                    className="flex-1 cursor-pointer py-4 text-sm font-bold text-[#00000099] hover:bg-black/5 rounded-2xl transition-all disabled:opacity-50"
                                 >
                                     {dict.dashboard.news.form.cancel}
                                 </button>
                                 <button
                                     type="submit"
-                                    className="flex-[2] cursor-pointer py-4 bg-brand-gradient text-white rounded-2xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all"
+                                    disabled={isSubmitting}
+                                    className="flex-[2] cursor-pointer py-4 bg-brand-gradient text-white rounded-2xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all disabled:opacity-70 flex items-center justify-center gap-2"
                                 >
-                                    {editingNews ? dict.dashboard.news.updateBtn : dict.dashboard.news.createBtn}
+                                    {isSubmitting && <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>}
+                                    {isSubmitting ? (editingNews ? "Updating..." : "Creating...") : (editingNews ? dict.dashboard.news.updateBtn : dict.dashboard.news.createBtn)}
                                 </button>
                             </div>
                         </form>

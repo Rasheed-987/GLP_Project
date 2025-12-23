@@ -57,6 +57,7 @@ export default function TestimonialsPage() {
     const [logoPreview, setLogoPreview] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [actionId, setActionId] = useState<string | null>(null);
     const fileInputRef = React.useRef<HTMLInputElement>(null);
 
     const [statusDropdownOpenEn, setStatusDropdownOpenEn] = useState(false);
@@ -70,7 +71,7 @@ export default function TestimonialsPage() {
         try {
             const response = await clientApi.get("/api/testimonials");
             setTestimonials(response.data);
-        } catch (error) {
+        } catch {
             toast.error("Failed to fetch testimonials");
         }
     }, []);
@@ -102,6 +103,8 @@ export default function TestimonialsPage() {
     };
 
     const toggleStatus = async (id: string, currentStatus: any) => {
+        setActionId(id);
+        setIsLoading(true);
         try {
             const newStatusEn = currentStatus.en === "active" ? "inactive" : "active";
             const newStatusAr = currentStatus.ar === "active" ? "inactive" : "active";
@@ -112,10 +115,13 @@ export default function TestimonialsPage() {
                     ar: newStatusAr
                 }
             });
-            fetchTestimonials();
+            await fetchTestimonials();
             toast.success("Status updated successfully");
-        } catch (error) {
+        } catch {
             toast.error("Failed to update status");
+        } finally {
+            setIsLoading(false);
+            setActionId(null);
         }
     };
 
@@ -124,9 +130,9 @@ export default function TestimonialsPage() {
             setDeletingId(id);
             try {
                 await clientApi.delete(`/api/testimonials/${id}`);
-                fetchTestimonials();
+                await fetchTestimonials();
                 toast.success("Testimonial deleted successfully");
-            } catch (error) {
+            } catch {
                 toast.error("Failed to delete testimonial");
             } finally {
                 setDeletingId(null);
@@ -146,7 +152,7 @@ export default function TestimonialsPage() {
     };
 
     return (
-        <div className="space-y-8 py-10 text-[#00000099] animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="space-y-8 pb-10 text-[#00000099] animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
@@ -210,12 +216,17 @@ export default function TestimonialsPage() {
                                     <td className="px-6 py-4">
                                         <button
                                             onClick={() => toggleStatus(item.id, item.status)}
-                                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wider transition-all
+                                            disabled={isLoading && actionId === item.id}
+                                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wider transition-all disabled:opacity-50
                                                 ${item.status[lang] === "active"
                                                     ? "bg-[#E6F4F1] text-[#019977] hover:bg-[#019977] hover:text-white"
                                                     : "bg-red-50 text-red-600 hover:bg-red-600 hover:text-white"}`}
                                         >
-                                            {item.status[lang] === "active" ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
+                                            {isLoading && actionId === item.id ? (
+                                                <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                                            ) : (
+                                                item.status[lang] === "active" ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />
+                                            )}
                                             {item.status[lang]}
                                         </button>
                                     </td>
@@ -366,7 +377,7 @@ export default function TestimonialsPage() {
                                 }
                                 setIsModalOpen(false);
                                 fetchTestimonials();
-                            } catch (error) {
+                            } catch {
                                 toast.error("Failed to save testimonial");
                             } finally {
                                 setIsLoading(false);
@@ -552,7 +563,7 @@ export default function TestimonialsPage() {
                                 <button type="button" onClick={() => setIsModalOpen(false)} disabled={isLoading} className="flex-1 cursor-pointer py-4 text-sm font-bold text-[#00000099] hover:bg-black/5 rounded-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed">Cancel</button>
                                 <button type="submit" disabled={isLoading} className="flex-[2] cursor-pointer py-4 bg-brand-gradient text-white rounded-2xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all font-outfit disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2">
                                     {isLoading && <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>}
-                                    {editingTestimonial ? "Update Testimonial" : "Create Testimonial"}
+                                    {isLoading ? (editingTestimonial ? "Updating..." : "Creating...") : (editingTestimonial ? "Update Testimonial" : "Create Testimonial")}
                                 </button>
                             </div>
                         </form>
