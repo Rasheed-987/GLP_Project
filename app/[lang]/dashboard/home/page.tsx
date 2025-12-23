@@ -21,9 +21,26 @@ export default function DashboardPage() {
     const params = useParams();
     const lang = params.lang as Locale;
     const [dict, setDict] = useState<any>(null);
+    const [fullName, setFullName] = useState<string>("Admin");
 
     useEffect(() => {
         getDictionary(lang).then(setDict);
+
+        // Get user from localStorage safely after mount
+        const timeout = setTimeout(() => {
+            const userData = localStorage.getItem("user");
+            if (userData) {
+                try {
+                    const user = JSON.parse(userData);
+                    if (user.fullName) {
+                        setFullName(user.fullName);
+                    }
+                } catch (e) {
+                    console.error("Error parsing user data:", e);
+                }
+            }
+        }, 0);
+        return () => clearTimeout(timeout);
     }, [lang]);
 
     if (!dict) return null;
@@ -84,11 +101,11 @@ export default function DashboardPage() {
     ];
 
     return (
-        <div className="space-y-10 py-10 text-[#00000099] animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="space-y-10 pb-10 text-[#00000099] animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Welcome Header */}
             <div>
                 <h1 className="text-3xl font-bold text-black tracking-tight">
-                    {dict.dashboard.overview.welcome} <span className="text-brand-blue">Admin</span>
+                    {dict.dashboard.overview.welcome} <span className="text-brand-blue">{fullName}</span>
                 </h1>
                 <p className="text-[#00000099] text-sm mt-1.5 font-medium">
                     Here&apos;s what&apos;s happening across your modules today.

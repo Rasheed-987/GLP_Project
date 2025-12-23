@@ -6,6 +6,8 @@ import { Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { Plus, Edit2, Trash2, Calendar, Clock, CheckCircle, XCircle, ChevronDown, Image as ImageIcon, Type, AlignLeft, FileText, X } from "lucide-react";
 import Image from "next/image";
+import clientApi from "@/lib/axios";
+import { toast } from "react-hot-toast";
 
 interface ContentSection {
     id: string;
@@ -19,7 +21,7 @@ interface ContentSection {
     };
 }
 
-interface Article {
+interface ArticleItem {
     id: string;
     title: {
         en: string;
@@ -42,43 +44,16 @@ interface Article {
     createdAt: string;
 }
 
-// Mock data
-const mockArticles: Article[] = [
-    {
-        id: "1",
-        title: {
-            en: "UAE Government Leaders Programme opens registration for UAE Nationals",
-            ar: "برنامج قيادات حكومة الإمارات يفتح باب التسجيل لمواطني الدولة"
-        },
-        subtitle: {
-            en: "From rising professionals to senior decision-makers, our programmes help shape future-ready leaders.",
-            ar: "من المهنيين الصاعدين إلى كبار صناع القرار، تساعد برامجنا في تشكيل قادة مستعدين للمستقبل."
-        },
-        date: { en: "2025-04-07", ar: "٢٠٢٥-٠٤-٠٧" },
-        mainImage: "https://via.placeholder.com/800x400",
-        sections: [
-            {
-                id: "s1",
-                heading: { en: "New heading", ar: "عنوان جديد" },
-                content: {
-                    en: "The UAE Government Leaders Programme is inviting UAE nationals to register for its 2020 cohort across three categories – Executive Leaders Programme, Future Leaders Programme, and UAE Youth Leaders Programme.",
-                    ar: "يدعو برنامج قيادات حكومة الإمارات مواطني الدولة للتسجيل في دفعة 2020 ضمن ثلاث فئات – برنامج القيادات التنفيذية، وبرنامج قادة المستقبل، وبرنامج شباب الإمارات."
-                }
-            }
-        ],
-        status: { en: "active", ar: "active" },
-        createdAt: new Date().toISOString()
-    }
-];
+// Mock data removed
 
 export default function ArticlesPage() {
     const params = useParams();
     const lang = params.lang as Locale;
     const [dict, setDict] = useState<any>(null);
-    const [articles, setArticles] = useState<Article[]>(mockArticles);
+    const [articles, setArticles] = useState<ArticleItem[]>([]);
     const [currentPage] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [editingArticle, setEditingArticle] = useState<Article | null>(null);
+    const [editingArticle, setEditingArticle] = useState<ArticleItem | null>(null);
 
     // Form state
     const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -87,12 +62,24 @@ export default function ArticlesPage() {
     const [statusDropdownOpenAr, setStatusDropdownOpenAr] = useState(false);
     const [selectedStatusEn, setSelectedStatusEn] = useState<"active" | "inactive">("active");
     const [selectedStatusAr, setSelectedStatusAr] = useState<"active" | "inactive">("active");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [actionId, setActionId] = useState<string | null>(null);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const itemsPerPage = 8;
 
+    const fetchArticles = async () => {
+        try {
+            const response = await clientApi.get("/api/articles");
+            setArticles(response.data);
+        } catch {
+            toast.error("Failed to fetch articles");
+        }
+    };
+
     useEffect(() => {
         getDictionary(lang).then(setDict);
+        fetchArticles();
     }, [lang]);
 
     if (!dict) return null;
@@ -125,24 +112,48 @@ export default function ArticlesPage() {
         }));
     };
 
-    const toggleStatus = (id: string) => {
-        setArticles(prev => prev.map(item => {
-            if (item.id === id) {
-                const newStatus = item.status[lang] === "active" ? "inactive" : "active";
-                return { ...item, status: { ...item.status, [lang]: newStatus } };
-            }
-            return item;
-        }));
+    const toggleStatus = async (id: string, currentStatus: any) => {
+        setActionId(id);
+        setIsSubmitting(true);
+        try {
+            const newStatusEn = currentStatus.en === "active" ? "inactive" : "active";
+            const newStatusAr = currentStatus.ar === "active" ? "inactive" : "active";
+
+            await clientApi.put(`/api/articles/${id}`, {
+                status: {
+                    en: newStatusEn,
+                    ar: newStatusAr
+                }
+            });
+            await fetchArticles();
+            toast.success("Status updated successfully");
+        } catch {
+            toast.error("Failed to update status");
+        } finally {
+            setIsSubmitting(false);
+            setActionId(null);
+        }
     };
 
-    const deleteArticle = (id: string) => {
+    const deleteArticle = async (id: string) => {
         if (confirm("Are you sure you want to delete this article?")) {
-            setArticles(prev => prev.filter(item => item.id !== id));
+            setActionId(id);
+            setIsSubmitting(true);
+            try {
+                await clientApi.delete(`/api/articles/${id}`);
+                await fetchArticles();
+                toast.success("Article deleted successfully");
+            } catch {
+                toast.error("Failed to delete article");
+            } finally {
+                setIsSubmitting(false);
+                setActionId(null);
+            }
         }
     };
 
     return (
-        <div className="space-y-8 py-10 text-[#00000099] animate-in fade-in slide-in-from-bottom-4 duration-700">
+        <div className="space-y-8 pb-10 text-[#00000099] animate-in fade-in slide-in-from-bottom-4 duration-700">
             {/* Header */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
@@ -157,7 +168,6 @@ export default function ArticlesPage() {
                     onClick={() => {
                         setEditingArticle(null);
                         setImagePreview(null);
-                        setSections([{ id: Date.now().toString(), heading: { en: "", ar: "" }, content: { en: "", ar: "" } }]);
                         setSelectedStatusEn("active");
                         setSelectedStatusAr("active");
                         setIsModalOpen(true);
@@ -206,13 +216,18 @@ export default function ArticlesPage() {
                                     </td>
                                     <td className="px-6 py-4">
                                         <button
-                                            onClick={() => toggleStatus(item.id)}
-                                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wider transition-all
+                                            onClick={() => toggleStatus(item.id, item.status)}
+                                            disabled={isSubmitting && actionId === item.id}
+                                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wider transition-all disabled:opacity-50
                                                 ${item.status[lang] === "active"
                                                     ? "bg-[#E6F4F1] text-[#019977] hover:bg-[#019977] hover:text-white"
                                                     : "bg-red-50 text-red-600 hover:bg-red-600 hover:text-white"}`}
                                         >
-                                            {item.status[lang] === "active" ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
+                                            {isSubmitting && actionId === item.id ? (
+                                                <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                                            ) : (
+                                                item.status[lang] === "active" ? <CheckCircle className="w-4 h-4" /> : <XCircle className="w-4 h-4" />
+                                            )}
                                             {item.status[lang]}
                                         </button>
                                     </td>
@@ -234,7 +249,6 @@ export default function ArticlesPage() {
                                                 onClick={() => {
                                                     setEditingArticle(item);
                                                     setImagePreview(item.mainImage);
-                                                    setSections(item.sections);
                                                     setSelectedStatusEn(item.status.en);
                                                     setSelectedStatusAr(item.status.ar);
                                                     setIsModalOpen(true);
@@ -245,9 +259,14 @@ export default function ArticlesPage() {
                                             </button>
                                             <button
                                                 onClick={() => deleteArticle(item.id)}
-                                                className="p-2 text-[#00000066] hover:text-red-600 hover:bg-red-50 rounded-lg transition-all cursor-pointer"
+                                                disabled={isSubmitting && actionId === item.id}
+                                                className="p-2 text-[#00000066] hover:text-red-600 hover:bg-red-50 rounded-lg transition-all cursor-pointer disabled:opacity-50"
                                             >
-                                                <Trash2 className="w-4 h-4" />
+                                                {isSubmitting && actionId === item.id ? (
+                                                    <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
+                                                ) : (
+                                                    <Trash2 className="w-4 h-4" />
+                                                )}
                                             </button>
                                         </div>
                                     </td>
@@ -279,7 +298,48 @@ export default function ArticlesPage() {
                             </button>
                         </div>
 
-                        <form className="flex-1 overflow-y-auto no-scrollbar p-8 space-y-10" onSubmit={(e) => { e.preventDefault(); setIsModalOpen(false); }}>
+                        <form className="flex-1 overflow-y-auto no-scrollbar p-8 space-y-10" onSubmit={async (e) => {
+                            e.preventDefault();
+                            setIsSubmitting(true);
+                            const formData = new FormData(e.currentTarget);
+
+                            const payload = {
+                                title: {
+                                    en: formData.get('titleEn'),
+                                    ar: formData.get('titleAr')
+                                },
+                                subtitle: {
+                                    en: formData.get('subtitleEn'),
+                                    ar: formData.get('subtitleAr')
+                                },
+                                date: {
+                                    en: formData.get('dateEn'),
+                                    ar: formData.get('dateAr')
+                                },
+                                mainImage: imagePreview || "https://via.placeholder.com/800x400",
+                                sections: sections,
+                                status: {
+                                    en: selectedStatusEn,
+                                    ar: selectedStatusAr
+                                }
+                            };
+
+                            try {
+                                if (editingArticle) {
+                                    await clientApi.put(`/api/articles/${editingArticle.id}`, payload);
+                                    toast.success("Article updated successfully");
+                                } else {
+                                    await clientApi.post("/api/articles", payload);
+                                    toast.success("Article published successfully");
+                                }
+                                setIsModalOpen(false);
+                                fetchArticles();
+                            } catch {
+                                toast.error("Failed to save article");
+                            } finally {
+                                setIsSubmitting(false);
+                            }
+                        }}>
                             <div className="space-y-10">
                                 {/* Article Metadata */}
                                 <div className="space-y-6">
@@ -290,7 +350,7 @@ export default function ArticlesPage() {
                                         <div className="space-y-6">
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Article Date (ENG)</label>
-                                                <input type="text" placeholder="e.g. 07.04.2025" defaultValue={editingArticle?.date.en} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" />
+                                                <input type="text" name="dateEn" placeholder="e.g. 07.04.2025" defaultValue={editingArticle?.date.en} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" />
                                             </div>
                                             <div className="relative">
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Published Status (ENG)</label>
@@ -310,7 +370,7 @@ export default function ArticlesPage() {
                                         <div className="space-y-6">
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">تاريخ المقال (AR)</label>
-                                                <input type="text" dir="rtl" placeholder="مثال: ٠٧.٠٤.٢٠٢٥" defaultValue={editingArticle?.date.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" />
+                                                <input type="text" dir="rtl" name="dateAr" placeholder="مثال: ٠٧.٠٤.٢٠٢٥" defaultValue={editingArticle?.date.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" />
                                             </div>
                                             <div className="relative">
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">حالة النشر (AR)</label>
@@ -342,21 +402,21 @@ export default function ArticlesPage() {
                                         <div className="space-y-4">
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Title (ENG)</label>
-                                                <input type="text" placeholder="Article Headline..." defaultValue={editingArticle?.title.en} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-bold" />
+                                                <input type="text" name="titleEn" placeholder="Article Headline..." defaultValue={editingArticle?.title.en} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-bold" />
                                             </div>
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Subtitle (ENG)</label>
-                                                <textarea rows={2} placeholder="Brief summary..." defaultValue={editingArticle?.subtitle.en} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" />
+                                                <textarea rows={2} name="subtitleEn" placeholder="Brief summary..." defaultValue={editingArticle?.subtitle.en} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" />
                                             </div>
                                         </div>
                                         <div className="space-y-4">
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">العنوان (AR)</label>
-                                                <input type="text" dir="rtl" placeholder="عنوان المقال..." defaultValue={editingArticle?.title.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-bold" />
+                                                <input type="text" dir="rtl" name="titleAr" placeholder="عنوان المقال..." defaultValue={editingArticle?.title.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-bold" />
                                             </div>
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">عنوان فرعي (AR)</label>
-                                                <textarea rows={2} dir="rtl" placeholder="ملخص قصير..." defaultValue={editingArticle?.subtitle.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" />
+                                                <textarea rows={2} dir="rtl" name="subtitleAr" placeholder="ملخص قصير..." defaultValue={editingArticle?.subtitle.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" />
                                             </div>
                                         </div>
                                     </div>
@@ -453,9 +513,10 @@ export default function ArticlesPage() {
                             </div>
 
                             <div className="flex items-center gap-3 pt-8 border-t border-border-stroke">
-                                <button type="button" onClick={() => setIsModalOpen(false)} className="flex-1 cursor-pointer py-4 text-sm font-bold text-[#00000099] hover:bg-black/5 rounded-2xl transition-all">Cancel</button>
-                                <button type="submit" className="flex-[2] cursor-pointer py-4 bg-brand-gradient text-white rounded-2xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all">
-                                    {editingArticle ? "Update Article" : "Publish Article"}
+                                <button type="button" onClick={() => setIsModalOpen(false)} disabled={isSubmitting} className="flex-1 cursor-pointer py-4 text-sm font-bold text-[#00000099] hover:bg-black/5 rounded-2xl transition-all disabled:opacity-50">Cancel</button>
+                                <button type="submit" disabled={isSubmitting} className="flex-[2] cursor-pointer py-4 bg-brand-gradient text-white rounded-2xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all disabled:opacity-70 flex items-center justify-center gap-2">
+                                    {isSubmitting && <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>}
+                                    {isSubmitting ? (editingArticle ? "Updating..." : "Publishing...") : (editingArticle ? "Update Article" : "Publish Article")}
                                 </button>
                             </div>
                         </form>
