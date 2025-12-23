@@ -153,7 +153,7 @@ export default function TestimonialsPage() {
 
     return (
         <div className="space-y-8 pb-10 text-[#00000099] animate-in fade-in slide-in-from-bottom-4 duration-700">
-            {/* Header */}
+            {/* Headers */}
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-black tracking-tight flex items-center gap-2">
