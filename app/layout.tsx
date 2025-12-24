@@ -1,7 +1,6 @@
 import './globals.css'
 import localFont from 'next/font/local'
 import { Toaster } from 'react-hot-toast'
-// import LoadingScreen from '@/components/LoadingScreen'
 const frutiger = localFont({
   src: [
     {

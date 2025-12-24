@@ -2,7 +2,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Container from "../../../components/Container";
-import type { Locale } from "@/lib/i18n/config";
+import type { Locale } from "../../../../lib/i18n/config";
 
 type FooterProps = {
     locale: Locale;

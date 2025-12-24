@@ -2,7 +2,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import arrow from "@/public/images/arrow111.png";
+import arrow from "../../../../../public/images/arrow111.png";
 
 export type Article = {
     id: string;

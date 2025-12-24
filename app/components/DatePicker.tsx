@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight, Calendar as CalendarIcon, X } from "lucide-react";
-import { Locale } from "@/lib/i18n/config";
+import { Locale } from "../../lib/i18n/config";
 
 interface DatePickerProps {
     value?: string;
