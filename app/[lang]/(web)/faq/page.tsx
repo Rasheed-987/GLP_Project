@@ -2,8 +2,8 @@
 import React from "react";
 import Image from "next/image";
 import Container from "../../../components/Container";
-import { getDictionary } from "@/lib/i18n/dictionaries";
-import type { Locale } from "@/lib/i18n/config";
+import { getDictionary } from "../../../../lib/i18n/dictionaries";
+import type { Locale } from "../../../../lib/i18n/config";
 import glpArrow from "../../../../public/images/glp_arrow.png";
 
 type FaqItem = { q: string; a: string };

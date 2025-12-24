@@ -1,8 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
-import type { Locale } from '@/lib/i18n/config';
-import Container from '@/app/components/Container';
-import { getDictionary } from '@/lib/i18n/dictionaries';
+import type { Locale } from "../../../../lib/i18n/config";
+import Container from "../../../../app/components/Container";
+import { getDictionary } from "../../../../lib/i18n/dictionaries";
 import Button from '../components/Button';
 import TagPill from '../components/TagPill';
 import Carousel from '../components/Carousel';
@@ -50,7 +50,7 @@ export default async function PartnershipPage({
                                 <span className="font-extrabold">{dict.partnership.title.highlight1}</span>
                             </h2>
                         </div>
-        
+
                         {/* Right Column: Description and Button */}
                         <div className="w-full lg:w-1/2 flex flex-col md:ps-32 justify-start md:pt-10 gap-6">
                             <p className="text-[#00000099] text-xs md:text-[15px] leading-[1.2]">

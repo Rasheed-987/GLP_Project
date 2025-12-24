@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import type { Locale } from "@/lib/i18n/config";
+import { getDictionary } from "../../../../lib/i18n/dictionaries";
+import type { Locale } from "../../../../lib/i18n/config";
 import Marquee from "react-fast-marquee";
 
 type TopBarProps = {
@@ -49,7 +50,7 @@ export default function TopBar({ locale, dict }: TopBarProps) {
 
     const calculateTimeLeft = () => {
       const difference = +new Date(news.expiryDate) - +new Date();
-      
+
       if (difference > 0) {
         const days = Math.floor(difference / (1000 * 60 * 60 * 24));
         const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);

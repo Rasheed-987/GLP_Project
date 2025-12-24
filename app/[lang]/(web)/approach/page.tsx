@@ -2,8 +2,8 @@
 import React from 'react';
 import Image from 'next/image';
 import Container from '../../../components/Container';
-import { getDictionary } from '@/lib/i18n/dictionaries';
-import type { Locale } from '@/lib/i18n/config';
+import { getDictionary } from "../../../../lib/i18n/dictionaries";
+import type { Locale } from "../../../../lib/i18n/config";
 import TagPill from '../components/TagPill';
 import Button from '../components/Button';
 import ContactSection from '../components/ContactSection';
@@ -181,7 +181,7 @@ export default async function ApproachPage({
                                         </span>
                                         <span className="block md:inline">
 
-                                       
+
                                             <span className="font-normal">{dict.approach.learningMethodology.title.line1.text2}</span>
                                             <span className="font-bold">{dict.approach.learningMethodology.title.line1.highlight2}</span>
                                         </span>

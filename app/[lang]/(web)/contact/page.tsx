@@ -1,5 +1,5 @@
-import { getDictionary } from "@/lib/i18n/dictionaries";
-import type { Locale } from "@/lib/i18n/config";
+import { getDictionary } from "../../../../lib/i18n/dictionaries";
+import type { Locale } from "../../../../lib/i18n/config";
 import Image from "next/image";
 import Container from "@/app/components/Container";
 import Button from "../components/Button";
@@ -29,18 +29,18 @@ export default async function ContactPage({
                             className="hidden md:block object-cover z-0"
                             priority
                         />
-                         {/* Background Image Mobile */}
-                         <Image
+                        {/* Background Image Mobile */}
+                        <Image
                             src="/images/contactmblbackground.png"
                             alt="Contact Background"
                             fill
                             className="block md:hidden object-cover z-0"
                             priority
                         />
-                        
+
                         {/* Men Image Overlay */}
                         <div className={`absolute left-[50%] -translate-x-1/2 md:translate-x-0 bottom-[50%] w-full h-[60%] md:bottom-0 md:w-[80%] md:h-[80%] z-0 pointer-events-none md:-mb-4 ${isRtl ? 'md:right-[-2px] md:-mr-8' : 'md:left-[-2px] md:-ml-8'}`}>
-                             <Image
+                            <Image
                                 src="/images/contactmen.png"
                                 alt="Contact Team"
                                 fill
@@ -65,31 +65,31 @@ export default async function ContactPage({
 
                                 {/* Info Icons Below */}
                                 <div className="px-7  ">
-  <div className="flex flex-col md:flex-row flex-wrap items-start md:items-center w-full justify-between gap-1">
-                                    <div className="flex items-center gap-2 text-white">
-                                        <div className="md:w-4 md:h-4 h-5 w-5 relative flex-shrink-0">
-                                            <Image src="/images/phone.png" alt="Phone" fill className="object-contain invert brightness-0" />
+                                    <div className="flex flex-col md:flex-row flex-wrap items-start md:items-center w-full justify-between gap-1">
+                                        <div className="flex items-center gap-2 text-white">
+                                            <div className="md:w-4 md:h-4 h-5 w-5 relative flex-shrink-0">
+                                                <Image src="/images/phone.png" alt="Phone" fill className="object-contain invert brightness-0" />
+                                            </div>
+                                            <span className="text-[14px] font-medium whitespace-nowrap">{dict.contactPage.hero.phone}</span>
                                         </div>
-                                        <span className="text-[14px] font-medium whitespace-nowrap">{dict.contactPage.hero.phone}</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 text-white">
-                                        <div className="md:w-4 md:h-4 h-5 w-5 relative flex-shrink-0">
-                                            <Image src="/images/pin.png" alt="Location" fill className="object-contain invert brightness-0" />
+                                        <div className="flex items-center gap-2 text-white">
+                                            <div className="md:w-4 md:h-4 h-5 w-5 relative flex-shrink-0">
+                                                <Image src="/images/pin.png" alt="Location" fill className="object-contain invert brightness-0" />
+                                            </div>
+                                            <span className="text-[14px] font-medium whitespace-nowrap">{dict.contactPage.hero.address}</span>
                                         </div>
-                                        <span className="text-[14px] font-medium whitespace-nowrap">{dict.contactPage.hero.address}</span>
-                                    </div>
-                                    <div className="flex items-center gap-2 text-white">
-                                        <div className="md:w-4 md:h-4 h-5 w-5 relative flex-shrink-0">
-                                            <Image src="/images/email.png" alt="Email" fill className="object-contain invert brightness-0" />
+                                        <div className="flex items-center gap-2 text-white">
+                                            <div className="md:w-4 md:h-4 h-5 w-5 relative flex-shrink-0">
+                                                <Image src="/images/email.png" alt="Email" fill className="object-contain invert brightness-0" />
+                                            </div>
+                                            <span className="text-[14px] font-medium whitespace-nowrap">{dict.contactPage.hero.email}</span>
                                         </div>
-                                        <span className="text-[14px] font-medium whitespace-nowrap">{dict.contactPage.hero.email}</span>
                                     </div>
                                 </div>
-                                </div>
-                                
+
                                 {/* Spacer for Mobile Image */}
                                 <div className="h-[250px] md:hidden w-full"></div>
-                              
+
                             </div>
 
                             {/* Right Column: Form Card */}
@@ -116,9 +116,9 @@ export default async function ContactPage({
                                             placeholder={dict.contactPage.form.phone}
                                             className="w-full px-4 py-2 rounded-full border border-gray-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#038174]/20 transition-all font-medium text-[14px]"
                                         />
-                                        <Dropdown 
-                                            options={dict.contactPage.form.interests} 
-                                            placeholder={dict.contactPage.form.interest} 
+                                        <Dropdown
+                                            options={dict.contactPage.form.interests}
+                                            placeholder={dict.contactPage.form.interest}
                                         />
                                         <textarea
                                             placeholder={dict.contactPage.form.message}

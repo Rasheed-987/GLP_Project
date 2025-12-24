@@ -1,6 +1,6 @@
 import React from "react";
-import { getDictionary } from "@/lib/i18n/dictionaries";
-import type { Locale } from "@/lib/i18n/config";
+import { getDictionary } from "../../../../lib/i18n/dictionaries";
+import type { Locale } from "../../../../lib/i18n/config";
 import ContactSection from "../components/ContactSection";
 import ProgramCard from "../components/ProgramCard";
 import TagPill from "../components/TagPill";

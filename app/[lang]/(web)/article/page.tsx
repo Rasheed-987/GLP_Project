@@ -1,5 +1,5 @@
-import { getDictionary } from "@/lib/i18n/dictionaries";
-import type { Locale } from "@/lib/i18n/config";
+import { getDictionary } from "../../../../lib/i18n/dictionaries";
+import type { Locale } from "../../../../lib/i18n/config";
 import Image from "next/image";
 import Link from "next/link";
 import CaseStudiesGrid from "../components/CaseStudiesGrid";
@@ -47,7 +47,7 @@ export default async function ArticlePage({
           <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12">
             {/* Header Top Row */}
             <div className="flex items-center justify-between mb-8">
-            
+
               <TagPill label={article.tag} />
 
               <span className="text-sm text-gray-600 font-medium">{article.date}</span>
@@ -75,60 +75,60 @@ export default async function ArticlePage({
           </div>
         </div>
 
-      {/* Article Content Sections */}
-      <div className="bg-white">
-        <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="max-w-3xl">
-            {(article.sections ?? []).map((section: any) => (
-              <div key={section.id} className="mb-16">
-                {section.type === "text" && (
-                  <>
-                    <h2 className="text-2xl md:text-3xl font-bold text-brand-green mb-6">
-                      {section.heading}
-                    </h2>
-                    <p className="text-base md:text-lg text-gray-700 leading-relaxed whitespace-pre-wrap">
-                      {section.content}
-                    </p>
-                  </>
-                )}
+        {/* Article Content Sections */}
+        <div className="bg-white">
+          <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div className="max-w-3xl">
+              {(article.sections ?? []).map((section: any) => (
+                <div key={section.id} className="mb-16">
+                  {section.type === "text" && (
+                    <>
+                      <h2 className="text-2xl md:text-3xl font-bold text-brand-green mb-6">
+                        {section.heading}
+                      </h2>
+                      <p className="text-base md:text-lg text-gray-700 leading-relaxed whitespace-pre-wrap">
+                        {section.content}
+                      </p>
+                    </>
+                  )}
 
-                {section.type === "image" && (
-                  <div className="relative w-full h-75 md:h-100 rounded-2xl overflow-hidden">
-                    <Image
-                      src={section.content}
-                      alt={section.heading}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                )}
-              </div>
-            ))}
+                  {section.type === "image" && (
+                    <div className="relative w-full h-75 md:h-100 rounded-2xl overflow-hidden">
+                      <Image
+                        src={section.content}
+                        alt={section.heading}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Latest Case Studies (Related) */}
-     
+        {/* Latest Case Studies (Related) */}
+
       </section>
-      
+
       {/* Our Latest Case studies */}
-            <section>
-                 <CaseStudiesGrid
-        title={dict.article.latestCaseStudies ?? dict.article.relatedArticles}
-        items={(dict.article.articles || []).map((a: any) => ({
-          id: a.id,
-          slug: a.slug,
-          date: a.date,
-          title: a.title,
-          excerpt: a.excerpt,
-          image: a.image,
-          mobileImage: a.mobileImage,
-          stats: a.stats,
-        }))}
-        hrefBase={`/${lang}/(web)/article`}
-      />
-            </section>
+      <section>
+        <CaseStudiesGrid
+          title={dict.article.latestCaseStudies ?? dict.article.relatedArticles}
+          items={(dict.article.articles || []).map((a: any) => ({
+            id: a.id,
+            slug: a.slug,
+            date: a.date,
+            title: a.title,
+            excerpt: a.excerpt,
+            image: a.image,
+            mobileImage: a.mobileImage,
+            stats: a.stats,
+          }))}
+          hrefBase={`/${lang}/(web)/article`}
+        />
+      </section>
 
     </>
   );

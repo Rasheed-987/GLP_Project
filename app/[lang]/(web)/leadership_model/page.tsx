@@ -1,9 +1,9 @@
 // app/[lang]/glm/page.tsx
 import React from "react";
 import Image from "next/image";
-import Container from "../../../components/Container";
-import { getDictionary } from "@/lib/i18n/dictionaries";
-import type { Locale } from "@/lib/i18n/config";
+import Container from "../../../../app/components/Container";
+import { getDictionary } from "../../../../lib/i18n/dictionaries";
+import type { Locale } from "../../../../lib/i18n/config";
 import AccordionSection from "../components/AccordionSection";
 import ConnectorElbow from "../components/ConnectorElbow";
 import GLMContent from "./GLMContent";
@@ -139,21 +139,21 @@ const MobileLine = ({
   type: "full" | "start" | "none";
 }) => {
   if (type === "none") return <div className="w-[2px]" />;
-  
+
   return (
     <div className="w-[2px] relative flex flex-col items-center h-full">
-      <div 
-        className="w-full" 
-        style={{ 
-          backgroundColor: color, 
-          height: type === "full" ? "100%" : "28px", 
+      <div
+        className="w-full"
+        style={{
+          backgroundColor: color,
+          height: type === "full" ? "100%" : "28px",
           flexGrow: type === "full" ? 1 : 0
-        }} 
+        }}
       />
       {type === "start" && (
-        <div 
-          className="absolute top-[24px] w-[9px] h-[9px] rounded-full z-10" 
-          style={{ backgroundColor: color }} 
+        <div
+          className="absolute top-[24px] w-[9px] h-[9px] rounded-full z-10"
+          style={{ backgroundColor: color }}
         />
       )}
       {type === "full" && <div className="w-full flex-1" style={{ backgroundColor: color }} />}
@@ -171,7 +171,7 @@ const MobileSectionLayout = ({
   const RED = "#E11D48";
   const BLACK = "#111827";
   const GREEN = "#059669";
-  
+
   const lines = [
     { color: GREEN, type: activeColor === GREEN ? "start" : "full" },
     { color: BLACK, type: activeColor === BLACK ? "start" : activeColor === GREEN ? "none" : "full" },
@@ -181,9 +181,9 @@ const MobileSectionLayout = ({
   return (
     <div className="flex gap-4 lg:hidden">
       <div className="flex gap-3 pt-1 shrink-0">
-         {lines.map((l, i) => (
-           <MobileLine key={i} color={l.color} type={l.type as any} />
-         ))}
+        {lines.map((l, i) => (
+          <MobileLine key={i} color={l.color} type={l.type as any} />
+        ))}
       </div>
       <div className="flex-1 min-w-0">
         {children}
@@ -195,25 +195,25 @@ const MobileSectionLayout = ({
 const MobileGlobeConnector = () => {
   return (
     <div className="lg:hidden flex gap-3 pt-4 pb-0 justify-start px-0 h-[60px] items-end">
-       <div className="flex gap-3 shrink-0">
-          {/* Green Line - Longest */}
-          <div className="w-[2px] relative h-[60px] bg-transparent">
-             <div className="absolute bottom-0 w-full bg-[#059669] h-full" />
-             <div className="absolute top-0 -left-[3px] w-[8px] h-[8px] rounded-full bg-[#059669]" />
-          </div>
-          
-          {/* Black Line - Medium */}
-          <div className="w-[2px] relative h-[60px] bg-transparent">
-             <div className="absolute bottom-0 w-full bg-[#111827] h-[75%]" />
-             <div className="absolute top-[25%] -left-[3px] w-[8px] h-[8px] rounded-full bg-[#111827]" />
-          </div>
+      <div className="flex gap-3 shrink-0">
+        {/* Green Line - Longest */}
+        <div className="w-[2px] relative h-[60px] bg-transparent">
+          <div className="absolute bottom-0 w-full bg-[#059669] h-full" />
+          <div className="absolute top-0 -left-[3px] w-[8px] h-[8px] rounded-full bg-[#059669]" />
+        </div>
 
-          {/* Red Line - Shortest */}
-          <div className="w-[2px] relative h-[60px] bg-transparent">
-             <div className="absolute bottom-0 w-full bg-[#E11D48] h-[50%]" />
-             <div className="absolute top-[50%] -left-[3px] w-[8px] h-[8px] rounded-full bg-[#E11D48]" />
-          </div>
-       </div>
+        {/* Black Line - Medium */}
+        <div className="w-[2px] relative h-[60px] bg-transparent">
+          <div className="absolute bottom-0 w-full bg-[#111827] h-[75%]" />
+          <div className="absolute top-[25%] -left-[3px] w-[8px] h-[8px] rounded-full bg-[#111827]" />
+        </div>
+
+        {/* Red Line - Shortest */}
+        <div className="w-[2px] relative h-[60px] bg-transparent">
+          <div className="absolute bottom-0 w-full bg-[#E11D48] h-[50%]" />
+          <div className="absolute top-[50%] -left-[3px] w-[8px] h-[8px] rounded-full bg-[#E11D48]" />
+        </div>
+      </div>
     </div>
   )
 }
@@ -250,8 +250,8 @@ function safeGLM(dictGlm: Partial<GLMDict> | undefined): GLMDict {
 
 const Item = ({ color, item }: { color: string; item: GLMItem }) => (
   <div className="flex gap-4">
-    <div 
-      className="shrink-0 w-11 h-11 md:w-12 md:h-12 rounded-full border-[1.5px] flex items-center justify-center bg-white shadow-sm" 
+    <div
+      className="shrink-0 w-11 h-11 md:w-12 md:h-12 rounded-full border-[1.5px] flex items-center justify-center bg-white shadow-sm"
       style={{ borderColor: color }}
     >
       {item.icon ? (
@@ -352,19 +352,19 @@ export default async function GLMPage({
               <span className="font-semibold text-black">{glm.hero.suffix}</span>
             </span>
           </h1>)
-:
-          ( <h1 className="flex justify-center text-center text-black leading-[1.05] mt-9 mb-10 gap-3">
-           <span className="block text-3xl md:text-5xl font-semibold">نموذج القيادة</span>
-            <span className="text-3xl md:text-5xl font-regular">لحكومة الإمارات</span>
-          </h1>)}
+            :
+            (<h1 className="flex justify-center text-center text-black leading-[1.05] mt-9 mb-10 gap-3">
+              <span className="block text-3xl md:text-5xl font-semibold">نموذج القيادة</span>
+              <span className="text-3xl md:text-5xl font-regular">لحكومة الإمارات</span>
+            </h1>)}
         </Container>
       </section>
 
       {/* MAIN LAYOUT */}
       <section className="pb-16 md:pb-24 lg:overflow-hidden">
         <Container className="px-4 lg:overflow-visible">
-          <GLMContent 
-            glm={glm} 
+          <GLMContent
+            glm={glm}
             earth={earth}
             leadershipContent={leadershipContent}
             futureContent={futureContent}

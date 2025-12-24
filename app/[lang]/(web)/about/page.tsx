@@ -1,8 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
-import Container from '@/app/components/Container';
-import { getDictionary } from '@/lib/i18n/dictionaries';
-import type { Locale } from '@/lib/i18n/config';
+import Container from "../../../../app/components/Container";
+import { getDictionary } from "../../../../lib/i18n/dictionaries";
+import type { Locale } from "../../../../lib/i18n/config";
 import TagPill from '../components/TagPill';
 import ContactSection from '../components/ContactSection';
 

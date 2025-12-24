@@ -1,8 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
-import type { Locale } from '@/lib/i18n/config';
-import Container from '@/app/components/Container';
-import { getDictionary } from '@/lib/i18n/dictionaries';
+import type { Locale } from "../../../../lib/i18n/config";
+import Container from "../../../../app/components/Container";
+import { getDictionary } from "../../../../lib/i18n/dictionaries";
 import Button from '../components/Button';
 import TagPill from '../components/TagPill';
 import Carousel from '../components/Carousel';

@@ -1,5 +1,5 @@
-import { getDictionary } from "@/lib/i18n/dictionaries";
-import type { Locale } from "@/lib/i18n/config";
+import { getDictionary } from "../../../lib/i18n/dictionaries";
+import type { Locale } from "../../../lib/i18n/config";
 import Hero from "./components/Hero";
 import Button from "./components/Button";
 import Image from "next/image";
@@ -8,7 +8,7 @@ import Carousel from "./components/Carousel";
 import ContactSection from "./components/ContactSection";
 import Marquee from "react-fast-marquee";
 import InteractiveProgramCard from "./components/InteractiveProgramCard";
-import Container from "@/app/components/Container";
+import Container from "../../../app/components/Container";
 
 export default async function HomePage({
   params,
@@ -219,7 +219,7 @@ export default async function HomePage({
 
               {/* Desktop: Author */}
               <div className="hidden lg:block">
-               <div className="mb-3">
+                <div className="mb-3">
                   <Image
                     src="/images/bar.png"
                     alt="bar"
@@ -239,23 +239,23 @@ export default async function HomePage({
 
       {/* Alumni Testimonials Section: Carousel displaying success stories from previous graduates */}
       <section className="bg-white pb-32">
-         
-          <Container className="flex flex-col items-start gap-2 mb-6 px-4 sm:px-6 lg:px-8">
-             <p className="text-xs font-bold tracking-widest bg-brand-gradient bg-clip-text text-transparent uppercase leading-none">
-                  {dict.home.alumni.pill}
-                </p>
-                <div className="mt-1">
-                  <Image
-                    src="/images/bar.png"
-                    alt="bar"
-                    width={80}
-                    height={4}
-                    className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
-                  />
-                </div>
-          </Container>
+
+        <Container className="flex flex-col items-start gap-2 mb-6 px-4 sm:px-6 lg:px-8">
+          <p className="text-xs font-bold tracking-widest bg-brand-gradient bg-clip-text text-transparent uppercase leading-none">
+            {dict.home.alumni.pill}
+          </p>
+          <div className="mt-1">
+            <Image
+              src="/images/bar.png"
+              alt="bar"
+              width={80}
+              height={4}
+              className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
+            />
+          </div>
+        </Container>
         <div className="">
-       
+
           <Carousel items={testimonials} lang={lang} />
         </div>
       </section>
