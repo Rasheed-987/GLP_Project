@@ -1,8 +1,8 @@
 import TopBar from "./components/TopBar";
 import Navbar from "./components/Navbar";
 import Container from "../../components/Container";
-import { getDictionary } from "@/lib/i18n/dictionaries";
-import type { Locale } from "@/lib/i18n/config";
+import { getDictionary } from "../../../lib/i18n/dictionaries";
+import type { Locale } from "../../../lib/i18n/config";
 
 import Footer from "./components/Footer";
 
@@ -24,7 +24,7 @@ export default async function WebLayout({
         </Container>
       </div>
       <div className="relative">
-        <header 
+        <header
           className="fixed left-0 right-0 z-50 w-full"
           style={{ top: 'var(--topbar-height, 52px)' }}
         >

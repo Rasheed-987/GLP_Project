@@ -1,9 +1,9 @@
 import React from "react";
-import { getDictionary } from "@/lib/i18n/dictionaries";
-import { Locale } from "@/lib/i18n/config";
+import { getDictionary } from "../../../lib/i18n/dictionaries";
+import { Locale } from "../../../lib/i18n/config";
 import Sidebar from "./components/Sidebar";
 import AuthCheck from "./components/AuthCheck";
-import LocaleSwitcher from "@/app/components/LocaleSwitcher";
+import LocaleSwitcher from "../../../app/components/LocaleSwitcher";
 import UserProfile from "./components/UserProfile";
 
 export default async function DashboardLayout({

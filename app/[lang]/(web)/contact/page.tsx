@@ -1,7 +1,7 @@
 import { getDictionary } from "../../../../lib/i18n/dictionaries";
 import type { Locale } from "../../../../lib/i18n/config";
 import Image from "next/image";
-import Container from "@/app/components/Container";
+import Container from "../../../../app/components/Container";
 import Button from "../components/Button";
 import Dropdown from "../components/Dropdown";
 
