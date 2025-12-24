@@ -28,15 +28,14 @@
     "tailwindcss": "^4",
     "@tailwindcss/postcss": "^4",
     "postcss": "^8.4.31",
-    "autoprefixer": "^10.4.16"
-  },
-  "devDependencies": {
-    "@types/negotiator": "^0.6.4",
+    "autoprefixer": "^10.4.16",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "typescript": "^5",
+    "@types/negotiator": "^0.6.4",
     "eslint": "^9",
-    "eslint-config-next": "15.1.0",
-    "typescript": "^5"
-  }
+    "eslint-config-next": "15.1.0"
+  },
+  "devDependencies": {}
 }
