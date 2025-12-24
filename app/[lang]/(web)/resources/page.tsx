@@ -1,6 +1,6 @@
 import React from "react";
-import { getDictionary } from "@/lib/i18n/dictionaries";
-import type { Locale } from "@/lib/i18n/config";
+import { getDictionary } from "../../../../lib/i18n/dictionaries";
+import type { Locale } from "../../../../lib/i18n/config";
 import Container from "../../../components/Container";
 import ContactSection from "../components/ContactSection";
 import TagPill from "../components/TagPill";
@@ -19,16 +19,16 @@ export default async function ResourcesPage({
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
     const res = await fetch(`${baseUrl}/api/articles?lang=${lang}`, { cache: 'no-store' });
     if (res.ok) {
-        const data = await res.json();
-        // Map API fields to component fields
-        articles = data.map((item: any) => ({
-            id: item.id,
-            slug: item.slug,
-            title: item.title,
-            date: item.date,
-            excerpt: item.subtitle, // Map subtitle -> excerpt
-            image: item.mainImage,  // Map mainImage -> image
-        }));
+      const data = await res.json();
+      // Map API fields to component fields
+      articles = data.map((item: any) => ({
+        id: item.id,
+        slug: item.slug,
+        title: item.title,
+        date: item.date,
+        excerpt: item.subtitle, // Map subtitle -> excerpt
+        image: item.mainImage,  // Map mainImage -> image
+      }));
     } else {
       console.error("Failed to fetch articles");
     }
@@ -38,7 +38,7 @@ export default async function ResourcesPage({
 
   // Fallback to dictionary if API fails or returns empty
   if (!articles || articles.length === 0) {
-     articles = dict?.article?.articles || [];
+    articles = dict?.article?.articles || [];
   }
 
   const t = dict?.resources;

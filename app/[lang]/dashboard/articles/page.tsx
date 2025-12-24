@@ -2,15 +2,15 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
-import { Locale } from "@/lib/i18n/config";
-import { getDictionary } from "@/lib/i18n/dictionaries";
+import { Locale } from "../../../../lib/i18n/config";
+import { getDictionary } from "../../../../lib/i18n/dictionaries";
 import { Plus, Edit2, Trash2, Calendar, Clock, CheckCircle, XCircle, ChevronDown, Image as ImageIcon, Type, AlignLeft, FileText, X } from "lucide-react";
 import Image from "next/image";
-import clientApi from "@/lib/clientApi";
+import clientApi from "../../../../lib/clientApi";
 import { toast } from "react-hot-toast";
-import DatePicker from "@/app/components/DatePicker";
-import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
-import LoadingScreen from "@/components/LoadingScreen";
+import DatePicker from "../../../../app/components/DatePicker";
+import DeleteConfirmationModal from "../../../../components/DeleteConfirmationModal";
+import LoadingScreen from "../../../../components/LoadingScreen";
 
 interface ContentSection {
     id: string;

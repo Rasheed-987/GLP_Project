@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import LocaleSwitcher from "@/app/components/LocaleSwitcher";
-import type { Locale } from "@/lib/i18n/config";
+import LocaleSwitcher from "../../../../app/components/LocaleSwitcher";
+import type { Locale } from "../../../../lib/i18n/config";
 import { useRouter } from "next/navigation";
 
 type NavbarProps = {
@@ -106,7 +106,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
             <button className="inline-flex items-center h-10 md:h-9 rounded-full bg-brand-gradient text-white px-4 md:px-6 text-sm font-medium shadow-sm hover:opacity-90 transition-opacity" onClick={() => router.push(`/${locale}/sign-in`)}>
               {dict.nav.login}
             </button>
-            {!open && ( 
+            {!open && (
               <button
                 onClick={() => setOpen(true)}
                 className="group inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 bg-white md:px-3 text-sm font-bold text-black hover:border-transparent transition-all duration-300 gap-2 hover:gap-0"

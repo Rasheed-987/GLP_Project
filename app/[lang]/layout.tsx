@@ -1,12 +1,12 @@
 import '../globals.css'
-import type { Locale } from '@/lib/i18n/config'
-import { getDictionary } from '@/lib/i18n/dictionaries'
+import type { Locale } from "../../lib/i18n/config"
+import { getDictionary } from "../../lib/i18n/dictionaries"
 import DirectionProvider from '../components/DirectionProvider'
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }) {
   const { lang } = await params
   const dict = await getDictionary(lang)
-  
+
   return {
     title: dict.metadata.title,
     description: dict.metadata.description,

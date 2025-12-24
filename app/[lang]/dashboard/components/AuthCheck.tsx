@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Locale } from "@/lib/i18n/config";
-import LoadingScreen from "@/components/LoadingScreen";
+import { Locale } from "../../../../lib/i18n/config";
+import LoadingScreen from "../../../../components/LoadingScreen";
 
 interface AuthCheckProps {
     children: React.ReactNode;

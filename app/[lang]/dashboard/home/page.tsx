@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { Locale } from "@/lib/i18n/config";
-import { getDictionary } from "@/lib/i18n/dictionaries";
+import { Locale } from "../../../../lib/i18n/config";
+import { getDictionary } from "../../../../lib/i18n/dictionaries";
 import Link from "next/link";
 import {
     Newspaper,
@@ -17,8 +17,8 @@ import {
     User,
     Loader2
 } from "lucide-react";
-import clientApi from "@/lib/clientApi";
-import LoadingScreen from "@/components/LoadingScreen";
+import clientApi from "../../../../lib/clientApi";
+import LoadingScreen from "../../../../components/LoadingScreen";
 
 export default function DashboardPage() {
     const params = useParams();

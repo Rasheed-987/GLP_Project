@@ -24,6 +24,21 @@
       }
     ],
     "paths": {
+      "@/app/*": [
+        "app/*"
+      ],
+      "@/lib/*": [
+        "lib/*"
+      ],
+      "@/components/*": [
+        "components/*"
+      ],
+      "@/models/*": [
+        "models/*"
+      ],
+      "@/public/*": [
+        "public/*"
+      ],
       "@/*": [
         "./*"
       ]

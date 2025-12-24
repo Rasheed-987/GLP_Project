@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import { Locale } from "@/lib/i18n/config";
+import { Locale } from "../../../../lib/i18n/config";
 
 interface SidebarProps {
     lang: Locale;
