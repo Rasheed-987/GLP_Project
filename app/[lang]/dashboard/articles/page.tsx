@@ -8,6 +8,7 @@ import { Plus, Edit2, Trash2, Calendar, Clock, CheckCircle, XCircle, ChevronDown
 import Image from "next/image";
 import clientApi from "@/lib/clientApi";
 import { toast } from "react-hot-toast";
+import DatePicker from "@/app/components/DatePicker";
 
 interface ContentSection {
     id: string;
@@ -57,11 +58,14 @@ export default function ArticlesPage() {
 
     // Form state
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [imageFile, setImageFile] = useState<File | null>(null);
     const [sections, setSections] = useState<ContentSection[]>([]);
     const [statusDropdownOpenEn, setStatusDropdownOpenEn] = useState(false);
     const [statusDropdownOpenAr, setStatusDropdownOpenAr] = useState(false);
     const [selectedStatusEn, setSelectedStatusEn] = useState<"active" | "inactive">("active");
     const [selectedStatusAr, setSelectedStatusAr] = useState<"active" | "inactive">("active");
+    const [dateEn, setDateEn] = useState("");
+    const [dateAr, setDateAr] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [actionId, setActionId] = useState<string | null>(null);
 
@@ -89,6 +93,7 @@ export default function ArticlesPage() {
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
+            setImageFile(file);
             const reader = new FileReader();
             reader.onloadend = () => setImagePreview(reader.result as string);
             reader.readAsDataURL(file);
@@ -168,8 +173,11 @@ export default function ArticlesPage() {
                     onClick={() => {
                         setEditingArticle(null);
                         setImagePreview(null);
+                        setImageFile(null);
                         setSelectedStatusEn("active");
                         setSelectedStatusAr("active");
+                        setDateEn("");
+                        setDateAr("");
                         setIsModalOpen(true);
                     }}
                     className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gradient text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all group cursor-pointer"
@@ -249,8 +257,11 @@ export default function ArticlesPage() {
                                                 onClick={() => {
                                                     setEditingArticle(item);
                                                     setImagePreview(item.mainImage);
+                                                    setImageFile(null);
                                                     setSelectedStatusEn(item.status.en);
                                                     setSelectedStatusAr(item.status.ar);
+                                                    setDateEn(item.date.en);
+                                                    setDateAr(item.date.ar);
                                                     setIsModalOpen(true);
                                                 }}
                                                 className="p-2 text-[#00000066] hover:text-brand-blue hover:bg-brand-blue/5 rounded-lg transition-all cursor-pointer"
@@ -300,42 +311,42 @@ export default function ArticlesPage() {
 
                         <form className="flex-1 overflow-y-auto no-scrollbar p-8 space-y-10" onSubmit={async (e) => {
                             e.preventDefault();
-                            setIsSubmitting(true);
                             const formData = new FormData(e.currentTarget);
-
-                            const payload = {
-                                title: {
-                                    en: formData.get('titleEn'),
-                                    ar: formData.get('titleAr')
-                                },
-                                subtitle: {
-                                    en: formData.get('subtitleEn'),
-                                    ar: formData.get('subtitleAr')
-                                },
-                                date: {
-                                    en: formData.get('dateEn'),
-                                    ar: formData.get('dateAr')
-                                },
-                                mainImage: imagePreview || "https://via.placeholder.com/800x400",
-                                sections: sections,
-                                status: {
-                                    en: selectedStatusEn,
-                                    ar: selectedStatusAr
-                                }
-                            };
-
+                            setIsSubmitting(true);
                             try {
+                                const formDataSubmit = new FormData();
+                                formDataSubmit.append('titleEn', formData.get('titleEn') as string);
+                                formDataSubmit.append('titleAr', formData.get('titleAr') as string);
+                                formDataSubmit.append('subtitleEn', formData.get('subtitleEn') as string);
+                                formDataSubmit.append('subtitleAr', formData.get('subtitleAr') as string);
+                                formDataSubmit.append('dateEn', dateEn);
+                                formDataSubmit.append('dateAr', dateAr);
+                                formDataSubmit.append('sections', JSON.stringify(sections));
+                                formDataSubmit.append('statusEn', selectedStatusEn);
+                                formDataSubmit.append('statusAr', selectedStatusAr);
+
+                                if (imageFile) {
+                                    formDataSubmit.append('mainImage', imageFile);
+                                } else if (editingArticle) {
+                                    formDataSubmit.append('mainImage', editingArticle.mainImage);
+                                }
+
                                 if (editingArticle) {
-                                    await clientApi.put(`/api/articles/${editingArticle.id}`, payload);
+                                    await clientApi.put(`/api/articles/${editingArticle.id}`, formDataSubmit, {
+                                        headers: { 'Content-Type': 'multipart/form-data' }
+                                    });
                                     toast.success("Article updated successfully");
                                 } else {
-                                    await clientApi.post("/api/articles", payload);
+                                    await clientApi.post("/api/articles", formDataSubmit, {
+                                        headers: { 'Content-Type': 'multipart/form-data' }
+                                    });
                                     toast.success("Article published successfully");
                                 }
                                 setIsModalOpen(false);
                                 fetchArticles();
-                            } catch {
-                                toast.error("Failed to save article");
+                            } catch (err: any) {
+                                console.error(err);
+                                toast.error(err.message || "Failed to save article");
                             } finally {
                                 setIsSubmitting(false);
                             }
@@ -348,10 +359,13 @@ export default function ArticlesPage() {
                                     </h4>
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                                         <div className="space-y-6">
-                                            <div>
-                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Article Date (ENG)</label>
-                                                <input type="text" name="dateEn" placeholder="e.g. 07.04.2025" defaultValue={editingArticle?.date.en} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" />
-                                            </div>
+                                            <DatePicker
+                                                label="Article Date (ENG)"
+                                                value={dateEn}
+                                                onChange={setDateEn}
+                                                lang="en"
+                                                placeholder="e.g. 07.04.2025"
+                                            />
                                             <div className="relative">
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Published Status (ENG)</label>
                                                 <button type="button" onClick={() => { setStatusDropdownOpenEn(!statusDropdownOpenEn); setStatusDropdownOpenAr(false); }} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black">
@@ -368,10 +382,14 @@ export default function ArticlesPage() {
                                             </div>
                                         </div>
                                         <div className="space-y-6">
-                                            <div>
-                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">تاريخ المقال (AR)</label>
-                                                <input type="text" dir="rtl" name="dateAr" placeholder="مثال: ٠٧.٠٤.٢٠٢٥" defaultValue={editingArticle?.date.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" />
-                                            </div>
+                                            <DatePicker
+                                                label="تاريخ المقال (AR)"
+                                                value={dateAr}
+                                                onChange={setDateAr}
+                                                lang="ar"
+                                                dir="rtl"
+                                                placeholder="مثال: ٠٧.٠٤.٢٠٢٥"
+                                            />
                                             <div className="relative">
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">حالة النشر (AR)</label>
                                                 <button type="button" dir="rtl" onClick={() => { setStatusDropdownOpenAr(!statusDropdownOpenAr); setStatusDropdownOpenEn(false); }} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black">

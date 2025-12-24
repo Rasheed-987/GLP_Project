@@ -14,33 +14,72 @@ import {
     Clock,
     Calendar,
     ChevronRight,
-    User
+    User,
+    Loader2
 } from "lucide-react";
+import clientApi from "@/lib/clientApi";
 
 export default function DashboardPage() {
     const params = useParams();
     const lang = params.lang as Locale;
     const [dict, setDict] = useState<any>(null);
     const [fullName, setFullName] = useState<string>("Admin");
+    const [statsData, setStatsData] = useState({
+        articles: 0,
+        news: 0,
+        testimonials: 0
+    });
+    const [recentArticles, setRecentArticles] = useState<any[]>([]);
+    const [recentNews, setRecentNews] = useState<any[]>([]);
+    const [recentTestimonials, setRecentTestimonials] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         getDictionary(lang).then(setDict);
 
-        // Get user from localStorage safely after mount
-        const timeout = setTimeout(() => {
-            const userData = localStorage.getItem("user");
-            if (userData) {
-                try {
-                    const user = JSON.parse(userData);
-                    if (user.fullName) {
-                        setFullName(user.fullName);
-                    }
-                } catch (e) {
-                    console.error("Error parsing user data:", e);
-                }
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const [articlesRes, newsRes, testimonialsRes] = await Promise.all([
+                    clientApi.get("/api/articles"),
+                    clientApi.get("/api/news"),
+                    clientApi.get("/api/testimonials")
+                ]);
+
+                const articles = articlesRes.data;
+                const news = newsRes.data;
+                const testimonials = testimonialsRes.data;
+
+                setStatsData({
+                    articles: articles.length,
+                    news: news.length,
+                    testimonials: testimonials.length
+                });
+
+                setRecentArticles(articles.slice(0, 3));
+                setRecentNews(news.slice(0, 4));
+                setRecentTestimonials(testimonials.slice(0, 2));
+            } catch (error) {
+                console.error("Error fetching dashboard data:", error);
+            } finally {
+                setLoading(false);
             }
-        }, 0);
-        return () => clearTimeout(timeout);
+        };
+
+        fetchData();
+
+        // Get user from localStorage safely after mount
+        const userData = localStorage.getItem("user");
+        if (userData) {
+            try {
+                const user = JSON.parse(userData);
+                if (user.fullName) {
+                    setFullName(user.fullName);
+                }
+            } catch (e) {
+                console.error("Error parsing user data:", e);
+            }
+        }
     }, [lang]);
 
     if (!dict) return null;
@@ -48,7 +87,7 @@ export default function DashboardPage() {
     const stats = [
         {
             label: dict.dashboard.sidebar.articles,
-            value: "1",
+            value: statsData.articles.toString(),
             icon: <FileText className="w-5 h-5" />,
             color: "text-brand-blue",
             bg: "bg-brand-blue/10",
@@ -56,7 +95,7 @@ export default function DashboardPage() {
         },
         {
             label: dict.dashboard.sidebar.news,
-            value: "2",
+            value: statsData.news.toString(),
             icon: <Newspaper className="w-5 h-5" />,
             color: "text-[#019977]",
             bg: "bg-[#019977]/10",
@@ -64,7 +103,7 @@ export default function DashboardPage() {
         },
         {
             label: dict.dashboard.sidebar.testimonials,
-            value: "2",
+            value: statsData.testimonials.toString(),
             icon: <MessageSquare className="w-5 h-5" />,
             color: "text-brand-blue",
             bg: "bg-brand-blue/10",
@@ -72,33 +111,14 @@ export default function DashboardPage() {
         },
     ];
 
-    const recentArticles = [
-        {
-            title: lang === 'ar' ? "برنامج قيادات حكومة الإمارات يفتح باب التسجيل" : "UAE Government Leaders Programme opens registration",
-            date: lang === 'ar' ? "٧ أبريل ٢٠٢٥" : "07 Apr 2025",
-            readTime: "6 min read"
-        }
-    ];
 
-    const recentNews = [
-        {
-            topic: lang === 'ar' ? "إطلاق دفعة جديدة من القادة" : "New Cohort of Leaders Launched",
-            expiry: lang === 'ar' ? "تنتهي في ٣٠ ديسمبر" : "Expires 30 Dec",
-            status: "active"
-        },
-        {
-            topic: lang === 'ar' ? "تحديث سياسة التدريب القيادي" : "Leadership Training Policy Update",
-            expiry: lang === 'ar' ? "تنتهي في ١٥ يناير" : "Expires 15 Jan",
-            status: "active"
-        }
-    ];
-
-    const recentTestimonials = [
-        {
-            name: lang === 'ar' ? "محمد القاسمي" : "Mohammed Al Qasimi",
-            profession: lang === 'ar' ? "مدير أول" : "Senior Director",
-        }
-    ];
+    if (loading) {
+        return (
+            <div className="h-[60vh] flex items-center justify-center">
+                <Loader2 className="w-8 h-8 text-brand-blue animate-spin" />
+            </div>
+        );
+    }
 
     return (
         <div className="space-y-10 pb-10 text-[#00000099] animate-in fade-in slide-in-from-bottom-4 duration-700">
@@ -167,23 +187,27 @@ export default function DashboardPage() {
                             </Link>
                         </div>
                         <div className="space-y-4">
-                            {recentArticles.map((article, i) => (
-                                <div key={i} className="group p-4 rounded-2xl bg-[#F7FAF9] border border-transparent hover:border-brand-blue/20 hover:bg-white hover:shadow-lg hover:shadow-brand-blue/5 transition-all cursor-pointer">
-                                    <h4 className="font-bold text-black group-hover:text-brand-blue transition-colors mb-2">
-                                        {article.title}
-                                    </h4>
-                                    <div className="flex items-center gap-4 text-[10px] font-bold text-[#00000066] uppercase tracking-wider">
-                                        <div className="flex items-center gap-1.5">
-                                            <Calendar className="w-3 h-3" />
-                                            {article.date}
-                                        </div>
-                                        <div className="flex items-center gap-1.5">
-                                            <Clock className="w-3 h-3" />
-                                            {article.readTime}
+                            {recentArticles.length > 0 ? (
+                                recentArticles.map((article, i) => (
+                                    <div key={i} className="group p-4 rounded-2xl bg-[#F7FAF9] border border-transparent hover:border-brand-blue/20 hover:bg-white hover:shadow-lg hover:shadow-brand-blue/5 transition-all cursor-pointer">
+                                        <h4 className="font-bold text-black group-hover:text-brand-blue transition-colors mb-2">
+                                            {lang === 'ar' ? article.title.ar : article.title.en}
+                                        </h4>
+                                        <div className="flex items-center gap-4 text-[10px] font-bold text-[#00000066] uppercase tracking-wider">
+                                            <div className="flex items-center gap-1.5">
+                                                <Calendar className="w-3 h-3" />
+                                                {lang === 'ar' ? article.date.ar : article.date.en}
+                                            </div>
+                                            <div className="flex items-center gap-1.5">
+                                                <Clock className="w-3 h-3" />
+                                                {new Date(article.createdAt).toLocaleDateString()}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))
+                            ) : (
+                                <p className="text-xs text-center py-6 text-[#00000066]">No articles found.</p>
+                            )}
                         </div>
                     </section>
 
@@ -202,22 +226,26 @@ export default function DashboardPage() {
                             </Link>
                         </div>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {recentNews.map((news, i) => (
-                                <div key={i} className="p-4 rounded-2xl border border-border-stroke space-y-3 relative overflow-hidden group hover:border-brand-blue/20 transition-all">
-                                    <span className="absolute top-0 right-0 w-16 h-16 bg-brand-green/5 rounded-bl-[40px]"></span>
-                                    <h4 className="font-bold text-black text-sm line-clamp-1 pr-4">
-                                        {news.topic}
-                                    </h4>
-                                    <div className="flex items-center justify-between">
-                                        <p className="text-[10px] font-medium text-[#00000066]">
-                                            {news.expiry}
-                                        </p>
-                                        <span className="px-2 py-0.5 bg-[#E6F4F1] text-[#019977] text-[8px] font-bold uppercase rounded-full">
-                                            {news.status}
-                                        </span>
+                            {recentNews.length > 0 ? (
+                                recentNews.map((news, i) => (
+                                    <div key={i} className="p-4 rounded-2xl border border-border-stroke space-y-3 relative overflow-hidden group hover:border-brand-blue/20 transition-all">
+                                        <span className="absolute top-0 right-0 w-16 h-16 bg-brand-green/5 rounded-bl-[40px]"></span>
+                                        <h4 className="font-bold text-black text-sm line-clamp-1 pr-4">
+                                            {lang === 'ar' ? news.topic.ar : news.topic.en}
+                                        </h4>
+                                        <div className="flex items-center justify-between">
+                                            <p className="text-[10px] font-medium text-[#00000066]">
+                                                {lang === 'ar' ? news.expiryDate.ar : news.expiryDate.en}
+                                            </p>
+                                            <span className="px-2 py-0.5 bg-[#E6F4F1] text-[#019977] text-[8px] font-bold uppercase rounded-full">
+                                                {lang === 'ar' ? news.status.ar : news.status.en}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                            ))}
+                                ))
+                            ) : (
+                                <p className="text-xs text-center py-6 text-[#00000066] col-span-full">No news found.</p>
+                            )}
                         </div>
                     </section>
                 </div>
@@ -234,22 +262,26 @@ export default function DashboardPage() {
                             </div>
                         </div>
                         <div className="flex-1 space-y-4">
-                            {recentTestimonials.map((t, i) => (
-                                <div key={i} className="p-5 rounded-2xl bg-[#F7FAF9] border border-border-stroke space-y-4">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-10 h-10 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue">
-                                            <User className="w-5 h-5" />
+                            {recentTestimonials.length > 0 ? (
+                                recentTestimonials.map((t, i) => (
+                                    <div key={i} className="p-5 rounded-2xl bg-[#F7FAF9] border border-border-stroke space-y-4">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-10 h-10 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue">
+                                                <User className="w-5 h-5" />
+                                            </div>
+                                            <div>
+                                                <p className="text-sm font-bold text-black">{lang === 'ar' ? t.name.ar : t.name.en}</p>
+                                                <p className="text-[10px] text-[#00000066] font-medium">{lang === 'ar' ? t.profession.ar : t.profession.en}</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p className="text-sm font-bold text-black">{t.name}</p>
-                                            <p className="text-[10px] text-[#00000066] font-medium">{t.profession}</p>
-                                        </div>
+                                        <p className="text-xs italic leading-relaxed text-[#00000099] line-clamp-3">
+                                            &quot;{lang === 'ar' ? t.description.ar : t.description.en}&quot;
+                                        </p>
                                     </div>
-                                    <p className="text-xs italic leading-relaxed text-[#00000099]">
-                                        &quot;UAEGLP has been a transformative experience for my leadership journey...&quot;
-                                    </p>
-                                </div>
-                            ))}
+                                ))
+                            ) : (
+                                <p className="text-xs text-center py-6 text-[#00000066]">No testimonials found.</p>
+                            )}
                         </div>
                         <Link href={`/${lang}/dashboard/testimonials`} className="mt-6 w-full py-4 bg-[#F7FAF9] rounded-2xl text-xs font-bold text-black hover:bg-[#E6F4F1] transition-all flex items-center justify-center gap-2 group cursor-pointer border border-border-stroke">
                             Explore All Testimonials

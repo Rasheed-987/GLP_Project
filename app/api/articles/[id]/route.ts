@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/dbConnect';
 import Article from '@/models/Article';
+import { writeFile, mkdir } from 'fs/promises';
+import { join } from 'path';
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
@@ -20,12 +22,62 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const { id } = await params;
-        const body = await req.json();
+        const formData = await req.formData();
+
+        const title = {
+            en: formData.get('titleEn') as string,
+            ar: formData.get('titleAr') as string
+        };
+        const subtitle = {
+            en: formData.get('subtitleEn') as string,
+            ar: formData.get('subtitleAr') as string
+        };
+        const date = {
+            en: formData.get('dateEn') as string,
+            ar: formData.get('dateAr') as string
+        };
+        const sections = JSON.parse(formData.get('sections') as string);
+        const status = {
+            en: formData.get('statusEn') as string,
+            ar: formData.get('statusAr') as string
+        };
+
+        const imageFile = formData.get('mainImage') as File | string | null;
+        let mainImage = "";
+
+        if (imageFile && typeof imageFile !== 'string') {
+            const bytes = await imageFile.arrayBuffer();
+            const buffer = Buffer.from(bytes);
+
+            const uploadDir = join(process.cwd(), 'public', 'uploads', 'articles');
+            await mkdir(uploadDir, { recursive: true });
+
+            const fileName = `${Date.now()}-${imageFile.name}`;
+            const path = join(uploadDir, fileName);
+            await writeFile(path, buffer);
+            mainImage = `/uploads/articles/${fileName}`;
+        } else if (typeof imageFile === 'string') {
+            mainImage = imageFile;
+        }
+
+        const updateData: any = {
+            title,
+            subtitle,
+            date,
+            sections,
+            status,
+        };
+
+        if (mainImage) {
+            updateData.mainImage = mainImage;
+        }
+
         await dbConnect();
-        const article = await Article.findByIdAndUpdate(id, body, {
+        const article = await Article.findByIdAndUpdate(id, updateData, {
             new: true,
             runValidators: true,
         });
+
         if (!article) {
             return NextResponse.json({ error: 'Article not found' }, { status: 404 });
         }
