@@ -3,10 +3,10 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { Locale } from "@/lib/i18n/config";
+import { Locale } from "../../../../lib/i18n/config";
 import Button from "../../(web)/components/Button";
-import { getDictionary } from "@/lib/i18n/dictionaries";
-import clientApi from "@/lib/clientApi";
+import { getDictionary } from "../../../../lib/i18n/dictionaries";
+import clientApi from "../../../../lib/clientApi";
 import toast from "react-hot-toast";
 
 const EyeIcon = () => (
