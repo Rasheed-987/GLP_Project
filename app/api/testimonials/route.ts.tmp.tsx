@@ -343,7 +343,7 @@ export default function TestimonialsPage() {
                             </button>
                         </div>
 
-                        <form className="flex-1 overflow-y-auto p-8 space-y-8" onSubmit={async (e) => {
+                        <form className="flex-1 overflow-y-auto no-scrollbar p-8 space-y-8" onSubmit={async (e) => {
                             e.preventDefault();
                             if (isLoading) return;
                             setIsLoading(true);
@@ -439,99 +439,91 @@ export default function TestimonialsPage() {
                                     </div>
                                 </div>
 
-                                {/* Media Section (Improved) */}
-                                <div className="space-y-4 border-t border-border-stroke pt-4">
-                                    <h4 className="flex items-center gap-2 text-sm font-bold text-black uppercase tracking-widest border-l-4 border-brand-blue pl-3">
-                                        Media (Photos & Logos)
-                                    </h4>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-[#F7FAF9] p-6 rounded-2xl border border-border-stroke">
-                                        {/* Company Logo */}
-                                        <div className="space-y-4">
-                                            <div className="flex items-center justify-between">
-                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider">Company Logo (ENG)</label>
-                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider text-right">شعار الشركة (AR)</label>
-                                            </div>
-                                            <div className="flex items-center gap-6">
-                                                <div className="w-24 h-24 rounded-2xl bg-white border-2 border-dashed border-border-stroke flex items-center justify-center shrink-0 overflow-hidden group/logo relative shadow-sm">
-                                                    {logoPreview ? (
-                                                        <img src={logoPreview} alt="Preview" className="w-full h-full object-contain p-2" />
-                                                    ) : (
-                                                        <ImageIcon className="w-8 h-8 text-[#00000033]" />
-                                                    )}
-                                                    <input
-                                                        type="file"
-                                                        ref={fileInputRef}
-                                                        onChange={handleLogoUpload}
-                                                        accept="image/*"
-                                                        className="hidden"
-                                                    />
+                                {/* Logo & Dates */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div className="space-y-4">
+                                        <h4 className="flex items-center gap-2 text-sm font-bold text-black uppercase tracking-widest border-l-4 border-brand-blue pl-3">
+                                            Media & Date
+                                        </h4>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="space-y-2">
+                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Company Logo</label>
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-16 h-16 rounded-2xl bg-[#F7FAF9] border-2 border-dashed border-border-stroke flex items-center justify-center shrink-0 overflow-hidden group/logo relative">
+                                                        {logoPreview ? (
+                                                            <img src={logoPreview} alt="Preview" className="w-full h-full object-contain p-2" />
+                                                        ) : (
+                                                            <ImageIcon className="w-6 h-6 text-[#00000033]" />
+                                                        )}
+                                                        <input
+                                                            type="file"
+                                                            ref={fileInputRef}
+                                                            onChange={handleLogoUpload}
+                                                            accept="image/*"
+                                                            className="hidden"
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-1.5 flex-1">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => fileInputRef.current?.click()}
+                                                            className="px-4 py-2 bg-white border border-border-stroke rounded-xl text-xs font-bold text-black hover:bg-[#F7FAF9] transition-all cursor-pointer shadow-sm"
+                                                        >
+                                                            {logoPreview ? "Change Logo" : "Upload Logo"}
+                                                        </button>
+                                                    </div>
                                                 </div>
-                                                <div className="space-y-3 flex-1">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => fileInputRef.current?.click()}
-                                                        className="w-full px-4 py-2.5 bg-white border border-border-stroke rounded-xl text-xs font-bold text-black hover:bg-[#F7FAF9] transition-all cursor-pointer shadow-sm flex items-center justify-center gap-2"
-                                                    >
-                                                        <ImageIcon className="w-4 h-4" />
-                                                        {logoPreview ? "Change Logo" : "Upload Logo"}
-                                                    </button>
-                                                    <p className="text-[10px] text-[#00000066] leading-relaxed">Recommended: Square PNG with transparent background (Max 2MB)</p>
+                                            </div>
+
+                                            <div className="space-y-2">
+                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Participant Photo</label>
+                                                <div className="flex items-center gap-4">
+                                                    <div className="w-16 h-16 rounded-2xl bg-[#F7FAF9] border-2 border-dashed border-border-stroke flex items-center justify-center shrink-0 overflow-hidden group/logo relative">
+                                                        {imagePreview ? (
+                                                            <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
+                                                        ) : (
+                                                            <ImageIcon className="w-6 h-6 text-[#00000033]" />
+                                                        )}
+                                                        <input
+                                                            type="file"
+                                                            ref={imageInputRef}
+                                                            onChange={handleImageUpload}
+                                                            accept="image/*"
+                                                            className="hidden"
+                                                        />
+                                                    </div>
+                                                    <div className="space-y-1.5 flex-1">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => imageInputRef.current?.click()}
+                                                            className="px-4 py-2 bg-white border border-border-stroke rounded-xl text-xs font-bold text-black hover:bg-[#F7FAF9] transition-all cursor-pointer shadow-sm"
+                                                        >
+                                                            {imagePreview ? "Change Photo" : "Upload Photo"}
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-
-                                        {/* Participant Photo */}
-                                        <div className="space-y-4">
-                                            <div className="flex items-center justify-between">
-                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider">Participant Photo (ENG)</label>
-                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider text-right">صورة المشارك (AR)</label>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-[10px]">Graduate Date (EN)</label>
+                                                <input type="text" name="dateEn" placeholder="e.g. Oct 2023" defaultValue={editingTestimonial?.graduateDate.en} className="w-full px-3 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all text-xs" required />
                                             </div>
-                                            <div className="flex items-center gap-6">
-                                                <div className="w-24 h-24 rounded-2xl bg-white border-2 border-dashed border-border-stroke flex items-center justify-center shrink-0 overflow-hidden group/photo relative shadow-sm">
-                                                    {imagePreview ? (
-                                                        <img src={imagePreview} alt="Preview" className="w-full h-full object-cover" />
-                                                    ) : (
-                                                        <ImageIcon className="w-8 h-8 text-[#00000033]" />
-                                                    )}
-                                                    <input
-                                                        type="file"
-                                                        ref={imageInputRef}
-                                                        onChange={handleImageUpload}
-                                                        accept="image/*"
-                                                        className="hidden"
-                                                    />
-                                                </div>
-                                                <div className="space-y-3 flex-1">
-                                                    <button
-                                                        type="button"
-                                                        onClick={() => imageInputRef.current?.click()}
-                                                        className="w-full px-4 py-2.5 bg-white border border-border-stroke rounded-xl text-xs font-bold text-black hover:bg-[#F7FAF9] transition-all cursor-pointer shadow-sm flex items-center justify-center gap-2"
-                                                    >
-                                                        <ImageIcon className="w-4 h-4" />
-                                                        {imagePreview ? "Change Photo" : "Upload Photo"}
-                                                    </button>
-                                                    <p className="text-[10px] text-[#00000066] leading-relaxed">Recommended: High quality portrait photo (Max 2MB)</p>
-                                                </div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-[10px] text-right">تاريخ التخرج (AR)</label>
+                                                <input type="text" dir="rtl" name="dateAr" placeholder="مثال: أكتوبر 2023" defaultValue={editingTestimonial?.graduateDate.ar} className="w-full px-3 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all text-xs" required />
                                             </div>
                                         </div>
                                     </div>
-                                </div>
 
-                                {/* Status & Date Section */}
-                                <div className="space-y-4 border-t border-border-stroke pt-4">
-                                    <h4 className="flex items-center gap-2 text-sm font-bold text-black uppercase tracking-widest border-l-4 border-brand-blue pl-3">
-                                        Status & Date
-                                    </h4>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                        <div className="space-y-4">
-                                            {/* Graduate Date (EN) */}
-                                            <div>
-                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Graduate Date (ENG)</label>
-                                                <input type="text" name="dateEn" placeholder="e.g. Oct 2023" defaultValue={editingTestimonial?.graduateDate.en} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all text-sm" required />
-                                            </div>
-                                            {/* Status (EN) */}
+                                    <div className="space-y-4">
+                                        <h4 className="flex items-center gap-2 text-sm font-bold text-black uppercase tracking-widest border-l-4 border-brand-blue pl-3">
+                                            Publishing Status
+                                        </h4>
+                                        <div className="grid grid-cols-1 gap-4">
+                                            {/* EN Status */}
                                             <div className="relative">
-                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Publishing Status (ENG)</label>
+                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Status (ENG)</label>
                                                 <button type="button" onClick={(e) => { e.stopPropagation(); setStatusDropdownOpenEn(!statusDropdownOpenEn); setStatusDropdownOpenAr(false); }} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all">
                                                     <span className="capitalize">{selectedStatusEn}</span>
                                                     <ChevronDown className={`w-4 h-4 text-[#00000066] transition-transform duration-200 ${statusDropdownOpenEn ? "rotate-180" : ""}`} />
@@ -547,17 +539,9 @@ export default function TestimonialsPage() {
                                                     </div>
                                                 )}
                                             </div>
-                                        </div>
-
-                                        <div className="space-y-4">
-                                            {/* Graduate Date (AR) */}
-                                            <div>
-                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">تاريخ التخرج (AR)</label>
-                                                <input type="text" dir="rtl" name="dateAr" placeholder="مثال: أكتوبر 2023" defaultValue={editingTestimonial?.graduateDate.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all text-sm" required />
-                                            </div>
-                                            {/* Status (AR) */}
+                                            {/* AR Status */}
                                             <div className="relative">
-                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">حالة النشر (AR)</label>
+                                                <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">الحالة (AR)</label>
                                                 <button type="button" dir="rtl" onClick={(e) => { e.stopPropagation(); setStatusDropdownOpenAr(!statusDropdownOpenAr); setStatusDropdownOpenEn(false); }} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all">
                                                     <span className="capitalize">{selectedStatusAr === "active" ? "نشط" : "غير نشط"}</span>
                                                     <ChevronDown className={`w-4 h-4 text-[#00000066] transition-transform duration-200 ${statusDropdownOpenAr ? "rotate-180" : ""}`} />
@@ -580,8 +564,8 @@ export default function TestimonialsPage() {
                                     </div>
                                 </div>
 
-                                {/* Content Section */}
-                                <div className="space-y-4 border-t border-border-stroke pt-4">
+                                {/* Description Section */}
+                                <div className="space-y-4 pt-4 border-t border-border-stroke">
                                     <h4 className="flex items-center gap-2 text-sm font-bold text-black uppercase tracking-widest border-l-4 border-brand-blue pl-3">
                                         Testimonial Content
                                     </h4>
@@ -605,18 +589,18 @@ export default function TestimonialsPage() {
 
                                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                         {[0, 1, 2].map((idx) => (
-                                            <div key={idx} className="p-5 rounded-2xl border border-dashed border-brand-blue/30 bg-brand-blue/5 space-y-4 hover:bg-brand-blue/10 transition-colors">
+                                            <div key={idx} className="p-5 rounded-2xl border border-dashed border-brand-blue/30 bg-brand-blue/5 space-y-4">
                                                 <div className="flex items-center gap-2 text-brand-blue font-bold text-xs uppercase">
                                                     <Award className="w-4 h-4" /> Achievement {idx + 1}
                                                 </div>
                                                 <div className="space-y-4">
                                                     <div className="grid grid-cols-2 gap-2">
-                                                        <input type="text" name={`achievement_val_en_${idx}`} placeholder="Val (EN)" defaultValue={editingTestimonial?.achievements[idx]?.value.en} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white focus:ring-1 focus:ring-brand-blue" required />
-                                                        <input type="text" dir="rtl" name={`achievement_val_ar_${idx}`} placeholder="القيمة (AR)" defaultValue={editingTestimonial?.achievements[idx]?.value.ar} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white focus:ring-1 focus:ring-brand-blue" required />
+                                                        <input type="text" name={`achievement_val_en_${idx}`} placeholder="Val (EN)" defaultValue={editingTestimonial?.achievements[idx]?.value.en} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white" required />
+                                                        <input type="text" dir="rtl" name={`achievement_val_ar_${idx}`} placeholder="القيمة (AR)" defaultValue={editingTestimonial?.achievements[idx]?.value.ar} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white" required />
                                                     </div>
                                                     <div className="space-y-2">
-                                                        <input type="text" name={`achievement_lbl_en_${idx}`} placeholder="Label (EN)" defaultValue={editingTestimonial?.achievements[idx]?.label.en} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white focus:ring-1 focus:ring-brand-blue" required />
-                                                        <input type="text" dir="rtl" name={`achievement_lbl_ar_${idx}`} placeholder="التسمية (AR)" defaultValue={editingTestimonial?.achievements[idx]?.label.ar} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white focus:ring-1 focus:ring-brand-blue" required />
+                                                        <input type="text" name={`achievement_lbl_en_${idx}`} placeholder="Label (EN)" defaultValue={editingTestimonial?.achievements[idx]?.label.en} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white" required />
+                                                        <input type="text" dir="rtl" name={`achievement_lbl_ar_${idx}`} placeholder="التسمية (AR)" defaultValue={editingTestimonial?.achievements[idx]?.label.ar} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white" required />
                                                     </div>
                                                 </div>
                                             </div>
@@ -625,11 +609,11 @@ export default function TestimonialsPage() {
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-3 pt-8 border-t border-border-stroke shrink-0">
-                                <button type="button" onClick={() => setIsModalOpen(false)} disabled={isLoading} className="flex-1 cursor-pointer py-4 text-sm font-bold text-[#00000099] hover:bg-black/5 rounded-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed border border-transparent hover:border-border-stroke">Cancel</button>
+                            <div className="flex items-center gap-3 pt-6 border-t border-border-stroke">
+                                <button type="button" onClick={() => setIsModalOpen(false)} disabled={isLoading} className="flex-1 cursor-pointer py-4 text-sm font-bold text-[#00000099] hover:bg-black/5 rounded-2xl transition-all disabled:opacity-50 disabled:cursor-not-allowed">Cancel</button>
                                 <button type="submit" disabled={isLoading} className="flex-[2] cursor-pointer py-4 bg-brand-gradient text-white rounded-2xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all font-outfit disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2">
                                     {isLoading && <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>}
-                                    {isLoading ? (editingTestimonial ? "Updating..." : "Creating...") : (editingTestimonial ? "Update Testimonial" : "Save Testimonial")}
+                                    {isLoading ? (editingTestimonial ? "Updating..." : "Creating...") : (editingTestimonial ? "Update Testimonial" : "Create Testimonial")}
                                 </button>
                             </div>
                         </form>

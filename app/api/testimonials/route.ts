@@ -18,6 +18,7 @@ export async function GET(req: Request) {
                 description: t.description[lang],
                 graduateDate: t.graduateDate[lang],
                 companyLogo: t.companyLogo,
+                image: t.image,
                 achievements: t.achievements.map((ach: any) => ({
                     value: ach.value[lang],
                     label: ach.label[lang]
