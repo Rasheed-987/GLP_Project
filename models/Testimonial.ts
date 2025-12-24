@@ -28,7 +28,8 @@ const TestimonialSchema = new mongoose.Schema({
         en: { type: String, required: true },
         ar: { type: String, required: true }
     },
-    companyLogo: { type: String }, // Assuming URL or base64 string
+    companyLogo: { type: String },
+    image: { type: String },
     achievements: {
         type: [AchievementSchema],
         validate: [arrayLimit, '{PATH} must have exactly 3 achievements']
