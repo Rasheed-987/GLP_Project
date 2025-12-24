@@ -18,6 +18,7 @@ import {
     Loader2
 } from "lucide-react";
 import clientApi from "@/lib/clientApi";
+import LoadingScreen from "@/components/LoadingScreen";
 
 export default function DashboardPage() {
     const params = useParams();
@@ -112,12 +113,8 @@ export default function DashboardPage() {
     ];
 
 
-    if (loading) {
-        return (
-            <div className="h-[60vh] flex items-center justify-center">
-                <Loader2 className="w-8 h-8 text-brand-blue animate-spin" />
-            </div>
-        );
+    if (loading || !dict) {
+        return <LoadingScreen />;
     }
 
     return (

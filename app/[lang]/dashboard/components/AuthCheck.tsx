@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Locale } from "@/lib/i18n/config";
+import LoadingScreen from "@/components/LoadingScreen";
 
 interface AuthCheckProps {
     children: React.ReactNode;
@@ -38,7 +39,7 @@ export default function AuthCheck({ children, lang }: AuthCheckProps) {
     }, [lang, router]);
 
     if (!isAuthorized) {
-        return null; // or a loading spinner
+        return <LoadingScreen />;
     }
 
     return <>{children}</>;

@@ -10,6 +10,7 @@ import clientApi from "@/lib/clientApi";
 import { toast } from "react-hot-toast";
 import DatePicker from "@/app/components/DatePicker";
 import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
+import LoadingScreen from "@/components/LoadingScreen";
 
 interface ContentSection {
     id: string;
@@ -68,6 +69,7 @@ export default function ArticlesPage() {
     const [dateEn, setDateEn] = useState("");
     const [dateAr, setDateAr] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [pageLoading, setPageLoading] = useState(true);
     const [actionId, setActionId] = useState<string | null>(null);
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -85,11 +87,17 @@ export default function ArticlesPage() {
     };
 
     useEffect(() => {
-        getDictionary(lang).then(setDict);
-        fetchArticles();
+        const init = async () => {
+            await Promise.all([
+                getDictionary(lang).then(setDict),
+                fetchArticles()
+            ]);
+            setPageLoading(false);
+        };
+        init();
     }, [lang]);
 
-    if (!dict) return null;
+    if (pageLoading || !dict) return <LoadingScreen />;
 
     const currentArticles = articles.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 

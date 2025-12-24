@@ -8,6 +8,7 @@ import { Plus, ChevronLeft, ChevronRight, Edit2, Trash2, Calendar, Clock, CheckC
 import clientApi from "@/lib/clientApi";
 import toast from "react-hot-toast";
 import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
+import LoadingScreen from "@/components/LoadingScreen";
 
 interface Achievement {
     value: {
@@ -59,6 +60,7 @@ export default function TestimonialsPage() {
     const [logoPreview, setLogoPreview] = useState<string | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [pageLoading, setPageLoading] = useState(true);
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [actionId, setActionId] = useState<string | null>(null);
@@ -82,8 +84,14 @@ export default function TestimonialsPage() {
     }, []);
 
     useEffect(() => {
-        getDictionary(lang).then(setDict);
-        fetchTestimonials();
+        const init = async () => {
+            await Promise.all([
+                getDictionary(lang).then(setDict),
+                fetchTestimonials()
+            ]);
+            setPageLoading(false);
+        };
+        init();
     }, [lang, fetchTestimonials]);
 
     useEffect(() => {
@@ -100,7 +108,9 @@ export default function TestimonialsPage() {
         }
     }, [editingTestimonial]);
 
-    if (!dict) return null;
+    if (pageLoading || !dict) {
+        return <LoadingScreen />;
+    }
 
     const totalPages = Math.ceil(testimonials.length / itemsPerPage);
     const currentTestimonials = testimonials.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -347,7 +357,7 @@ export default function TestimonialsPage() {
                             </button>
                         </div>
 
-                        <form className="flex-1 overflow-y-auto p-8 space-y-8" onSubmit={async (e) => {
+                        <form className="flex-1 overflow-y-auto p-8 space-y-8 no-scrollbar" onSubmit={async (e) => {
                             e.preventDefault();
                             if (isLoading) return;
                             setIsLoading(true);
@@ -443,12 +453,12 @@ export default function TestimonialsPage() {
                                     </div>
                                 </div>
 
-                                {/* Media Section (Improved) */}
+                                {/* Media Section (Improved visibility) */}
                                 <div className="space-y-4 border-t border-border-stroke pt-4">
                                     <h4 className="flex items-center gap-2 text-sm font-bold text-black uppercase tracking-widest border-l-4 border-brand-blue pl-3">
                                         Media (Photos & Logos)
                                     </h4>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 bg-[#F7FAF9] p-6 rounded-2xl border border-border-stroke">
+                                    <div className="grid grid-cols-1 gap-10 bg-[#F7FAF9] p-8 rounded-3xl border border-border-stroke">
                                         {/* Company Logo */}
                                         <div className="space-y-4">
                                             <div className="flex items-center justify-between">

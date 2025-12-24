@@ -8,6 +8,7 @@ import { Plus, ChevronLeft, ChevronRight, Edit2, Trash2, Calendar, Clock, CheckC
 import clientApi from "@/lib/clientApi";
 import toast from "react-hot-toast";
 import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
+import LoadingScreen from "@/components/LoadingScreen";
 
 interface NewsItem {
     id: string;
@@ -47,6 +48,7 @@ export default function NewsPage() {
     const [selectedStatusEn, setSelectedStatusEn] = useState<"active" | "inactive">("active");
     const [selectedStatusAr, setSelectedStatusAr] = useState<"active" | "inactive">("active");
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [pageLoading, setPageLoading] = useState(true);
     const [actionId, setActionId] = useState<string | null>(null);
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -63,15 +65,18 @@ export default function NewsPage() {
     };
 
     useEffect(() => {
-        const initData = () => {
-            getDictionary(lang).then(setDict);
-            void fetchNews();
+        const initData = async () => {
+            await Promise.all([
+                getDictionary(lang).then(setDict),
+                fetchNews()
+            ]);
+            setPageLoading(false);
         };
         initData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [lang]);
 
-    if (!dict) return null;
+    if (pageLoading || !dict) return <LoadingScreen />;
 
     const totalPages = Math.ceil(news.length / itemsPerPage);
     const currentNews = news.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
