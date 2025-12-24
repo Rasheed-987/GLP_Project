@@ -4,10 +4,33 @@ import Article from '@/models/Article';
 import { writeFile, mkdir } from 'fs/promises';
 import { join } from 'path';
 
-export async function GET() {
+export async function GET(req: Request) {
     try {
+        const { searchParams } = new URL(req.url);
+        const lang = searchParams.get('lang') as 'en' | 'ar' | null;
+
         await dbConnect();
         const articles = await Article.find({}).sort({ createdAt: -1 });
+
+        if (lang && (lang === 'en' || lang === 'ar')) {
+            const localizedArticles = articles.map((article: any) => ({
+                id: article._id,
+                title: article.title[lang],
+                subtitle: article.subtitle[lang],
+                date: article.date[lang],
+                mainImage: article.mainImage,
+                sections: article.sections.map((section: any) => ({
+                    id: section.id,
+                    heading: section.heading[lang],
+                    content: section.content[lang]
+                })),
+                status: article.status[lang],
+                createdAt: article.createdAt,
+                updatedAt: article.updatedAt
+            }));
+            return NextResponse.json(localizedArticles);
+        }
+
         return NextResponse.json(articles);
     } catch (error: any) {
         console.error('Error fetching articles:', error);

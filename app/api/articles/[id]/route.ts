@@ -7,11 +7,35 @@ import { join } from 'path';
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const { id } = await params;
+        const { searchParams } = new URL(req.url);
+        const lang = searchParams.get('lang') as 'en' | 'ar' | null;
+
         await dbConnect();
         const article = await Article.findById(id);
+
         if (!article) {
             return NextResponse.json({ error: 'Article not found' }, { status: 404 });
         }
+
+        if (lang && (lang === 'en' || lang === 'ar')) {
+            const localizedArticle = {
+                id: article._id,
+                title: article.title[lang],
+                subtitle: article.subtitle[lang],
+                date: article.date[lang],
+                mainImage: article.mainImage,
+                sections: article.sections.map((section: any) => ({
+                    id: section.id,
+                    heading: section.heading[lang],
+                    content: section.content[lang]
+                })),
+                status: article.status[lang],
+                createdAt: article.createdAt,
+                updatedAt: article.updatedAt
+            };
+            return NextResponse.json(localizedArticle);
+        }
+
         return NextResponse.json(article);
     } catch (error: any) {
         console.error('Error fetching article:', error);
