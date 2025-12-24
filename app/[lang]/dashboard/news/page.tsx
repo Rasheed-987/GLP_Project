@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { Locale } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/dictionaries";
 import { Plus, ChevronLeft, ChevronRight, Edit2, Trash2, Calendar, Clock, CheckCircle, XCircle, ChevronDown } from "lucide-react";
-import clientApi from "@/lib/axios";
+import clientApi from "@/lib/clientApi";
 import toast from "react-hot-toast";
 
 interface NewsItem {
