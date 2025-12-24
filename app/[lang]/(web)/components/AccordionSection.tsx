@@ -34,7 +34,7 @@ export default function AccordionSection({
           type="button"
           onClick={handleToggle}
           className="w-full flex items-center justify-between text-start gap-4 pb-4 relative z-10"
-          style={{ borderBottom: `2px solid ${color}` }}
+          style={{ borderBottom: `3px solid ${color}` }}
         >
           <h2 className="text-[18px] md:text-[20px] font-semibold" style={{ color }}>
             {title}

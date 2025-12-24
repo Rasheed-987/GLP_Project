@@ -28,28 +28,25 @@ const MobileLine = ({
     <div className="w-[2px] relative flex flex-col items-center h-full">
       {/* Continuous vertical line */}
       <div 
-        className="w-full h-full" 
-        style={{ backgroundColor: color }} 
+        className="w-full" 
+        style={{ 
+          backgroundColor: color, 
+          height: type === "start" ? "45px" : "100%" 
+        }} 
       />
       
-      {/* The Dot and Bend for the active section header */}
+      {/* Horizontal bend connecting into the header underline */}
       {type === "start" && (
-        <div className="absolute top-[18px] z-10 w-full flex items-center justify-center overflow-visible">
-          <div 
-            className="w-[9px] h-[9px] rounded-full shrink-0 shadow-sm" 
-            style={{ backgroundColor: color, border: '1.5px solid white' }} 
-          />
-          {/* Horizontal bend connecting into the header underline */}
-          <div 
-            className="absolute h-[2px] w-[32px]" 
-            style={{ 
-              backgroundColor: color,
-              [isRtl ? 'right' : 'left']: '1px',
-              top: '50%',
-              transform: 'translateY(-50%)'
-            }} 
-          />
-        </div>
+        <div 
+          className="absolute h-[2px]" 
+          style={{ 
+            width: color === "#059669" ? "68px" : "36px", // Increased by 4px for horizontal shift
+            backgroundColor: color,
+            [isRtl ? 'right' : 'left']: '1px',
+            top: '44px', // Align vertical end 
+            transform: 'translateY(-50%)' // Center vertically on the 22px point
+          }} 
+        />
       )}
     </div>
   );
@@ -69,16 +66,18 @@ const MobileSectionLayout = ({
   const GREEN = "#059669";
   
   const lines = [
-    { color: GREEN, type: activeColor === GREEN ? "start" : activeColor === BLACK || activeColor === RED ? "full" : "none" },
-    { color: BLACK, type: activeColor === BLACK ? "start" : activeColor === RED ? "full" : "none" },
-    { color: RED, type: activeColor === RED ? "start" : "none" },
+    { color: GREEN, type: activeColor === GREEN ? "start" : activeColor === BLACK || activeColor === RED ? "full" : "none", left: '-4px' },
+    { color: BLACK, type: activeColor === BLACK ? "start" : activeColor === RED ? "full" : "none", left: '28px' },
+    { color: RED, type: activeColor === RED ? "start" : "none", left: '52px' },
   ];
 
   return (
-    <div className="flex gap-0 lg:hidden min-h-[100px]">
-      <div className="flex gap-4 px-4 pt-0 shrink-0">
+    <div className="flex gap-0 lg:hidden min-h-[100px] -mt-[4px]">
+      <div className={`relative w-[60px] shrink-0 pt-0`}>
          {lines.map((l, i) => (
-           <MobileLine key={i} color={l.color} type={l.type as any} isRtl={isRtl} />
+           <div key={i} className="absolute h-full top-0" style={{ [isRtl ? 'right' : 'left']: l.left }}>
+             <MobileLine color={l.color} type={l.type as any} isRtl={isRtl} />
+           </div>
          ))}
       </div>
       <div className="flex-1 min-w-0">
@@ -91,25 +90,20 @@ const MobileSectionLayout = ({
 const MobileGlobeConnector = ({ isRtl }: { isRtl: boolean }) => {
   return (
     <div className={`lg:hidden flex pt-0 pb-0 justify-start h-[120px] items-end`}>
-       <div className="flex gap-4 px-4 h-full shrink-0">
-          {/* Green Line - Outer */}
-          <div className="w-[2px] relative h-full bg-transparent">
-             <div className="absolute bottom-0 w-full bg-[#059669] h-full" />
-          </div>
+       {/* Relative container to hold absolute lines */}
+      <div className={`relative h-full w-[60px] shrink-0 -mt-[4px]`}>
+          {/* Green Line - Outer (Aligned with -20px on globe) */}
+          <div className="absolute w-[2px] h-full bg-[#059669]" style={{ [isRtl ? 'right' : 'left']: '-4px' }} />
           
           {/* Black Line - Middle */}
-          <div className="w-[2px] relative h-full bg-transparent">
-             <div className="absolute bottom-0 w-full bg-[#111827] h-[85%]" />
-          </div>
+          <div className="absolute w-[2px] h-full bg-[#111827]" style={{ [isRtl ? 'right' : 'left']: '28px' }} />
 
           {/* Red Line - Inner */}
-          <div className="w-[2px] relative h-full bg-transparent">
-             <div className="absolute bottom-0 w-full bg-[#E11D48] h-[70%]" />
-          </div>
+          <div className="absolute w-[2px] h-full bg-[#E11D48]" style={{ [isRtl ? 'right' : 'left']: '52px' }} />
        </div>
     </div>
-  )
-}
+  );
+};
 
 export default function GLMContent({
   glm,
@@ -162,8 +156,8 @@ export default function GLMContent({
       const x2 = isRtl ? (hRect.right - cRect.left) : (hRect.left - cRect.left);
       const y2 = hRect.top + hRect.height - 1 - cRect.top;
 
-      // Elbow point: 60px from the dot
-      const elbowX = isRtl ? (x1 - 60) : (x1 + 60);
+      // Elbow point: 50px from the text start (x2)
+      const elbowX = isRtl ? (x2 + 50) : (x2 - 50);
       
       // M start -> L elbow -> L end
       return `M ${x1} ${y1} L ${elbowX} ${y2} L ${x2} ${y2}`;
@@ -209,7 +203,7 @@ export default function GLMContent({
 
   return (
     <div 
-      className={`flex flex-col ${isRtl ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-10 lg:gap-0 items-start relative lg:min-h-[900px]`} 
+      className={`flex flex-col ${isRtl ? 'lg:flex-row-reverse' : 'lg:flex-row'} gap-0 lg:gap-0 items-start relative lg:min-h-[900px]`} 
       ref={containerRef}
       dir={isRtl ? "rtl" : "ltr"}
     >
@@ -222,26 +216,30 @@ export default function GLMContent({
       </svg>
 
       {/* LEFT/RIGHT: Globe */}
-      <div className={`w-full lg:w-auto flex ${isRtl ? 'justify-end pr-4' : 'justify-start pl-4'} lg:px-0 lg:justify-start lg:absolute ${isRtl ? 'lg:-right-[200px]' : 'lg:-left-[200px]'} lg:top-0`}>
+      <div className={`w-full lg:w-auto flex ${isRtl ? 'justify-start pr-4' : 'justify-start pl-4'} lg:px-0 lg:justify-start lg:absolute ${isRtl ? 'lg:-right-[200px]' : 'lg:-left-[200px]'} lg:top-0`}>
         <div className="relative w-[320px] md:w-[380px] lg:w-[400px] aspect-square overflow-visible" ref={globeRef}>
           <div className="absolute inset-0 rounded-full overflow-hidden bg-white shadow-lg">
             <Image src={earth} alt="Globe" fill className="object-cover animate-spin-slow" priority />
           </div>
-          <div className="absolute -inset-5 rounded-full border-2 border-black/10 shadow-inner" />
+          <div className="absolute -inset-5 rounded-full border-2 border-[#EDEDED] shadow-inner" />
           
           {/* Desktop Dots */}
           <div ref={dotRef1} className="hidden lg:block absolute w-3 h-3 rounded-full bg-[#E11D48] z-20 shadow-md" style={{ top: '12%', [isRtl ? 'left' : 'right']: '10%', transform: `translate(${isRtl ? '-50%' : '50%'}, -50%)` }} />
           <div ref={dotRef2} className="hidden lg:block absolute w-3 h-3 rounded-full bg-[#111827] z-20 shadow-md" style={{ top: '42%', [isRtl ? 'left' : 'right']: '-4%', transform: `translate(${isRtl ? '-50%' : '50%'}, -50%)` }} />
           <div ref={dotRef3} className="hidden lg:block absolute w-3 h-3 rounded-full bg-[#059669] z-20 shadow-md" style={{ top: '72%', [isRtl ? 'left' : 'right']: '0%', transform: `translate(${isRtl ? '-50%' : '50%'}, -50%)` }} />
 
-          {/* Mobile Dots - Fixed to Border */}
           <div className="lg:hidden">
-             {/* Green - Outer */}
-             <div className="absolute w-[10px] h-[10px] rounded-full bg-[#059669] border-2 border-white z-20" style={{ top: '35%', [isRtl ? 'right' : 'left']: '1px' }} />
-             {/* Black - Middle */}
-             <div className="absolute w-[10px] h-[10px] rounded-full bg-[#111827] border-2 border-white z-20" style={{ top: '55%', [isRtl ? 'right' : 'left']: '17px' }} />
-             {/* Red - Inner */}
-             <div className="absolute w-[10px] h-[10px] rounded-full bg-[#E11D48] border-2 border-white z-20" style={{ top: '75%', [isRtl ? 'right' : 'left']: '33px' }} />
+             {/* Green - Outer (Top Section) - X_page=-4, X_rel=-20, Y=126 */}
+             <div className="absolute w-[2px] bg-[#059669] z-10" style={{ top: '126px', bottom: '-4px', [isRtl ? 'right' : 'left']: '-20px' }} />
+             <div className="absolute w-[10px] h-[10px] rounded-full bg-[#059669] border-2 border-white z-20" style={{ top: '126px', [isRtl ? 'right' : 'left']: '-24px', transform: 'translateY(-50%)' }} />
+             
+             {/* Black - Middle - X_page=28, X_rel=12, Y=264 */}
+             <div className="absolute w-[2px] bg-[#111827] z-10" style={{ top: '264px', bottom: '-4px', [isRtl ? 'right' : 'left']: '12px' }} />
+             <div className="absolute w-[10px] h-[10px] rounded-full bg-[#111827] border-2 border-white z-20" style={{ top: '264px', [isRtl ? 'right' : 'left']: '8px', transform: 'translateY(-50%)' }} />
+             
+             {/* Red - Inner (Bottom Section) - X_page=52, X_rel=36, Y=291 */}
+             <div className="absolute w-[2px] bg-[#E11D48] z-10" style={{ top: '291px', bottom: '-4px', [isRtl ? 'right' : 'left']: '36px' }} />
+             <div className="absolute w-[10px] h-[10px] rounded-full bg-[#E11D48] border-2 border-white z-20" style={{ top: '291px', [isRtl ? 'right' : 'left']: '32px', transform: 'translateY(-50%)' }} />
           </div>
         </div>
       </div>

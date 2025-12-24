@@ -21,7 +21,7 @@ export default function ContactSection({
     description,
     button,
     button2,
-    backgroundImage = '/images/contactbg.png'
+    backgroundImage = '/images/contactbackground.png'
 }: ContactSectionProps) {
     return (
         <section className="px-4 pb-20 text-white">

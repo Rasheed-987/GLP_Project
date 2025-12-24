@@ -340,7 +340,7 @@ export default async function GLMPage({
   return (
     <>
       {/* HERO */}
-      <section className="pt-16 md:pt-20 pb-10 md:pb-12">
+      <section className="pt-16 md:pt-20 pb-10">
         <Container className="px-4">
           {lang === "en" ? (<h1 className="text-center text-black leading-[1.05] mt-9 mb-10">
             <span className="block text-3xl md:text-5xl font-medium">

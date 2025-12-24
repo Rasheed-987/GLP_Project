@@ -14,19 +14,70 @@ type TopBarProps = {
   };
 };
 
+interface NewsData {
+  id: string;
+  topic: string;
+  content: string;
+  expiryDate: string;
+  applyNowUrl: string;
+  createdAt: string;
+}
+
 export default function TopBar({ locale, dict }: TopBarProps) {
   const [isVisible, setIsVisible] = useState(true);
+  const [news, setNews] = useState<NewsData | null>(null);
+  const [timeLeft, setTimeLeft] = useState<string>("");
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const response = await fetch(`/api/news/latest?lang=${locale}`);
+        if (response.ok) {
+          const data = await response.json();
+          setNews(data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch news:", error);
+      }
+    };
+
+    fetchNews();
+  }, [locale]);
+
+  useEffect(() => {
+    if (!news?.expiryDate) return;
+
+    const calculateTimeLeft = () => {
+      const difference = +new Date(news.expiryDate) - +new Date();
+      
+      if (difference > 0) {
+        const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((difference / 1000 / 60) % 60);
+        const seconds = Math.floor((difference / 1000) % 60);
+
+        return `${days} days ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      }
+      return "";
+    };
+
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [news]);
 
   useEffect(() => {
     const root = document.documentElement;
-    if (isVisible) {
+    if (isVisible && news) {
       root.style.setProperty("--topbar-height", "52px");
     } else {
       root.style.setProperty("--topbar-height", "0px");
     }
-  }, [isVisible]);
+  }, [isVisible, news]);
 
-  if (!isVisible) return null;
+  if (!isVisible || !news) return null;
 
   return (
     <div role="region" aria-label="announcement" className="w-full pt-2 px-2 md:px-0">
@@ -39,17 +90,21 @@ export default function TopBar({ locale, dict }: TopBarProps) {
           <Marquee speed={40} gradient={false} pauseOnHover={true}>
             <div className="flex items-center gap-4 sm:gap-8 px-4">
               <span className="text-xs md:text-sm font-medium whitespace-nowrap">
-                {dict.topBar.announcement}
+                {news.content}
               </span>
-              <span className="text-xs md:text-sm font-bold whitespace-nowrap">
-                14 days 07:00:51
-              </span>
-              <a
-                href="#apply"
-                className="inline-flex items-center rounded-full bg-white text-black hover:bg-white/90 transition-colors px-4 py-1.5 text-[10px] md:text-xs font-semibold whitespace-nowrap"
-              >
-                {dict.topBar.applyNow}
-              </a>
+              {timeLeft && (
+                <span className="text-xs md:text-sm font-bold whitespace-nowrap">
+                  {timeLeft}
+                </span>
+              )}
+              {news.applyNowUrl && (
+                <a
+                  href={news.applyNowUrl}
+                  className="inline-flex items-center rounded-full bg-white text-black hover:bg-white/90 transition-colors px-4 py-1.5 text-[10px] md:text-xs font-semibold whitespace-nowrap"
+                >
+                  {dict.topBar.applyNow}
+                </a>
+              )}
             </div>
           </Marquee>
         </div>
