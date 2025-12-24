@@ -14,6 +14,33 @@ export default async function ResourcesPage({
   const { lang } = await params;
   const dict = await getDictionary(lang);
 
+  let articles = [];
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const res = await fetch(`${baseUrl}/api/articles?lang=${lang}`, { cache: 'no-store' });
+    if (res.ok) {
+        const data = await res.json();
+        // Map API fields to component fields
+        articles = data.map((item: any) => ({
+            id: item.id,
+            slug: item.slug,
+            title: item.title,
+            date: item.date,
+            excerpt: item.subtitle, // Map subtitle -> excerpt
+            image: item.mainImage,  // Map mainImage -> image
+        }));
+    } else {
+      console.error("Failed to fetch articles");
+    }
+  } catch (error) {
+    console.error("Error fetching articles:", error);
+  }
+
+  // Fallback to dictionary if API fails or returns empty
+  if (!articles || articles.length === 0) {
+     articles = dict?.article?.articles || [];
+  }
+
   const t = dict?.resources;
   const tArticle = dict?.article;
 
@@ -73,7 +100,7 @@ export default async function ResourcesPage({
               tabs={tabs}
               subtitle={t.subtitle}
               videoCards={t.videoCards ?? []}
-              articles={tArticle?.articles ?? []}
+              articles={articles}
               seeMoreText={t.seeMore}
               lang={lang}
               reportsData={t.reportsData}

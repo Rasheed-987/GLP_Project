@@ -20,6 +20,37 @@ export default async function HomePage({
 
   const programs = dict.programs.items.slice(0, 3);
 
+
+  let testimonials = [];
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const testimonialRes = await fetch(`${baseUrl}/api/testimonials?lang=${lang}`, { cache: 'no-store' });
+    if (testimonialRes.ok) {
+      const data = await testimonialRes.json();
+      testimonials = data.map((t: any) => ({
+        tag: t.graduateDate,
+        quote: t.description,
+        author: t.name,
+        role: t.profession,
+        image: t.image || "/images/homecenter1.png", // Fallback image
+        logo: t.companyLogo || "/images/logo.png", // Fallback logo
+        stats: t.achievements && t.achievements.length > 0 ? t.achievements : [
+          { value: "40%", label: "Improvement in Patient Outcomes" },
+          { value: "30%", label: "Reduction in Operational Costs" },
+          { value: "24/7", label: "Virtual Health Support" }
+        ]
+      }));
+    }
+  } catch (error) {
+    console.error("Failed to fetch testimonials:", error);
+    testimonials = dict.home.alumni.items; // Fallback to dictionary
+  }
+
+  // Use dictionary items if API returns empty
+  if (testimonials.length === 0) {
+    // testimonials = dict.home.alumni.items;
+  }
+
   return (
     <>
       {/* Hero Section: Main introduction with primary call-to-action */}
@@ -225,7 +256,7 @@ export default async function HomePage({
           </Container>
         <div className="">
        
-          <Carousel items={dict.home.alumni.items} lang={lang} />
+          <Carousel items={testimonials} lang={lang} />
         </div>
       </section>
 
