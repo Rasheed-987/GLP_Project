@@ -7,6 +7,7 @@ import { getDictionary } from "@/lib/i18n/dictionaries";
 import { Plus, ChevronLeft, ChevronRight, Edit2, Trash2, Calendar, Clock, CheckCircle, XCircle, ChevronDown, User, Briefcase, Award, Image as ImageIcon } from "lucide-react";
 import clientApi from "@/lib/clientApi";
 import toast from "react-hot-toast";
+import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
 
 interface Achievement {
     value: {
@@ -59,6 +60,7 @@ export default function TestimonialsPage() {
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [actionId, setActionId] = useState<string | null>(null);
     const fileInputRef = React.useRef<HTMLInputElement>(null);
     const imageInputRef = React.useRef<HTMLInputElement>(null);
@@ -130,18 +132,24 @@ export default function TestimonialsPage() {
         }
     };
 
-    const deleteTestimonial = async (id: string) => {
-        if (confirm("Are you sure you want to delete this testimonial?")) {
-            setDeletingId(id);
-            try {
-                await clientApi.delete(`/api/testimonials/${id}`);
-                await fetchTestimonials();
-                toast.success("Testimonial deleted successfully");
-            } catch {
-                toast.error("Failed to delete testimonial");
-            } finally {
-                setDeletingId(null);
-            }
+    const handleDeleteClick = (id: string) => {
+        setDeletingId(id);
+        setIsDeleteModalOpen(true);
+    };
+
+    const deleteTestimonial = async () => {
+        if (!deletingId) return;
+        setIsLoading(true);
+        try {
+            await clientApi.delete(`/api/testimonials/${deletingId}`);
+            await fetchTestimonials();
+            toast.success("Testimonial deleted successfully");
+            setIsDeleteModalOpen(false);
+        } catch {
+            toast.error("Failed to delete testimonial");
+        } finally {
+            setIsLoading(false);
+            setDeletingId(null);
         }
     };
 
@@ -275,15 +283,11 @@ export default function TestimonialsPage() {
                                                 <Edit2 className="w-4 h-4" />
                                             </button>
                                             <button
-                                                onClick={() => deleteTestimonial(item.id)}
+                                                onClick={() => handleDeleteClick(item.id)}
                                                 disabled={deletingId === item.id}
                                                 className="p-2 text-[#00000066] hover:text-red-600 hover:bg-red-50 rounded-lg transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                             >
-                                                {deletingId === item.id ? (
-                                                    <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin"></div>
-                                                ) : (
-                                                    <Trash2 className="w-4 h-4" />
-                                                )}
+                                                <Trash2 className="w-4 h-4" />
                                             </button>
                                         </div>
                                     </td>
@@ -636,6 +640,18 @@ export default function TestimonialsPage() {
                     </div>
                 </div>
             )}
+            {/* Delete Confirmation Modal */}
+            <DeleteConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                    setDeletingId(null);
+                }}
+                onConfirm={deleteTestimonial}
+                title="Delete Testimonial"
+                message="Are you sure you want to delete this testimonial? This action cannot be undone."
+                isLoading={isLoading}
+            />
         </div>
     );
 }

@@ -9,6 +9,7 @@ import Image from "next/image";
 import clientApi from "@/lib/clientApi";
 import { toast } from "react-hot-toast";
 import DatePicker from "@/app/components/DatePicker";
+import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
 
 interface ContentSection {
     id: string;
@@ -68,6 +69,8 @@ export default function ArticlesPage() {
     const [dateAr, setDateAr] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [actionId, setActionId] = useState<string | null>(null);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const itemsPerPage = 8;
@@ -140,20 +143,24 @@ export default function ArticlesPage() {
         }
     };
 
-    const deleteArticle = async (id: string) => {
-        if (confirm("Are you sure you want to delete this article?")) {
-            setActionId(id);
-            setIsSubmitting(true);
-            try {
-                await clientApi.delete(`/api/articles/${id}`);
-                await fetchArticles();
-                toast.success("Article deleted successfully");
-            } catch {
-                toast.error("Failed to delete article");
-            } finally {
-                setIsSubmitting(false);
-                setActionId(null);
-            }
+    const handleDeleteClick = (id: string) => {
+        setDeletingId(id);
+        setIsDeleteModalOpen(true);
+    };
+
+    const deleteArticle = async () => {
+        if (!deletingId) return;
+        setIsSubmitting(true);
+        try {
+            await clientApi.delete(`/api/articles/${deletingId}`);
+            await fetchArticles();
+            toast.success("Article deleted successfully");
+            setIsDeleteModalOpen(false);
+        } catch {
+            toast.error("Failed to delete article");
+        } finally {
+            setIsSubmitting(false);
+            setDeletingId(null);
         }
     };
 
@@ -269,15 +276,11 @@ export default function ArticlesPage() {
                                                 <Edit2 className="w-4 h-4" />
                                             </button>
                                             <button
-                                                onClick={() => deleteArticle(item.id)}
+                                                onClick={() => handleDeleteClick(item.id)}
                                                 disabled={isSubmitting && actionId === item.id}
                                                 className="p-2 text-[#00000066] hover:text-red-600 hover:bg-red-50 rounded-lg transition-all cursor-pointer disabled:opacity-50"
                                             >
-                                                {isSubmitting && actionId === item.id ? (
-                                                    <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
-                                                ) : (
-                                                    <Trash2 className="w-4 h-4" />
-                                                )}
+                                                <Trash2 className="w-4 h-4" />
                                             </button>
                                         </div>
                                     </td>
@@ -541,6 +544,18 @@ export default function ArticlesPage() {
                     </div>
                 </div>
             )}
+            {/* Delete Confirmation Modal */}
+            <DeleteConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                    setDeletingId(null);
+                }}
+                onConfirm={deleteArticle}
+                title="Delete Article"
+                message="Are you sure you want to delete this article? This action cannot be undone."
+                isLoading={isSubmitting}
+            />
         </div>
     );
 }

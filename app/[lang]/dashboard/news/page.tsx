@@ -7,6 +7,7 @@ import { getDictionary } from "@/lib/i18n/dictionaries";
 import { Plus, ChevronLeft, ChevronRight, Edit2, Trash2, Calendar, Clock, CheckCircle, XCircle, ChevronDown } from "lucide-react";
 import clientApi from "@/lib/clientApi";
 import toast from "react-hot-toast";
+import DeleteConfirmationModal from "@/components/DeleteConfirmationModal";
 
 interface NewsItem {
     id: string;
@@ -47,6 +48,8 @@ export default function NewsPage() {
     const [selectedStatusAr, setSelectedStatusAr] = useState<"active" | "inactive">("active");
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [actionId, setActionId] = useState<string | null>(null);
+    const [deletingId, setDeletingId] = useState<string | null>(null);
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const itemsPerPage = 10;
 
@@ -100,20 +103,24 @@ export default function NewsPage() {
         }
     };
 
-    const deleteNews = async (id: string) => {
-        if (confirm("Are you sure you want to delete this news?")) {
-            setActionId(id);
-            setIsSubmitting(true);
-            try {
-                await clientApi.delete(`/api/news/${id}`);
-                await fetchNews();
-                toast.success("News deleted successfully");
-            } catch {
-                toast.error("Failed to delete news");
-            } finally {
-                setIsSubmitting(false);
-                setActionId(null);
-            }
+    const handleDeleteClick = (id: string) => {
+        setDeletingId(id);
+        setIsDeleteModalOpen(true);
+    };
+
+    const deleteNews = async () => {
+        if (!deletingId) return;
+        setIsSubmitting(true);
+        try {
+            await clientApi.delete(`/api/news/${deletingId}`);
+            await fetchNews();
+            toast.success("News deleted successfully");
+            setIsDeleteModalOpen(false);
+        } catch {
+            toast.error("Failed to delete news");
+        } finally {
+            setIsSubmitting(false);
+            setDeletingId(null);
         }
     };
 
@@ -216,15 +223,11 @@ export default function NewsPage() {
                                                 <Edit2 className="w-4 h-4" />
                                             </button>
                                             <button
-                                                onClick={() => deleteNews(item.id)}
+                                                onClick={() => handleDeleteClick(item.id)}
                                                 disabled={isSubmitting && actionId === item.id}
                                                 className="p-2 text-[#00000066] hover:text-red-600 hover:bg-red-50 rounded-lg transition-all disabled:opacity-50"
                                             >
-                                                {isSubmitting && actionId === item.id ? (
-                                                    <div className="w-4 h-4 border-2 border-red-600 border-t-transparent rounded-full animate-spin" />
-                                                ) : (
-                                                    <Trash2 className="w-4 h-4" />
-                                                )}
+                                                <Trash2 className="w-4 h-4" />
                                             </button>
                                         </div>
                                     </td>
@@ -545,6 +548,18 @@ export default function NewsPage() {
                     </div>
                 </div>
             )}
+            {/* Delete Confirmation Modal */}
+            <DeleteConfirmationModal
+                isOpen={isDeleteModalOpen}
+                onClose={() => {
+                    setIsDeleteModalOpen(false);
+                    setDeletingId(null);
+                }}
+                onConfirm={deleteNews}
+                title="Delete News"
+                message="Are you sure you want to delete this news item? This action cannot be undone."
+                isLoading={isSubmitting}
+            />
         </div>
     );
 }
