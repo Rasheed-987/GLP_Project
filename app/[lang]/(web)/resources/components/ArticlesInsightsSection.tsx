@@ -41,7 +41,7 @@ function ActionCircle({ href = "#", className = "" }: { href?: string; className
 }
 
 function FeaturedCard({ a }: { a: Article }) {
-  const href = a.href || (a.slug ? `/article/${a.slug}` : "#");
+  const href = a.href || (a.id ? `/article/${a.id}` : (a.slug ? `/article/${a.slug}` : "#"));
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[1.55fr_1fr] gap-4 lg:gap-10 items-stretch">
@@ -73,7 +73,7 @@ function FeaturedCard({ a }: { a: Article }) {
 }
 
 function SmallCard({ a }: { a: Article }) {
-  const href = a.href || (a.slug ? `/article/${a.slug}` : "#");
+  const href = a.href || (a.id ? `/article/${a.id}` : (a.slug ? `/article/${a.slug}` : "#"));
 
   return (
     <div className="w-full">
