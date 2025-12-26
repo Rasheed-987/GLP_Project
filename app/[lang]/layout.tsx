@@ -2,7 +2,7 @@ import '../globals.css'
 import type { Locale } from "../../lib/i18n/config"
 import { getDictionary } from "../../lib/i18n/dictionaries"
 import localFont from 'next/font/local'
-import { Toaster } from 'react-hot-toast'
+import ToasterProvider from '../components/ToasterProvider'
 import Providers from './providers'
 
 const frutiger = localFont({
@@ -56,7 +56,7 @@ export default async function LangLayout({
   return (
     <html lang={locale} dir={dir}>
       <body className={`${frutiger.variable} font-sans antialiased`}>
-        <Toaster position="top-center" />
+        <ToasterProvider />
         <Providers>
           {children}
         </Providers>
