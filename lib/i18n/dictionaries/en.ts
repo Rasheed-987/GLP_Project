@@ -1,5 +1,3 @@
-import { text } from "stream/consumers";
-
 export default {
   nav: {
     home: 'Home',
@@ -227,48 +225,48 @@ export default {
             },
           ],
         },
-        // {
-        //   label: "APPLICATION & SELECTION",
-        //   items: [
-        //     {
-        //       q: "How do I apply to a programme?",
-        //       a: "You can apply through the online application form when admissions are open, by submitting the required details and documents (if needed).",
-        //     },
-        //     {
-        //       q: "Can I apply to more than one programme?",
-        //       a: "Yes, subject to eligibility criteria and scheduling. We recommend choosing the programme that best matches your career stage first.",
-        //     },
-        //     {
-        //       q: "What does the selection process involve?",
-        //       a: "Depending on the programme, selection may include application review, interviews, and assessments to ensure alignment with programme goals.",
-        //     },
-        //     {
-        //       q: "Is there a cost to participate?",
-        //       a: "Fees (if applicable) depend on the programme and partnerships. Most programmes are supported; details are shared during admissions.",
-        //     },
-        //     {
-        //       q: "How can I access the Qiyadat platform?",
-        //       a: "Access is granted to participants and alumni depending on the programme, via credentials shared after admission or graduation.",
-        //     },
-        //     {
-        //       q: "What opportunities are available after graduation?",
-        //       a: "Graduates join the alumni network and can access ongoing learning, leadership events, and collaboration initiatives.",
-        //     },
-        //   ],
-        // },
-        // {
-        //   label: "FOR ENTITIES / PARTNERS",
-        //   items: [
-        //     {
-        //       q: "Can our entity collaborate with GLP to develop a custom programme?",
-        //       a: "Yes. GLP partners with entities to co-design and deliver tailored programmes aligned with strategic needs through consultation, co-design, and delivery.",
-        //     },
-        //     {
-        //       q: "Do you work with private companies or only government bodies?",
-        //       a: "We work with government entities and private sector partners depending on the partnership scope and programme objectives.",
-        //     },
-        //   ],
-        // },
+        {
+          label: "APPLICATION & SELECTION",
+          items: [
+            {
+              q: "How do I apply to a programme?",
+              a: "You can apply through the online application form when admissions are open, by submitting the required details and documents (if needed).",
+            },
+            {
+              q: "Can I apply to more than one programme?",
+              a: "Yes, subject to eligibility criteria and scheduling. We recommend choosing the programme that best matches your career stage first.",
+            },
+            {
+              q: "What does the selection process involve?",
+              a: "Depending on the programme, selection may include application review, interviews, and assessments to ensure alignment with programme goals.",
+            },
+            {
+              q: "Is there a cost to participate?",
+              a: "Fees (if applicable) depend on the programme and partnerships. Most programmes are supported; details are shared during admissions.",
+            },
+            {
+              q: "How can I access the Qiyadat platform?",
+              a: "Access is granted to participants and alumni depending on the programme, via credentials shared after admission or graduation.",
+            },
+            {
+              q: "What opportunities are available after graduation?",
+              a: "Graduates join the alumni network and can access ongoing learning, leadership events, and collaboration initiatives.",
+            },
+          ],
+        },
+        {
+          label: "FOR ENTITIES / PARTNERS",
+          items: [
+            {
+              q: "Can our entity collaborate with GLP to develop a custom programme?",
+              a: "Yes. GLP partners with entities to co-design and deliver tailored programmes aligned with strategic needs through consultation, co-design, and delivery.",
+            },
+            {
+              q: "Do you work with private companies or only government bodies?",
+              a: "We work with government entities and private sector partners depending on the partnership scope and programme objectives.",
+            },
+          ],
+        },
       ],
     },
     cta: {

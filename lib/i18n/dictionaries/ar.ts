@@ -1,5 +1,3 @@
-import { subtle } from "crypto";
-
 export default {
   nav: {
     home: "الرئيسية",

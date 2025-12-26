@@ -19,11 +19,8 @@ export default async function ContactPage({
             <section className="bg-white min-h-screen py-20 lg:py-24">
                 <Container className="px-4">
                     <div className="relative w-full rounded-[1rem] md:rounded-[2rem] overflow-hidden flex items-stretch bg-[#006251] aspect-auto landscape:aspect-[2.4/1] min-h-0 md:min-h-[650px]">
-                        {/* Background Image Desktop */}
-                        {/* Background Image */}
-                        {/* Background Image Desktop */}
                         <Image
-                            src="/images/contactbackground.png"
+                            src="/images/contactbackground.webp"
                             alt="Contact Background"
                             fill
                             className="hidden md:block object-cover z-0"
@@ -31,7 +28,7 @@ export default async function ContactPage({
                         />
                         {/* Background Image Mobile */}
                         <Image
-                            src="/images/contactmblbackground.png"
+                            src="/images/contactmblbackground.webp"
                             alt="Contact Background"
                             fill
                             className="block md:hidden object-cover z-0"
@@ -41,7 +38,7 @@ export default async function ContactPage({
                         {/* Men Image Overlay */}
                         <div className={`absolute left-[50%] -translate-x-1/2 md:translate-x-0 bottom-[50%] w-full h-[60%] md:bottom-0 md:w-[80%] md:h-[80%] z-0 pointer-events-none md:-mb-4 ${isRtl ? 'md:right-[-2px] md:-mr-8' : 'md:left-[-2px] md:-ml-8'}`}>
                             <Image
-                                src="/images/contactmen.png"
+                                src="/images/contactmen.webp"
                                 alt="Contact Team"
                                 fill
                                 className={`object-contain object-bottom ${isRtl ? 'md:object-right' : 'md:object-left'}`}

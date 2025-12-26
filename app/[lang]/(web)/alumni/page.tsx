@@ -54,7 +54,7 @@ export default async function AlumniPage({
             <section>
                 <Container className="w-full px-4 ">
                     <Image
-                        src="/images/alumni_hero.png"
+                        src="/images/alumni_hero.webp"
                         alt="Alumni"
                         width={1920}
                         height={600}
@@ -69,7 +69,7 @@ export default async function AlumniPage({
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0 mx-4 overflow-hidden rounded-[1.5rem] ">
                     <Image
-                        src="/images/bg_1.png"
+                        src="/images/bg_1.webp"
                         alt=""
                         fill
                         className="object-cover"
