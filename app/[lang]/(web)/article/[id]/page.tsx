@@ -3,9 +3,9 @@ import type { Locale } from "../../../../../lib/i18n/config";
 import Container from "../../../../../app/components/Container";
 import Image from "next/image";
 import Link from "next/link";
-import CaseStudiesGrid from "../../components/CaseStudiesGrid";
 import TagPill from "../../components/TagPill";
 import { notFound } from "next/navigation";
+import { SmallCard, Article } from "../../resources/components/ArticlesInsightsSection";
 
 export default async function ArticleDetailsPage({
   params,
@@ -27,31 +27,30 @@ export default async function ArticleDetailsPage({
     console.error("Error fetching article:", error);
   }
 
-  // Fallback to dictionary search (optional, or just 404)
+  // Fallback to dictionary search
   if (!article) {
-    // Try to find in dictionary by ID or slug if possible, otherwise use first as fallback for demo so page doesn't crash?
-    // Actually better to show 404 or a fallback "not found" state.
-    // But for now, let's fallback to the first article in dict just to match the static behavior if ID is weird
-    // OR strictly follow the requirement.
-    // Let's use the static one for now if API fails so user sees something during dev
-    console.log("Article not found via API, falling back to static");
     article = dict.article.articles.find((a: any) => a.id === id || a.slug === id) || dict.article.articles[0];
   }
 
   if (!article) return notFound();
 
-  // Normalize data structure if needed
-  // API returns: { title, subtitle, date, mainImage, sections: [{heading, content, type}], ... }
-  // Design expects: article.title, article.excerpt (subtitle), article.date, article.image (mainImage), article.sections
   const displayArticle = {
     ...article,
     title: article.title,
     excerpt: article.subtitle || article.excerpt,
     image: article.mainImage || article.image,
     date: article.date,
-    tag: article.tag || dict.article.articles[0].tag || "Leadership", // Default tag
+    tag: article.tag || dict.article.articles[0].tag || "Leadership",
     sections: article.sections || []
   };
+
+  // Get related articles (exclude current one)
+  const allArticles = dict.article.articles || [];
+  const smallCards = allArticles
+    .filter((a: any) => String(a.id) !== String(id) && a.slug !== id)
+    .slice(0, 3);
+  
+  const caseStudies = dict.article.latestCaseStudies || "Our latest Case Studies";
 
   return (
     <>
@@ -80,28 +79,23 @@ export default async function ArticleDetailsPage({
           <span>{dict.article.back}</span>
         </Link>
       </section>
+
       <section className="mx-auto max-w-4xl">
         <div className="bg-white">
           <div className="mx-auto px-4 sm:px-6 lg:px-8 py-12">
-            {/* Header Top Row */}
             <div className="flex items-center justify-between mb-8">
-
               <TagPill label={displayArticle.tag} />
-
               <span className="text-sm text-gray-600 font-medium">{displayArticle.date}</span>
             </div>
 
-            {/* Article Title */}
             <h1 className="text-4xl text-black md:text-5xl lg:text-6xl font-bold leading-tight mb-8 max-w-4xl">
               {displayArticle.title}
             </h1>
 
-            {/* Article Subtitle */}
             <p className="text-lg md:text-xl text-gray-600 max-w-3xl mb-12 leading-relaxed">
               {displayArticle.excerpt}
             </p>
 
-            {/* Featured Image */}
             <div className="relative w-full h-75 md:h-100 lg:h-125 rounded-3xl overflow-hidden mb-16">
               <Image
                 src={displayArticle.image}
@@ -113,7 +107,6 @@ export default async function ArticleDetailsPage({
           </div>
         </div>
 
-        {/* Article Content Sections */}
         <div className="bg-white">
           <div className="mx-auto px-4 sm:px-6 lg:px-8 py-16">
             <div className="max-w-3xl">
@@ -145,11 +138,35 @@ export default async function ArticleDetailsPage({
             </div>
           </div>
         </div>
-
       </section>
 
-      {/* Our Latest Case studies (from dictionary for now as requested stats to be left alone/static) */}
-      <section>
+      {/* Related Articles Grid */}
+      <section className="pb-24 border-t border-gray-100">
+        <Container className="px-4 sm:px-6 lg:px-8 pt-16">
+          <h2 className="text-2xl md:text-3xl font-bold text-teal-700 mb-10">
+            {caseStudies}
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-12">
+            {smallCards.map((a: any, idx: number) => (
+              <SmallCard key={String(a.id ?? a.slug ?? idx)} a={a} />
+            ))}
+          </div>
+
+          <div className="mt-16 flex justify-center">
+            <Link href={`/${lang}/resources`}>
+              <button
+                type="button"
+                className="rounded-full bg-[#0B5F6A] text-white px-8 py-3 text-[14px] font-bold hover:bg-[#0A5560] transition-colors shadow-sm"
+              >
+                {dict.resources.seeMore || "See More"}
+              </button>
+            </Link>
+          </div>
+        </Container>
+
+        {/* Commented out original CaseStudiesGrid as per user request */}
+        {/* 
         <CaseStudiesGrid
           title={dict.article.latestCaseStudies ?? dict.article.relatedArticles}
           items={(dict.article.articles || []).map((a: any) => ({
@@ -163,9 +180,9 @@ export default async function ArticleDetailsPage({
             stats: a.stats,
           }))}
           hrefBase={`/${lang}/article`}
-        />
+        /> 
+        */}
       </section>
-
     </>
   );
 }

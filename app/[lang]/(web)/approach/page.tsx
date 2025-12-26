@@ -7,6 +7,7 @@ import type { Locale } from "../../../../lib/i18n/config";
 import TagPill from '../components/TagPill';
 import Button from '../components/Button';
 import ContactSection from '../components/ContactSection';
+import { getImageBlur } from '../../../../lib/image';
 
 export default async function ApproachPage({
     params,
@@ -15,6 +16,13 @@ export default async function ApproachPage({
 }) {
     const { lang } = await params;
     const dict = await getDictionary(lang);
+
+    const heroBlur = await getImageBlur("/images/approach_hero.webp");
+    const learningBlur = await getImageBlur("/images/LearningMethodology.webp");
+    const aboutBlur = await getImageBlur("/images/approach_about.webp");
+    const alumniBlur = await getImageBlur("/images/alumni.webp");
+    const alumniBgBlur = await getImageBlur("/images/bg_1.png");
+    const contactBlur = await getImageBlur("/images/contactbackground.png");
 
     return (
         <>
@@ -53,11 +61,13 @@ export default async function ApproachPage({
                         <div className="w-full lg:w-8/12 order-2">
                             <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden">
                                 <Image
-                                    src="/images/approach_hero.png"
+                                    src="/images/approach_hero.webp"
                                     alt="UAE Government Leaders Program Approach"
                                     fill
                                     className="object-cover"
                                     priority
+                                    placeholder={heroBlur ? "blur" : undefined}
+                                    blurDataURL={heroBlur}
                                 />
                             </div>
                         </div>
@@ -262,10 +272,12 @@ export default async function ApproachPage({
                         <div className="w-full lg:w-6/12 order-2">
                             <div className="relative w-full h-full min-h-[300px] lg:min-h-[600px] rounded-2xl lg:rounded-[1.5rem] overflow-hidden">
                                 <Image
-                                    src="/images/LearningMethodology.png"
+                                    src="/images/LearningMethodology.webp"
                                     alt="Learning Methodology"
                                     fill
                                     className="object-cover"
+                                    placeholder={learningBlur ? "blur" : undefined}
+                                    blurDataURL={learningBlur}
                                 />
                             </div>
                         </div>
@@ -355,12 +367,14 @@ export default async function ApproachPage({
             {/*  Image Section */}
             <section className="w-full px-4 ">
                 <Image
-                    src="/images/approach_about.png"
+                    src="/images/approach_about.webp"
                     alt="About UAELGM"
                     width={1920}
                     height={600}
                     className="w-full h-auto"
                     priority
+                    placeholder={aboutBlur ? "blur" : undefined}
+                    blurDataURL={aboutBlur}
                 />
             </section>
 
@@ -373,6 +387,8 @@ export default async function ApproachPage({
                         alt=""
                         fill
                         className="object-cover"
+                        placeholder={alumniBgBlur ? "blur" : undefined}
+                        blurDataURL={alumniBgBlur}
                     />
                 </div>
 
@@ -383,10 +399,12 @@ export default async function ApproachPage({
                             <div className="w-full lg:w-1/2">
                                 <div className="relative aspect-[4/3] w-full md:min-h-[600px] rounded-2xl  md:rounded-[1.5rem] overflow-hidden">
                                     <Image
-                                        src="/images/alumni.png"
+                                        src="/images/alumni.webp"
                                         alt="Alumni Network"
                                         fill
                                         className="object-cover"
+                                        placeholder={alumniBlur ? "blur" : undefined}
+                                        blurDataURL={alumniBlur}
                                     />
                                 </div>
                             </div>
@@ -478,6 +496,7 @@ export default async function ApproachPage({
                 titleLine2={dict.approach.contact.titleLine2}
                 description={dict.approach.contact.description}
                 button={dict.approach.contact.button}
+                blurDataURL={contactBlur}
             />
 
         </>

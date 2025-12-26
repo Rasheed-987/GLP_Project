@@ -129,10 +129,10 @@ function BigFeatured({
         <div className="h-full px-10 pt-10 pb-8 flex flex-col">
           {/* Quote (TOP in your screenshot) */}
           <div className={["flex flex-col gap-3", isRTL ? "text-right" : "text-left"].join(" ")}>
-            <div className="text-[#0C5A77] text-[16px] md:text-[22px] lg:text-[38px] leading-none font-extrabold">
+            <div className="text-[#0C5A77] text-[16px] md:text-[20px] lg:text-[24px] leading-none font-extrabold">
               {isRTL ? "”" : "“"}
             </div>
-            <p className="text-[#0C5A77] text-[20px] md:text-[22px] lg:text-[22px] leading-[1.45] font-medium">
+            <p className="text-[#0C5A77] text-[16px] md:text-[18px] lg:text-[20px] leading-[1.45] font-medium">
               {data.quote}
             </p>
           </div>
@@ -175,7 +175,7 @@ function BigFeatured({
               {data.stats.slice(0, 3).map((s, i) => (
                 <div key={i}>
                   <div
-                    className="text-[30px] md:text-[40px] lg:text-[74px] leading-none font-medium"
+                    className="text-[30px] md:text-[40px] lg:text-[56px] leading-none font-medium"
                     style={{
                       backgroundImage:
                         "linear-gradient(90deg, #045A86 0%, #019977 100%)",

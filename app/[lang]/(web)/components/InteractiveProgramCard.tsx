@@ -11,6 +11,8 @@ interface ProgramCardProps {
   };
   isInteractive: boolean;
   foregroundImage: string;
+  backgroundBlur?: string;
+  foregroundBlur?: string;
   index: number;
   dict: {
     nav: {
@@ -24,6 +26,8 @@ export default function InteractiveProgramCard({
   program,
   isInteractive,
   foregroundImage,
+  backgroundBlur,
+  foregroundBlur,
   index,
   dict,
 }: ProgramCardProps) {
@@ -33,10 +37,12 @@ export default function InteractiveProgramCard({
     <div key={program.title} className="group relative rounded-[32px] overflow-hidden aspect-4/5 lg:aspect-3/4 bg-brand-green">
       {/* Background Pattern */}
       <Image
-        src="/images/gb.png"
+        src="/images/gb.webp"
         alt=""
         fill
         className="object-cover"
+        placeholder={backgroundBlur ? "blur" : undefined}
+        blurDataURL={backgroundBlur}
       />
 
       {/* Foreground Image */}
@@ -46,11 +52,13 @@ export default function InteractiveProgramCard({
           alt={program.title}
           fill
           className={`object-contain object-bottom-right pointer-events-none transition-transform duration-500 ease-out ${isInteractive ? 'group-hover:scale-105' : ''}`}
+          placeholder={foregroundBlur ? "blur" : undefined}
+          blurDataURL={foregroundBlur}
         />
       </div>
 
       {/* Overlays for text readability */}
-      <div className="absolute inset-0 z-20 bg-gradient-to-b from-black/60 via-transparent h-1/2" />
+      <div className="absolute inset-0 z-20 bg-linear-to-b from-black/60 via-transparent h-1/2" />
       <div
         className={`absolute inset-0 z-20 bg-linear-to-t from-black/80 via-transparent transition-opacity duration-500 ${
           isInteractive

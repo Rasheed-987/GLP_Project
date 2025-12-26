@@ -4,6 +4,7 @@ import type { Locale } from "../../../../lib/i18n/config";
 import ContactSection from "../components/ContactSection";
 import ProgramCard from "../components/ProgramCard";
 import TagPill from "../components/TagPill";
+import { getImageBlur } from "../../../../lib/image";
 
 export default async function ProgramsPage({
     params,
@@ -12,6 +13,10 @@ export default async function ProgramsPage({
 }) {
     const { lang } = await params;
     const dict = await getDictionary(lang);
+
+    const programBlurs = await Promise.all(
+        (dict.programs.items || []).map((item: any) => getImageBlur(item.image))
+    );
 
     return (
         <>
@@ -52,6 +57,7 @@ export default async function ProgramsPage({
                             <ProgramCard
                                 item={item}
                                 reversed={index % 2 === 0} // Index 0 (First): Image Left. Index 1 (Second): Image Right.
+                                blurDataURL={programBlurs[index]}
                             />
                         </div>
                     );

@@ -49,9 +49,10 @@ export type ProgramItem = {
 interface ProgramCardProps {
     item: ProgramItem;
     reversed: boolean;
+    blurDataURL?: string;
 }
 
-export default function ProgramCard({ item, reversed }: ProgramCardProps) {
+export default function ProgramCard({ item, reversed, blurDataURL }: ProgramCardProps) {
     const isGreenTheme = item.theme === 'green';
     const bgColor = isGreenTheme ? 'bg-[#E4F3EF]' : 'bg-[#F7FAF9]';
 
@@ -160,6 +161,8 @@ export default function ProgramCard({ item, reversed }: ProgramCardProps) {
                             alt={item.title}
                             fill
                             className="object-cover"
+                            placeholder={blurDataURL ? "blur" : undefined}
+                            blurDataURL={blurDataURL}
                         />
                     ) : (
                         <div className="flex items-center justify-center h-full text-gray-400">Image Placeholder</div>

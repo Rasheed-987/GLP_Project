@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
+import Marquee from "react-fast-marquee";
 import VideoTile from "./VideoTile";
 import ArticlesInsightsSection from "./ArticlesInsightsSection";
 import AlumniImpactShowcase, {
@@ -69,22 +70,54 @@ export default function ResourcesClient({
   return (
     <div className="flex flex-col items-center w-full">
       {/* Tabs */}
-      <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-        {tabs.map((tb) => (
-          <button
-            key={tb.key}
-            type="button"
-            onClick={() => setActive(tb.key)}
-            className={[
-              "rounded-full px-7 py-3 text-[12px] font-semibold border transition-all",
-              tb.key === active
-                ? "bg-[#E6EFEA] text-slate-900 border-[#00000033]"
-                : "bg-white text-slate-700 border-[#00000033] hover:bg-slate-50",
-            ].join(" ")}
+      <div className="mt-8 w-full">
+        {/* Desktop View: Static and Centered */}
+        <div className="hidden md:flex flex-wrap items-center justify-center gap-3">
+          {tabs.map((tb) => (
+            <button
+              key={tb.key}
+              type="button"
+              onClick={() => setActive(tb.key)}
+              className={[
+                "rounded-full px-7 py-3 text-[12px] font-semibold border transition-all",
+                tb.key === active
+                  ? "bg-[#E6EFEA] text-slate-900 border-[#00000033]"
+                  : "bg-white text-slate-700 border-[#00000033] hover:bg-slate-50",
+              ].join(" ")}
+            >
+              {tb.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Mobile View: Continuous Moving (Marquee) */}
+        <div className="md:hidden">
+          <Marquee
+            speed={40}
+            gradient={true}
+            gradientColor="white"
+            gradientWidth={40}
+            play={true}
           >
-            {tb.label}
-          </button>
-        ))}
+            <div className="flex items-center gap-3 px-4 py-1">
+              {tabs.map((tb) => (
+                <button
+                  key={tb.key}
+                  type="button"
+                  onClick={() => setActive(tb.key)}
+                  className={[
+                    "rounded-full px-7 py-3 text-[12px] font-semibold border transition-all shrink-0",
+                    tb.key === active
+                      ? "bg-[#E6EFEA] text-slate-900 border-[#00000033]"
+                      : "bg-white text-slate-700 border-[#00000033] hover:bg-slate-50",
+                  ].join(" ")}
+                >
+                  {tb.label}
+                </button>
+              ))}
+            </div>
+          </Marquee>
+        </div>
       </div>
 
       <p className="mt-4 text-[13.5px] md:text-[15px] text-slate-500 text-center max-w-2xl px-4">

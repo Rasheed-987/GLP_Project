@@ -511,6 +511,8 @@ export default {
         nomineeEmail: "البريد الإلكتروني للمرشح",
         reason: "لماذا ترشح هذا الفرد؟",
         submit: "ارسال",
+        successTitle: "شكرًا لك على التوصية بـ",
+        successMessage: "سيتم التواصل معهم من قبل فريقنا مع أخذ توصيتك بعين الاعتبار"
       },
     },
     partners: {

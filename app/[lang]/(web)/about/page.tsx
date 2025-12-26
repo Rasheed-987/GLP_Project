@@ -5,6 +5,7 @@ import { getDictionary } from "../../../../lib/i18n/dictionaries";
 import type { Locale } from "../../../../lib/i18n/config";
 import TagPill from '../components/TagPill';
 import ContactSection from '../components/ContactSection';
+import { getImageBlur } from '../../../../lib/image';
 
 export default async function AboutPage({
   params,
@@ -13,6 +14,10 @@ export default async function AboutPage({
 }) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
+
+  const heroBlur = await getImageBlur("/images/about.webp");
+  const midBlur = await getImageBlur("/images/aboutmid.webp");
+  const contactBlur = await getImageBlur("/images/contactbg.webp");
 
   return (
     <>
@@ -38,11 +43,13 @@ export default async function AboutPage({
       <section className="px-4 pb-10">
         <div className="relative w-full aspect-video md:aspect-21/9 rounded-[20px] overflow-hidden">
           <Image
-            src="/images/about.png"
+            src="/images/about.webp"
             alt="Leadership Team"
             fill
             className="object-cover rounded-[20px]"
             priority
+            placeholder={heroBlur ? "blur" : undefined}
+            blurDataURL={heroBlur}
           />
         </div>
       </section>
@@ -68,10 +75,12 @@ export default async function AboutPage({
         <div className="hidden md:block absolute inset-0 z-0 bg-[#F9FBFC] rounded-[1.5rem] overflow-hidden border border-gray-100/50">
           <div className="relative w-full h-full flex items-center justify-center">
             <Image
-              src="/images/aboutmid.png"
+              src="/images/aboutmid.webp"
               alt="Background"
               fill
               className="object-cover opacity-90"
+              placeholder={midBlur ? "blur" : undefined}
+              blurDataURL={midBlur}
             />
           </div>
         </div>
@@ -92,10 +101,12 @@ export default async function AboutPage({
               {/* Mobile Image and Description Block */}
               <div className="md:hidden relative w-full h-[450px] mt-6 rounded-[2rem] overflow-hidden">
                 <Image
-                  src="/images/aboutmid.png"
+                  src="/images/aboutmid.webp"
                   alt="Innovation"
                   fill
                   className="object-cover"
+                  placeholder={midBlur ? "blur" : undefined}
+                  blurDataURL={midBlur}
                 />
                 <div className="absolute inset-x-0 bottom-0 p-8 pt-20 bg-linear-to-t from-black/80 to-transparent">
                   <p className="text-white text-[14px] leading-relaxed max-w-xs">
@@ -269,6 +280,7 @@ export default async function AboutPage({
         button={dict.about.cta.button1}
         button2={dict.about.cta.button2}
         backgroundImage="/images/contactbg.png"
+        blurDataURL={contactBlur}
       />
 
     </>

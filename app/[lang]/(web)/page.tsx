@@ -8,7 +8,9 @@ import Carousel from "./components/Carousel";
 import ContactSection from "./components/ContactSection";
 import Marquee from "react-fast-marquee";
 import InteractiveProgramCard from "./components/InteractiveProgramCard";
+import NominationForm from "./components/NominationForm";
 import Container from "../../../app/components/Container";
+import { getImageBlur } from "../../../lib/image";
 
 export default async function HomePage({
   params,
@@ -51,6 +53,17 @@ export default async function HomePage({
     // testimonials = dict.home.alumni.items;
   }
 
+  // Generate blurs for main images
+  const heroBlur = await getImageBlur("/images/home1.webp");
+  const shiekhBlur = await getImageBlur("/images/shiekh.webp");
+  const bottomImageBlur = await getImageBlur("/images/homebottom.png");
+  const cardBgBlur = await getImageBlur("/images/gb.webp");
+
+  const foregroundImages = ["/images/homecenter1.png", "/images/homecenter2.png", "/images/homecenter3.png"];
+  const foregroundBlurs = await Promise.all(
+    foregroundImages.map((img) => getImageBlur(img))
+  );
+
   return (
     <>
       {/* Hero Section: Main introduction with primary call-to-action */}
@@ -62,7 +75,8 @@ export default async function HomePage({
             suffix: dict.home.hero.titleSuffix,
           }}
           description={dict.home.description}
-          backgroundImage="/images/home1.png"
+          backgroundImage="/images/home1.webp"
+          blurDataURL={heroBlur}
           buttons={{
             primary: {
               text: dict.home.hero.button1,
@@ -80,8 +94,8 @@ export default async function HomePage({
           <div className="grid grid-cols-2 gap-x-8 gap-y-10 text-center sm:grid-cols-3 lg:grid-cols-6">
             {dict.home.features.map((feature) => (
               <div key={feature.text} className="flex flex-col items-center">
-                <div className="mb-4 flex h-15 w-15 ">
-                  <Image src={feature.icon} alt="" width={56} height={46} />
+                <div className="mb-4 flex h-12 w-12 ">
+                  <Image src={feature.icon} alt="" width={45} height={35} />
                 </div>
                 <p className="text-sm text-gray-600">{feature.text}</p>
               </div>
@@ -122,7 +136,6 @@ export default async function HomePage({
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {programs.map((program, index) => {
               const isInteractive = index < 3;
-              const foregroundImages = ["/images/homecenter1.png", "/images/homecenter2.png", "/images/homecenter3.png"];
 
               return (
                 <InteractiveProgramCard
@@ -130,6 +143,8 @@ export default async function HomePage({
                   program={program}
                   isInteractive={isInteractive}
                   foregroundImage={foregroundImages[index]}
+                  backgroundBlur={cardBgBlur}
+                  foregroundBlur={foregroundBlurs[index]}
                   index={index}
                   dict={dict}
                 />
@@ -172,11 +187,13 @@ export default async function HomePage({
             {/* Image */}
             <div className="relative w-full lg:w-5/12 flex justify-center lg:justify-end order-2 lg:order-1">
               <Image
-                src="/images/shiekh.png"
+                src="/images/shiekh.webp"
                 alt="H.H. Sheikh Mohammed Bin Rashid Al Maktoum"
                 width={500}
                 height={600}
                 className="object-contain drop-shadow-xl"
+                placeholder={shiekhBlur ? "blur" : undefined}
+                blurDataURL={shiekhBlur}
               />
             </div>
 
@@ -312,62 +329,7 @@ export default async function HomePage({
 
             {/* Right Column: Nomination Form */}
             <div className="bg-[#E6EFEA] rounded-[24px] p-6 md:p-10">
-              <form className="space-y-4">
-                <div>
-                  <h4 className="text-sm font-bold tracking-widest text-brand-blue mb-4">
-                    {dict.home.nomination.form.yourDetails}
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <input
-                      type="text"
-                      placeholder={dict.home.nomination.form.fullName}
-                      className="w-full px-5 py-3 rounded-full bg-[#E6EFEA] border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
-                    />
-                    <input
-                      type="text"
-                      placeholder={dict.home.nomination.form.organization}
-                      className="w-full px-5 py-3 rounded-full bg-[#E6EFEA] border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
-                    />
-                  </div>
-                  <input
-                    type="email"
-                    placeholder={dict.home.nomination.form.email}
-                    className="w-full mt-3 px-5 py-3 rounded-full bg-[#E6EFEA] border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
-                  />
-                </div>
-
-                <div>
-                  <h4 className="text-sm font-bold tracking-widest text-brand-blue mb-4">
-                    {dict.home.nomination.form.nomineeDetails}
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <input
-                      type="text"
-                      placeholder={dict.home.nomination.form.nomineeName}
-                      className="w-full px-5 py-3 rounded-full bg-[#E6EFEA] border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
-                    />
-                    <input
-                      type="text"
-                      placeholder={dict.home.nomination.form.nomineeOrg}
-                      className="w-full px-5 py-3 rounded-full bg-[#E6EFEA] border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
-                    />
-                  </div>
-                  <input
-                    type="email"
-                    placeholder={dict.home.nomination.form.nomineeEmail}
-                    className="w-full mt-3 px-5 py-3 rounded-full bg-[#E6EFEA] border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 text-sm"
-                  />
-                  <textarea
-                    placeholder={dict.home.nomination.form.reason}
-                    rows={4}
-                    className="w-full mt-3 px-5 py-3 rounded-[20px] bg-[#E6EFEA] border border-black/5 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-green/20 resize-none text-sm"
-                  />
-                </div>
-
-                <Button className="w-full py-4 rounded-full tracking-widest uppercase text-sm">
-                  {dict.home.nomination.form.submit}
-                </Button>
-              </form>
+              <NominationForm dict={dict.home.nomination.form} />
             </div>
           </div>
         </div>
@@ -433,10 +395,12 @@ export default async function HomePage({
             {/* Right Column: Image */}
             <div className="relative h-[500px] lg:h-auto overflow-hidden rounded-[32px]">
               <Image
-                src="/images/homebottom.png"
+                src="/images/homebottom.webp"
                 alt="Meeting"
                 fill
                 className="object-cover"
+                placeholder={bottomImageBlur ? "blur" : undefined}
+                blurDataURL={bottomImageBlur}
               />
             </div>
           </div>

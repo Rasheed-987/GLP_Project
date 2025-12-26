@@ -11,6 +11,7 @@ type ContactSectionProps = {
     button: string;
     button2?: string;
     backgroundImage?: string;
+    blurDataURL?: string;
 };
 
 export default function ContactSection({
@@ -21,7 +22,8 @@ export default function ContactSection({
     description,
     button,
     button2,
-    backgroundImage = '/images/contactbackground.png'
+    backgroundImage = '/images/contactbackground.png',
+    blurDataURL
 }: ContactSectionProps) {
     return (
         <section className="px-4 pb-20 text-white">
@@ -34,6 +36,8 @@ export default function ContactSection({
                         fill
                         className="object-cover"
                         priority
+                        placeholder={blurDataURL ? "blur" : undefined}
+                        blurDataURL={blurDataURL}
                     />
                 </div>
 
@@ -59,13 +63,13 @@ export default function ContactSection({
                     </p>
                     <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                         <button
-                            className="inline-flex items-center justify-center px-8 py-3 rounded-full bg-white text-black/80 hover:cursor-pointer font-extrabold text-xs md:text-sm capitalize leading-none transition-transform duration-200 ease-out hover:scale-105"
+                            className="inline-flex items-center justify-center px-5 py-4 rounded-full bg-white text-black/80 hover:cursor-pointer font-extrabold text-xs md:text-sm capitalize leading-none transition-transform duration-200 ease-out hover:scale-105"
                         >
                             {button}
                         </button>
                         {button2 && (
                             <button
-                                className="inline-flex items-center justify-center px-8 py-3 rounded-full border border-white text-white hover:cursor-pointer font-extrabold text-xs md:text-sm capitalize leading-none transition-transform duration-200 ease-out hover:scale-105"
+                                className="inline-flex items-center justify-center px-5 py-4 rounded-full border border-white text-white hover:cursor-pointer font-extrabold text-xs md:text-sm capitalize leading-none transition-transform duration-200 ease-out hover:scale-105"
                             >
                                 {button2}
                             </button>
