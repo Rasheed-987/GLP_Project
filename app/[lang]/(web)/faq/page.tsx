@@ -11,11 +11,11 @@ type FaqGroup = { label: string; items: FaqItem[] };
 
 function PlusIcon() {
   return (
-    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <svg className="w-5 h-5 transition-transform duration-300 group-open:rotate-45" viewBox="0 0 24 24" fill="none" aria-hidden="true">
       <path
         d="M12 5v14M5 12h14"
         stroke="currentColor"
-        strokeWidth="1.8"
+        strokeWidth="2"
         strokeLinecap="round"
       />
     </svg>
@@ -34,26 +34,22 @@ function FaqRow({
   isRTL: boolean;
 }) {
   return (
-    <details className="group border-b border-black/10 py-4" open={defaultOpen}>
+    <details className="group border-b border-gray-100 py-6" open={defaultOpen}>
       <summary
-        className={[
-          "list-none cursor-pointer select-none flex items-center justify-between gap-4",
-          isRTL ? "" : "",
-        ].join(" ")}
+        className="list-none cursor-pointer select-none flex items-center justify-between gap-4"
       >
-        <span className="text-[13px] md:text-[14px] font-semibold text-slate-900">
+        <span className="text-[14px] md:text-[15px] font-bold text-black leading-tight">
           {q}
         </span>
 
-        {/* plus on the edge */}
-        <span className="text-slate-900/80 group-open:rotate-45 transition-transform">
+        <span className="text-black shrink-0">
           <PlusIcon />
         </span>
       </summary>
 
       <div
         className={[
-          "mt-2 text-[12.5px] md:text-[13px] leading-[1.7] text-slate-600",
+          "mt-4 text-[13px] md:text-[14px] leading-relaxed text-[#00000099]",
           isRTL ? "text-right" : "text-left",
         ].join(" ")}
       >
@@ -73,95 +69,71 @@ export default async function FAQPage({
 
   const isRTL = String(lang).toLowerCase().startsWith("ar");
 
-  // ✅ Use your Arabic resources FAQ
   const resourcesFaq = (dict as any)?.resources?.faq as
     | { title?: string; groups?: FaqGroup[] }
     | undefined;
 
-  const pageTitle =
-    resourcesFaq?.title || (dict as any)?.nav?.faq || "الأسئلة الشائعة";
+  const pageTitle = resourcesFaq?.title || (dict as any)?.nav?.faq || "FAQ";
 
-  // subtitle not provided in dict → safe Arabic fallback
-  const pageSub =
-    "اعثر على إجابات سريعة حول برامجنا، ومعايير الأهلية، وآلية التقديم، والمزيد.";
+  const pageSub = isRTL 
+    ? "اعثر على إجابات سريعة حول برامجنا، ومعايير الأهلية، وآلية التقديم، والمزيد."
+    : "Find quick answers about our programmes, eligibility, application process, and more";
 
   const groups: FaqGroup[] = Array.isArray(resourcesFaq?.groups)
     ? resourcesFaq!.groups
     : [];
 
   return (
-    <div dir={isRTL ? "rtl" : "ltr"} className="bg-white text-slate-900">
-      <main>
-        <section className="py-16 md:py-20 px-4 lg:px-12">
-          <Container className="px-4">
-            <div className="relative grid grid-cols-1 md:grid-cols-2 gap-10 lg:gap-16">
-              {/* LEFT */}
-              <div className="relative">
-                <h1
-                  className={[
-                    "text-[54px] md:text-[64px] font-medium tracking-tight text-slate-900",
-                    isRTL ? "text-right" : "text-left",
-                  ].join(" ")}
-                >
-                  {pageTitle}
-                </h1>
+    <div dir={isRTL ? "rtl" : "ltr"} className="bg-white text-slate-900 min-h-screen">
+      <main className="pt-16 md:pt-24 pb-20">
+        <Container className="px-6 lg:px-12">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+            {/* LEFT - Sticky Content */}
+            <div className="lg:col-span-5 h-fit lg:sticky lg:top-32">
+              <h1 className="text-[48px] md:text-[64px] font-medium tracking-tight text-black mb-6">
+                {pageTitle}
+              </h1>
 
-                <p
-                  className={[
-                    "mt-4 text-[13px] md:text-[14px] leading-[1.7] text-slate-900",
-                    isRTL ? "text-right" : "text-left",
-                  ].join(" ")}
-                >
-                  {pageSub}
-                </p>
+              <p className="text-[14px] md:text-[15px] leading-relaxed text-[#00000099] max-w-sm mb-12">
+                {pageSub}
+              </p>
 
-                {/* decorative arrow image */}
-                <div className={isRTL ? "flex justify-start" : "flex justify-start"}>
-                  <Image
+              {/* Decorative Pattern */}
+              <div className={`relative hidden lg:block`}>
+                 <Image
                     src={glpArrow}
                     className={[
-                      "w-[100vw] md:w-[420px] lg:w-[620px] opacity-[0.7] scale-[1.2] lg:scale-[1]",
-                      isRTL ? "-mr-8 lg:-mr-16 " : "-ml-8 lg:-ml-16 mt-12",
+                      "w-screen md:w-[420px] lg:w-[620px] opacity-[0.7] scale-[1.2] lg:scale-[1]",
+                      isRTL ? "-mr-8 lg:-mr-16 -scale-x-100" : "-ml-8 lg:-ml-16 mt-12",
                     ].join(" ")}
                     alt=""
-                    priority={false}
                   />
-                </div>
-              </div>
-
-              {/* RIGHT */}
-              <div className="">
-                {groups.map((g: FaqGroup, gi: number) => (
-                  <div key={gi} className={gi === 0 ? "" : "mt-14"}>
-                    <div
-                      className={[
-                        "flex items-center justify-between",
-                        isRTL ? "flex-row-reverse" : "",
-                      ].join(" ")}
-                    >
-                      <p className="text-[12px] font-extrabold tracking-[0.16em] text-teal-800">
-                        {g.label}
-                      </p>
-                      <div className="w-3 h-[2px] bg-slate-900/80 rounded" />
-                    </div>
-
-                    <div className="mt-4 border-t border-black/10">
-                      {g.items.map((it: FaqItem, idx: number) => (
-                        <FaqRow
-                          key={idx}
-                          q={it.q}
-                          a={it.a}
-                          defaultOpen={gi === 0 && idx === 0}
-                          isRTL={isRTL}
-                        />
-                      ))}
-                    </div>
-                  </div>
-                ))}
               </div>
             </div>
-          </Container>
-        </section>
+
+            {/* RIGHT - FAQ Groups */}
+            <div className="lg:col-span-7">
+              {groups.map((g: FaqGroup, gi: number) => (
+                <div key={gi} className={gi === 0 ? "" : "mt-20"}>
+                  <p className="text-[12px] font-bold tracking-widest text-[#006A8E] uppercase mb-6">
+                    {g.label}
+                  </p>
+
+                  <div className="border-t border-gray-100">
+                    {g.items.map((it: FaqItem, idx: number) => (
+                      <FaqRow
+                        key={idx}
+                        q={it.q}
+                        a={it.a}
+                        isRTL={isRTL}
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Container>
       </main>
     </div>
   );

@@ -56,7 +56,7 @@ export default async function HomePage({
   // Generate blurs for main images
   const heroBlur = await getImageBlur("/images/home1.webp");
   const shiekhBlur = await getImageBlur("/images/shiekh.webp");
-  const bottomImageBlur = await getImageBlur("/images/homebottom.png");
+  const bottomImageBlur = await getImageBlur("/images/homebottom.webp");
   const cardBgBlur = await getImageBlur("/images/gb.webp");
 
   const foregroundImages = ["/images/homecenter1.png", "/images/homecenter2.png", "/images/homecenter3.png"];
