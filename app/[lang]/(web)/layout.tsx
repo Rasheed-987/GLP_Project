@@ -11,16 +11,17 @@ export default async function WebLayout({
   params
 }: {
   children: React.ReactNode;
-  params: Promise<{ lang: Locale }>;
+  params: Promise<{ lang: string }>;
 }) {
   const { lang } = await params;
-  const dict = await getDictionary(lang);
+  const locale = lang as Locale;
+  const dict = await getDictionary(locale);
 
   return (
     <>
       <div className="sticky top-0  mb-1 z-[100] bg-white">
         <Container className="px-4">
-          <TopBar locale={lang} dict={dict} />
+          <TopBar locale={locale} dict={dict} />
         </Container>
       </div>
       <div className="relative">
@@ -29,14 +30,14 @@ export default async function WebLayout({
           style={{ top: 'var(--topbar-height, 52px)' }}
         >
           <Container className="">
-            <Navbar locale={lang} dict={dict} />
+            <Navbar locale={locale} dict={dict} />
           </Container>
         </header>
         <Container>
           <main>{children}</main>
         </Container>
 
-        <Footer locale={lang} dict={dict} />
+        <Footer locale={locale} dict={dict} />
       </div>
     </>
   );
