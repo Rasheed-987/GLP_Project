@@ -63,6 +63,8 @@ export default function TestimonialsPage() {
     const [editingTestimonial, setEditingTestimonial] = useState<Testimonial | null>(null);
     const [logoPreview, setLogoPreview] = useState<string | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+    const [logoFile, setLogoFile] = useState<File | null>(null);
+    const [imageFile, setImageFile] = useState<File | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -87,11 +89,15 @@ export default function TestimonialsPage() {
             setSelectedStatusAr(editingTestimonial.status.ar);
             setLogoPreview(editingTestimonial.companyLogo);
             setImagePreview(editingTestimonial.image);
+            setLogoFile(null);
+            setImageFile(null);
         } else {
             setSelectedStatusEn("active");
             setSelectedStatusAr("active");
             setLogoPreview(null);
             setImagePreview(null);
+            setLogoFile(null);
+            setImageFile(null);
         }
     }, [editingTestimonial]);
 
@@ -153,6 +159,7 @@ export default function TestimonialsPage() {
     const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
+            setLogoFile(file);
             const reader = new FileReader();
             reader.onloadend = () => {
                 setLogoPreview(reader.result as string);
@@ -164,6 +171,7 @@ export default function TestimonialsPage() {
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
+            setImageFile(file);
             const reader = new FileReader();
             reader.onloadend = () => {
                 setImagePreview(reader.result as string);
@@ -350,52 +358,60 @@ export default function TestimonialsPage() {
                             e.preventDefault();
                             if (isLoading) return;
                             setIsLoading(true);
-                            const formData = new FormData(e.currentTarget);
+                            const form = e.currentTarget;
+                            const htmlFormData = new FormData(form);
 
+                            // Build achievements array
                             const achievements = [0, 1, 2].map(idx => ({
                                 value: {
-                                    en: formData.get(`achievement_val_en_${idx}`),
-                                    ar: formData.get(`achievement_val_ar_${idx}`)
+                                    en: htmlFormData.get(`achievement_val_en_${idx}`),
+                                    ar: htmlFormData.get(`achievement_val_ar_${idx}`)
                                 },
                                 label: {
-                                    en: formData.get(`achievement_lbl_en_${idx}`),
-                                    ar: formData.get(`achievement_lbl_ar_${idx}`)
+                                    en: htmlFormData.get(`achievement_lbl_en_${idx}`),
+                                    ar: htmlFormData.get(`achievement_lbl_ar_${idx}`)
                                 }
                             }));
 
-                            // Prepare payload
-                            const payload = {
-                                name: {
-                                    en: formData.get('nameEn'),
-                                    ar: formData.get('nameAr')
-                                },
-                                profession: {
-                                    en: formData.get('professionEn'),
-                                    ar: formData.get('professionAr')
-                                },
-                                description: {
-                                    en: formData.get('descEn'),
-                                    ar: formData.get('descAr')
-                                },
-                                graduateDate: {
-                                    en: formData.get('dateEn'),
-                                    ar: formData.get('dateAr')
-                                },
-                                companyLogo: logoPreview || '',
-                                image: imagePreview || '',
-                                achievements,
-                                status: {
-                                    en: selectedStatusEn,
-                                    ar: selectedStatusAr
-                                }
-                            };
+                            // Build FormData for API
+                            const apiFormData = new FormData();
+                            apiFormData.append('nameEn', htmlFormData.get('nameEn') as string);
+                            apiFormData.append('nameAr', htmlFormData.get('nameAr') as string);
+                            apiFormData.append('professionEn', htmlFormData.get('professionEn') as string);
+                            apiFormData.append('professionAr', htmlFormData.get('professionAr') as string);
+                            apiFormData.append('descriptionEn', htmlFormData.get('descEn') as string);
+                            apiFormData.append('descriptionAr', htmlFormData.get('descAr') as string);
+                            apiFormData.append('graduateDateEn', htmlFormData.get('dateEn') as string);
+                            apiFormData.append('graduateDateAr', htmlFormData.get('dateAr') as string);
+                            apiFormData.append('statusEn', selectedStatusEn);
+                            apiFormData.append('statusAr', selectedStatusAr);
+                            apiFormData.append('achievements', JSON.stringify(achievements));
+
+                            // Handle image uploads
+                            if (logoFile) {
+                                // New logo file uploaded
+                                apiFormData.append('companyLogo', logoFile);
+                            } else if (editingTestimonial?.companyLogo) {
+                                // Keep existing logo path
+                                apiFormData.append('companyLogo', editingTestimonial.companyLogo);
+                            }
+                            // If no logoFile and no existing logo, don't append anything
+
+                            if (imageFile) {
+                                // New image file uploaded
+                                apiFormData.append('image', imageFile);
+                            } else if (editingTestimonial?.image) {
+                                // Keep existing image path
+                                apiFormData.append('image', editingTestimonial.image);
+                            }
+                            // If no imageFile and no existing image, don't append anything
 
                             try {
                                 if (editingTestimonial) {
-                                    await clientApi.put(`/api/testimonials/${editingTestimonial.id}`, payload);
+                                    await clientApi.put(`/api/testimonials/${editingTestimonial.id}`, apiFormData);
                                     toast.success("Testimonial updated successfully");
                                 } else {
-                                    await clientApi.post("/api/testimonials", payload);
+                                    await clientApi.post("/api/testimonials", apiFormData);
                                     toast.success("Testimonial created successfully");
                                 }
                                 setIsModalOpen(false);
