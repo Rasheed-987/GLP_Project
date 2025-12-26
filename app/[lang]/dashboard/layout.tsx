@@ -9,14 +9,15 @@ export default async function DashboardLayout({
     params,
 }: {
     children: React.ReactNode;
-    params: Promise<{ lang: Locale }>;
+    params: Promise<{ lang: string }>;
 }) {
     const { lang } = await params;
-    const dict = await getDictionary(lang);
+    const locale = lang as Locale;
+    const dict = await getDictionary(locale);
 
     return (
-        <AuthCheck lang={lang}>
-            <DashboardLayoutClient lang={lang} dict={dict}>
+        <AuthCheck lang={locale}>
+            <DashboardLayoutClient lang={locale} dict={dict}>
                 {children}
             </DashboardLayoutClient>
         </AuthCheck>
