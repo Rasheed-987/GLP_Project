@@ -9,6 +9,7 @@ import clientApi from "../../../../lib/clientApi";
 import toast from "react-hot-toast";
 import DeleteConfirmationModal from "../../../../components/DeleteConfirmationModal";
 import LoadingScreen from "../../../../components/LoadingScreen";
+import { useTestimonials } from "../../../../hooks/useDashboard";
 
 interface Achievement {
     value: {
@@ -53,14 +54,16 @@ export default function TestimonialsPage() {
     const params = useParams();
     const lang = params.lang as Locale;
     const [dict, setDict] = useState<any>(null);
-    const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+
+    // React Query Hook
+    const { data: testimonials = [], isLoading: testimonialsLoading, refetch: fetchTestimonials } = useTestimonials(lang);
+
     const [currentPage, setCurrentPage] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingTestimonial, setEditingTestimonial] = useState<Testimonial | null>(null);
     const [logoPreview, setLogoPreview] = useState<string | null>(null);
     const [imagePreview, setImagePreview] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [pageLoading, setPageLoading] = useState(true);
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
     const [actionId, setActionId] = useState<string | null>(null);
@@ -74,25 +77,9 @@ export default function TestimonialsPage() {
 
     const itemsPerPage = 10;
 
-    const fetchTestimonials = useCallback(async () => {
-        try {
-            const response = await clientApi.get("/api/testimonials");
-            setTestimonials(response.data);
-        } catch {
-            toast.error("Failed to fetch testimonials");
-        }
-    }, []);
-
     useEffect(() => {
-        const init = async () => {
-            await Promise.all([
-                getDictionary(lang).then(setDict),
-                fetchTestimonials()
-            ]);
-            setPageLoading(false);
-        };
-        init();
-    }, [lang, fetchTestimonials]);
+        getDictionary(lang).then(setDict);
+    }, [lang]);
 
     useEffect(() => {
         if (editingTestimonial) {
@@ -108,7 +95,7 @@ export default function TestimonialsPage() {
         }
     }, [editingTestimonial]);
 
-    if (pageLoading || !dict) {
+    if (testimonialsLoading || !dict) {
         return <LoadingScreen />;
     }
 
@@ -198,6 +185,7 @@ export default function TestimonialsPage() {
                     </p>
                 </div>
                 <button
+                    disabled={isLoading}
                     onClick={() => {
                         setEditingTestimonial(null);
                         setLogoPreview(null);
@@ -206,7 +194,7 @@ export default function TestimonialsPage() {
                         setStatusDropdownOpenEn(false);
                         setStatusDropdownOpenAr(false);
                     }}
-                    className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gradient text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all group cursor-pointer"
+                    className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gradient text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all group cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <Plus className="w-4 h-4 transition-transform group-hover:rotate-90" />
                     Add New Testimonial
@@ -227,7 +215,7 @@ export default function TestimonialsPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border-stroke">
-                            {currentTestimonials.map((item) => (
+                            {currentTestimonials.map((item: Testimonial) => (
                                 <tr key={item.id} className="group hover:bg-[#F7FAF9]/50 transition-colors">
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
@@ -253,8 +241,8 @@ export default function TestimonialsPage() {
                                     <td className="px-6 py-4">
                                         <button
                                             onClick={() => toggleStatus(item.id, item.status)}
-                                            disabled={isLoading && actionId === item.id}
-                                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wider transition-all disabled:opacity-50
+                                            disabled={isLoading}
+                                            className={`cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wider transition-all disabled:opacity-50 disabled:cursor-not-allowed
                                                 ${item.status[lang] === "active"
                                                     ? "bg-[#E6F4F1] text-[#019977] hover:bg-[#019977] hover:text-white"
                                                     : "bg-red-50 text-red-600 hover:bg-red-600 hover:text-white"}`}
@@ -288,13 +276,14 @@ export default function TestimonialsPage() {
                                                     setStatusDropdownOpenEn(false);
                                                     setStatusDropdownOpenAr(false);
                                                 }}
-                                                className="p-2 text-[#00000066] hover:text-brand-blue hover:bg-brand-blue/5 rounded-lg transition-all cursor-pointer"
+                                                disabled={isLoading}
+                                                className="p-2 text-[#00000066] hover:text-brand-blue hover:bg-brand-blue/5 rounded-lg transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                             >
                                                 <Edit2 className="w-4 h-4" />
                                             </button>
                                             <button
                                                 onClick={() => handleDeleteClick(item.id)}
-                                                disabled={deletingId === item.id}
+                                                disabled={isLoading}
                                                 className="p-2 text-[#00000066] hover:text-red-600 hover:bg-red-50 rounded-lg transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                             >
                                                 <Trash2 className="w-4 h-4" />
@@ -546,14 +535,14 @@ export default function TestimonialsPage() {
                                             {/* Status (EN) */}
                                             <div className="relative">
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Publishing Status (ENG)</label>
-                                                <button type="button" onClick={(e) => { e.stopPropagation(); setStatusDropdownOpenEn(!statusDropdownOpenEn); setStatusDropdownOpenAr(false); }} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all">
+                                                <button type="button" onClick={(e) => { e.stopPropagation(); setStatusDropdownOpenEn(!statusDropdownOpenEn); setStatusDropdownOpenAr(false); }} className="cursor-pointer w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all">
                                                     <span className="capitalize">{selectedStatusEn}</span>
                                                     <ChevronDown className={`w-4 h-4 text-[#00000066] transition-transform duration-200 ${statusDropdownOpenEn ? "rotate-180" : ""}`} />
                                                 </button>
                                                 {statusDropdownOpenEn && (
                                                     <div className="absolute z-[110] bottom-full mb-2 left-0 w-full bg-white rounded-2xl border border-border-stroke shadow-xl overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-200">
                                                         {["active", "inactive"].map((s) => (
-                                                            <button key={s} type="button" onClick={() => { setSelectedStatusEn(s as any); setStatusDropdownOpenEn(false); }} className={`w-full px-4 py-3 text-left text-sm hover:bg-brand-blue/5 transition-colors flex items-center gap-2 ${selectedStatusEn === s ? "bg-brand-blue/5 text-brand-blue font-bold" : "text-[#00000099]"}`}>
+                                                            <button key={s} type="button" onClick={() => { setSelectedStatusEn(s as any); setStatusDropdownOpenEn(false); }} className={`cursor-pointer w-full px-4 py-3 text-left text-sm hover:bg-brand-blue/5 transition-colors flex items-center gap-2 ${selectedStatusEn === s ? "bg-brand-blue/5 text-brand-blue font-bold" : "text-[#00000099]"}`}>
                                                                 <div className={`w-2 h-2 rounded-full ${s === "active" ? "bg-[#019977]" : "bg-red-600"}`} />
                                                                 {s.charAt(0).toUpperCase() + s.slice(1)}
                                                             </button>
@@ -572,7 +561,7 @@ export default function TestimonialsPage() {
                                             {/* Status (AR) */}
                                             <div className="relative">
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">حالة النشر (AR)</label>
-                                                <button type="button" dir="rtl" onClick={(e) => { e.stopPropagation(); setStatusDropdownOpenAr(!statusDropdownOpenAr); setStatusDropdownOpenEn(false); }} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all">
+                                                <button type="button" dir="rtl" onClick={(e) => { e.stopPropagation(); setStatusDropdownOpenAr(!statusDropdownOpenAr); setStatusDropdownOpenEn(false); }} className="cursor-pointer w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all">
                                                     <span className="capitalize">{selectedStatusAr === "active" ? "نشط" : "غير نشط"}</span>
                                                     <ChevronDown className={`w-4 h-4 text-[#00000066] transition-transform duration-200 ${statusDropdownOpenAr ? "rotate-180" : ""}`} />
                                                 </button>
@@ -582,7 +571,7 @@ export default function TestimonialsPage() {
                                                             { val: "active", lab: "نشط (Active)" },
                                                             { val: "inactive", lab: "غير نشط (Inactive)" }
                                                         ].map((s) => (
-                                                            <button key={s.val} type="button" onClick={() => { setSelectedStatusAr(s.val as any); setStatusDropdownOpenAr(false); }} className={`w-full px-4 py-3 text-right text-sm hover:bg-brand-blue/5 transition-colors flex items-center justify-start gap-2 flex-row-reverse ${selectedStatusAr === s.val ? "bg-brand-blue/5 text-brand-blue font-bold" : "text-[#00000099]"}`}>
+                                                            <button key={s.val} type="button" onClick={() => { setSelectedStatusAr(s.val as any); setStatusDropdownOpenAr(false); }} className={`cursor-pointer w-full px-4 py-3 text-right text-sm hover:bg-brand-blue/5 transition-colors flex items-center justify-start gap-2 flex-row-reverse ${selectedStatusAr === s.val ? "bg-brand-blue/5 text-brand-blue font-bold" : "text-[#00000099]"}`}>
                                                                 <div className={`w-2 h-2 rounded-full ${s.val === "active" ? "bg-[#019977]" : "bg-red-600"}`} />
                                                                 {s.lab}
                                                             </button>

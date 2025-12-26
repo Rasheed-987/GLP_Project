@@ -2,10 +2,20 @@ import { NextResponse } from 'next/server';
 import dbConnect from "../../../lib/dbConnect";
 import News from "../../../models/News";
 
-export async function GET() {
+export async function GET(req: Request) {
     try {
+        const { searchParams } = new URL(req.url);
+        const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : 0;
+
         await dbConnect();
-        const news = await News.find({}).sort({ createdAt: -1 });
+
+        let query = News.find({}).sort({ createdAt: -1 });
+
+        if (limit > 0) {
+            query = query.limit(limit);
+        }
+
+        const news = await query;
         return NextResponse.json(news);
     } catch (error) {
         return NextResponse.json({ error: 'Failed to fetch news' }, { status: 500 });

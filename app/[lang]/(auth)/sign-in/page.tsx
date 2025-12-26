@@ -125,7 +125,7 @@ export default function SignInPage() {
                     {/* Forgot Password Link */}
                     <div className="flex justify-end">
                         <Link
-                            href={`/${lang}/forgot-password`}
+                            href={`/${lang}/forget-password`}
                             className="text-sm font-semibold text-brand-blue hover:text-brand-green transition-colors"
                         >
                             {dict.auth.signIn.forgotPassword}

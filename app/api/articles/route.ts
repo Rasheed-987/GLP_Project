@@ -9,8 +9,17 @@ export async function GET(req: Request) {
         const { searchParams } = new URL(req.url);
         const lang = searchParams.get('lang') as 'en' | 'ar' | null;
 
+        const limit = searchParams.get('limit') ? parseInt(searchParams.get('limit')!) : 0;
+
         await dbConnect();
-        const articles = await Article.find({}).sort({ createdAt: -1 });
+
+        let query = Article.find({}).sort({ createdAt: -1 });
+
+        if (limit > 0) {
+            query = query.limit(limit);
+        }
+
+        const articles = await query;
 
         if (lang && (lang === 'en' || lang === 'ar')) {
             const localizedArticles = articles.map((article: any) => ({
