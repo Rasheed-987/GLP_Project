@@ -1025,6 +1025,27 @@ export default {
       noAccount: "Don't have an account?",
       signUp: 'Sign Up',
     },
+    forgotPassword: {
+      title: 'Forgot Password',
+      description: 'Enter your email address to receive a one-time password (OTP).',
+      email: 'Email address',
+      sendOTP: 'Send OTP',
+      backToSignIn: 'Back to Sign In',
+    },
+    verifyOTP: {
+      title: 'Verify OTP',
+      description: 'Enter the 6-digit code sent to your email address.',
+      otp: 'OTP Code',
+      verifyBtn: 'Verify OTP',
+      resendOTP: 'Resend OTP',
+    },
+    resetPassword: {
+      title: 'Reset Password',
+      description: 'Enter your new password below.',
+      password: 'New Password',
+      confirmPassword: 'Confirm New Password',
+      resetBtn: 'Reset Password',
+    },
     signUp: {
       title: 'Create Account',
       fullName: 'Full Name',

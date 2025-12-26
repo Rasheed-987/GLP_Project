@@ -11,6 +11,7 @@ import { toast } from "react-hot-toast";
 import DatePicker from "../../../../app/components/DatePicker";
 import DeleteConfirmationModal from "../../../../components/DeleteConfirmationModal";
 import LoadingScreen from "../../../../components/LoadingScreen";
+import { useArticles } from "../../../../hooks/useDashboard";
 
 interface ContentSection {
     id: string;
@@ -53,7 +54,10 @@ export default function ArticlesPage() {
     const params = useParams();
     const lang = params.lang as Locale;
     const [dict, setDict] = useState<any>(null);
-    const [articles, setArticles] = useState<ArticleItem[]>([]);
+
+    // React Query Hook
+    const { data: articles = [], isLoading: articlesLoading, refetch: fetchArticles } = useArticles(lang);
+
     const [currentPage] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingArticle, setEditingArticle] = useState<ArticleItem | null>(null);
@@ -69,7 +73,6 @@ export default function ArticlesPage() {
     const [dateEn, setDateEn] = useState("");
     const [dateAr, setDateAr] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [pageLoading, setPageLoading] = useState(true);
     const [actionId, setActionId] = useState<string | null>(null);
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -77,27 +80,11 @@ export default function ArticlesPage() {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const itemsPerPage = 8;
 
-    const fetchArticles = async () => {
-        try {
-            const response = await clientApi.get("/api/articles");
-            setArticles(response.data);
-        } catch {
-            toast.error("Failed to fetch articles");
-        }
-    };
-
     useEffect(() => {
-        const init = async () => {
-            await Promise.all([
-                getDictionary(lang).then(setDict),
-                fetchArticles()
-            ]);
-            setPageLoading(false);
-        };
-        init();
+        getDictionary(lang).then(setDict);
     }, [lang]);
 
-    if (pageLoading || !dict) return <LoadingScreen />;
+    if (articlesLoading || !dict) return <LoadingScreen />;
 
     const currentArticles = articles.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
@@ -185,6 +172,7 @@ export default function ArticlesPage() {
                     </p>
                 </div>
                 <button
+                    disabled={isSubmitting}
                     onClick={() => {
                         setEditingArticle(null);
                         setImagePreview(null);
@@ -195,7 +183,7 @@ export default function ArticlesPage() {
                         setDateAr("");
                         setIsModalOpen(true);
                     }}
-                    className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gradient text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all group cursor-pointer"
+                    className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gradient text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all group cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <Plus className="w-4 h-4 transition-transform group-hover:rotate-90" />
                     Create New Article
@@ -216,7 +204,7 @@ export default function ArticlesPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border-stroke">
-                            {currentArticles.map((item) => (
+                            {currentArticles.map((item: ArticleItem) => (
                                 <tr key={item.id} className="group hover:bg-[#F7FAF9]/50 transition-colors">
                                     <td className="px-6 py-4">
                                         <div className="flex items-center gap-3">
@@ -240,8 +228,8 @@ export default function ArticlesPage() {
                                     <td className="px-6 py-4">
                                         <button
                                             onClick={() => toggleStatus(item.id, item.status)}
-                                            disabled={isSubmitting && actionId === item.id}
-                                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wider transition-all disabled:opacity-50
+                                            disabled={isSubmitting}
+                                            className={`cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wider transition-all disabled:opacity-50 disabled:cursor-not-allowed
                                                 ${item.status[lang] === "active"
                                                     ? "bg-[#E6F4F1] text-[#019977] hover:bg-[#019977] hover:text-white"
                                                     : "bg-red-50 text-red-600 hover:bg-red-600 hover:text-white"}`}
@@ -279,14 +267,15 @@ export default function ArticlesPage() {
                                                     setDateAr(item.date.ar);
                                                     setIsModalOpen(true);
                                                 }}
-                                                className="p-2 text-[#00000066] hover:text-brand-blue hover:bg-brand-blue/5 rounded-lg transition-all cursor-pointer"
+                                                disabled={isSubmitting}
+                                                className="p-2 text-[#00000066] hover:text-brand-blue hover:bg-brand-blue/5 rounded-lg transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                             >
                                                 <Edit2 className="w-4 h-4" />
                                             </button>
                                             <button
                                                 onClick={() => handleDeleteClick(item.id)}
-                                                disabled={isSubmitting && actionId === item.id}
-                                                className="p-2 text-[#00000066] hover:text-red-600 hover:bg-red-50 rounded-lg transition-all cursor-pointer disabled:opacity-50"
+                                                disabled={isSubmitting}
+                                                className="p-2 text-[#00000066] hover:text-red-600 hover:bg-red-50 rounded-lg transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                                             >
                                                 <Trash2 className="w-4 h-4" />
                                             </button>
@@ -379,14 +368,14 @@ export default function ArticlesPage() {
                                             />
                                             <div className="relative">
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Published Status (ENG)</label>
-                                                <button type="button" onClick={() => { setStatusDropdownOpenEn(!statusDropdownOpenEn); setStatusDropdownOpenAr(false); }} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black">
+                                                <button type="button" onClick={() => { setStatusDropdownOpenEn(!statusDropdownOpenEn); setStatusDropdownOpenAr(false); }} className="cursor-pointer w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black">
                                                     <span className="capitalize">{selectedStatusEn}</span>
                                                     <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${statusDropdownOpenEn ? "rotate-180" : ""}`} />
                                                 </button>
                                                 {statusDropdownOpenEn && (
                                                     <div className="absolute z-[110] bottom-full mb-2 left-0 w-full bg-white rounded-2xl border border-border-stroke shadow-xl overflow-hidden animate-in fade-in slide-in-from-bottom-2 duration-200">
                                                         {["active", "inactive"].map(s => (
-                                                            <button key={s} type="button" onClick={() => { setSelectedStatusEn(s as any); setStatusDropdownOpenEn(false); }} className={`w-full px-4 py-3 text-left hover:bg-black/5 text-sm capitalize ${selectedStatusEn === s ? "bg-brand-blue/5 text-brand-blue font-bold" : "text-[#00000099]"}`}>{s}</button>
+                                                            <button key={s} type="button" onClick={() => { setSelectedStatusEn(s as any); setStatusDropdownOpenEn(false); }} className={`cursor-pointer w-full px-4 py-3 text-left hover:bg-black/5 text-sm capitalize ${selectedStatusEn === s ? "bg-brand-blue/5 text-brand-blue font-bold" : "text-[#00000099]"}`}>{s}</button>
                                                         ))}
                                                     </div>
                                                 )}
@@ -403,7 +392,7 @@ export default function ArticlesPage() {
                                             />
                                             <div className="relative">
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">حالة النشر (AR)</label>
-                                                <button type="button" dir="rtl" onClick={() => { setStatusDropdownOpenAr(!statusDropdownOpenAr); setStatusDropdownOpenEn(false); }} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black">
+                                                <button type="button" dir="rtl" onClick={() => { setStatusDropdownOpenAr(!statusDropdownOpenAr); setStatusDropdownOpenEn(false); }} className="cursor-pointer w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black">
                                                     <span className="capitalize">{selectedStatusAr === "active" ? "نشط" : "غير نشط"}</span>
                                                     <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${statusDropdownOpenAr ? "rotate-180" : ""}`} />
                                                 </button>
@@ -413,7 +402,7 @@ export default function ArticlesPage() {
                                                             { val: "active", lab: "نشط (Active)" },
                                                             { val: "inactive", lab: "غير نشط (Inactive)" }
                                                         ].map(s => (
-                                                            <button key={s.val} type="button" onClick={() => { setSelectedStatusAr(s.val as any); setStatusDropdownOpenAr(false); }} className={`w-full px-4 py-3 text-right hover:bg-black/5 text-sm ${selectedStatusAr === s.val ? "bg-brand-blue/5 text-brand-blue font-bold" : "text-[#00000099]"}`}>{s.lab}</button>
+                                                            <button key={s.val} type="button" onClick={() => { setSelectedStatusAr(s.val as any); setStatusDropdownOpenAr(false); }} className={`cursor-pointer w-full px-4 py-3 text-right hover:bg-black/5 text-sm ${selectedStatusAr === s.val ? "bg-brand-blue/5 text-brand-blue font-bold" : "text-[#00000099]"}`}>{s.lab}</button>
                                                         ))}
                                                     </div>
                                                 )}
@@ -462,13 +451,13 @@ export default function ArticlesPage() {
                                                 <>
                                                     <Image src={imagePreview} alt="Preview" width={800} height={400} className="w-full h-full object-cover" />
                                                     <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                                                        <button type="button" onClick={() => fileInputRef.current?.click()} className="bg-white text-black px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2">
+                                                        <button type="button" onClick={() => fileInputRef.current?.click()} className="cursor-pointer bg-white text-black px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2">
                                                             <ImageIcon className="w-4 h-4" /> Change Image
                                                         </button>
                                                     </div>
                                                 </>
                                             ) : (
-                                                <button type="button" onClick={() => fileInputRef.current?.click()} className="flex flex-col items-center gap-3 text-[#00000033]">
+                                                <button type="button" onClick={() => fileInputRef.current?.click()} className="cursor-pointer flex flex-col items-center gap-3 text-[#00000033]">
                                                     <ImageIcon className="w-12 h-12" />
                                                     <span className="text-sm font-bold">Click to upload featured image (21:9 Aspect Recommended)</span>
                                                 </button>
@@ -484,7 +473,7 @@ export default function ArticlesPage() {
                                         <h4 className="text-sm font-bold text-black uppercase tracking-widest">
                                             Content Sections (Headings & Paragraphs)
                                         </h4>
-                                        <button type="button" onClick={addSection} className="flex items-center gap-2 text-xs font-bold text-brand-blue hover:text-brand-blue/80 transition-all">
+                                        <button type="button" onClick={addSection} className="cursor-pointer flex items-center gap-2 text-xs font-bold text-brand-blue hover:text-brand-blue/80 transition-all">
                                             <Plus className="w-4 h-4" /> Add Section
                                         </button>
                                     </div>
@@ -492,7 +481,7 @@ export default function ArticlesPage() {
                                     <div className="space-y-12">
                                         {sections.map((section, index) => (
                                             <div key={section.id} className="relative p-8 rounded-3xl bg-[#F7FAF9] border border-border-stroke space-y-8 animate-in slide-in-from-top-4 duration-300">
-                                                <button type="button" onClick={() => removeSection(section.id)} className="absolute top-4 right-4 p-2 bg-red-50 text-red-600 rounded-full hover:bg-red-600 hover:text-white transition-all">
+                                                <button type="button" onClick={() => removeSection(section.id)} className="cursor-pointer absolute top-4 right-4 p-2 bg-red-50 text-red-600 rounded-full hover:bg-red-600 hover:text-white transition-all">
                                                     <X className="w-4 h-4" />
                                                 </button>
 

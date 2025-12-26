@@ -1051,6 +1051,27 @@ export default {
       noAccount: 'ليس لديك حساب؟',
       signUp: 'إنشاء حساب',
     },
+    forgotPassword: {
+      title: 'نسيت كلمة المرور',
+      description: 'أدخل بريدك الإلكتروني لتلقي رمز التحقق (OTP).',
+      email: 'البريد الإلكتروني',
+      sendOTP: 'إرسال الرمز',
+      backToSignIn: 'العودة لتسجيل الدخول',
+    },
+    verifyOTP: {
+      title: 'التحقق من الرمز',
+      description: 'أدخل الرمز المكون من 6 أرقام المرسل إلى بريدك الإلكتروني.',
+      otp: 'رمز التحقق',
+      verifyBtn: 'تحقق من الرمز',
+      resendOTP: 'إعادة إرسال الرمز',
+    },
+    resetPassword: {
+      title: 'إعادة تعيين كلمة المرور',
+      description: 'أدخل كلمة المرور الجديدة أدناه.',
+      password: 'كلمة المرور الجديدة',
+      confirmPassword: 'تأكيد كلمة المرور الجديدة',
+      resetBtn: 'إعادة تعيين كلمة المرور',
+    },
     signUp: {
       title: 'إنشاء حساب جديد',
       fullName: 'الاسم الكامل',

@@ -103,36 +103,44 @@ export default function Navbar({ locale, dict }: NavbarProps) {
 
           {/* Right: actions */}
           <div className="flex items-center gap-2 md:gap-3">
-            <button className="inline-flex items-center h-10 md:h-9 rounded-full bg-brand-gradient text-white px-4 md:px-6 text-sm font-medium shadow-sm hover:opacity-90 transition-opacity" onClick={() => router.push(`/${locale}/sign-in`)}>
+            <button className="cursor-pointer inline-flex items-center h-10 md:h-9 rounded-full bg-brand-gradient text-white px-4 md:px-6 text-sm font-medium shadow-sm hover:opacity-90 transition-opacity" onClick={() => router.push(`/${locale}/sign-in`)}>
               {dict.nav.login}
             </button>
             {!open && (
-              <button
-                onClick={() => setOpen(true)}
-                className="group inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 bg-white md:px-3 text-sm font-bold text-black transition-all duration-300 gap-2 "
-                aria-label="Open menu"
-              >
-                <svg
-                  width="18"
-                  height="14"
-                  viewBox="0 0 18 14"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="md:w-[14px] md:h-[10px] transition-all duration-300 group-hover:w-0 group-hover:opacity-0 group-hover:scale-0 overflow-hidden"
+              <div className="relative group/menu">
+                {/* Ghost Element for Layout Stability */}
+                <div aria-hidden="true" className="invisible inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 md:px-3 gap-2">
+                  <svg width="18" height="14" viewBox="0 0 18 14" fill="none" className="md:w-[14px] md:h-[10px]"><path d="M0 1H18M0 7H18M0 13H18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
+                  <span className="hidden md:inline">{dict.nav.menu}</span>
+                </div>
+
+                <button
+                  onClick={() => setOpen(true)}
+                  className="cursor-pointer absolute right-0 top-0 group inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 bg-white md:px-3 text-sm font-bold text-black hover:border-transparent transition-all duration-300 gap-2 group-hover/menu:gap-0"
+                  aria-label="Open menu"
                 >
-                  <path d="M0 1H18M0 7H18M0 13H18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                </svg>
-                <span className="hidden md:inline transition-all duration-300 group-hover:scale-105">{dict.nav.menu}</span>
-              </button>
+                  <svg
+                    width="18"
+                    height="14"
+                    viewBox="0 0 18 14"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="md:w-[14px] md:h-[10px] transition-all duration-300 group-hover/menu:opacity-0 group-hover/menu:scale-0 group-hover/menu:w-0 overflow-hidden"
+                  >
+                    <path d="M0 1H18M0 7H18M0 13H18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                  </svg>
+                  <span className="hidden md:inline transition-all duration-300 group-hover/menu:scale-105">{dict.nav.menu}</span>
+                </button>
+              </div>
             )}
             {open && (
               <button
                 type="button"
                 onClick={() => setOpen(false)}
-                className="group inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 bg-white text-zinc-900 hover:bg-black/5 hover:border-transparent transition-all duration-300 md:px-4 gap-2 hover:gap-0 cursor-pointer"
+                className="group inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 bg-white text-zinc-900 hover:bg-black/5 hover:border-transparent transition-all duration-300 md:px-4 gap-2 cursor-pointer"
                 aria-label="Close menu"
               >
-                <span aria-hidden className="font-normal text-xl md:text-sm transition-all duration-300 group-hover:w-0 group-hover:opacity-0 group-hover:scale-0 overflow-hidden">✕</span>
+                <span aria-hidden className="font-normal text-xl md:text-sm transition-all duration-300 group-hover:opacity-0 group-hover:scale-0 overflow-hidden">✕</span>
                 <span className="hidden md:inline text-sm font-bold transition-all duration-300 group-hover:scale-105">{dict.nav.close}</span>
               </button>
             )}
