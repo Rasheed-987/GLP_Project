@@ -2,14 +2,17 @@ import axios from 'axios';
 
 const clientApi = axios.create({
     baseURL: '', // Using relative URL for Next.js API routes
-    headers: {
-        'Content-Type': 'application/json',
-    },
 });
 
-// Request interceptor for adding auth token
+// Request interceptor for adding auth token and handling FormData
 clientApi.interceptors.request.use(
     (config) => {
+        // Only set Content-Type to JSON if it's not FormData
+        if (!(config.data instanceof FormData)) {
+            config.headers['Content-Type'] = 'application/json';
+        }
+        // If it's FormData, axios will automatically set the correct Content-Type with boundary
+
         // You can add logic here to get token from localStorage or cookies
         // const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
         // if (token) {

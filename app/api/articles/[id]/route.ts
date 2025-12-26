@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import dbConnect from "../../../../lib/dbConnect";
 import Article from "../../../../models/Article";
-import { writeFile, mkdir } from 'fs/promises';
+import { writeFile, mkdir, unlink } from 'fs/promises';
 import { join } from 'path';
 
 export async function GET(req: Request, { params }: { params: Promise<{ id: string }> }) {
@@ -116,10 +116,27 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
     try {
         const { id } = await params;
         await dbConnect();
-        const deletedArticle = await Article.findByIdAndDelete(id);
-        if (!deletedArticle) {
+
+        // First, get the article to find the image path
+        const article = await Article.findById(id);
+        if (!article) {
             return NextResponse.json({ error: 'Article not found' }, { status: 404 });
         }
+
+        // Delete associated image file from filesystem
+        if (article.mainImage && article.mainImage.startsWith('/uploads/articles/')) {
+            const imagePath = join(process.cwd(), 'public', article.mainImage);
+            try {
+                await unlink(imagePath);
+            } catch (err) {
+                // File might not exist, continue
+                console.log(`Could not delete file: ${imagePath}`);
+            }
+        }
+
+        // Delete the article from database
+        await Article.findByIdAndDelete(id);
+
         return NextResponse.json({ message: 'Article deleted successfully' });
     } catch (error: any) {
         console.error('Error deleting article:', error);
