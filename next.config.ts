@@ -15,5 +15,6 @@ const nextConfig: NextConfig = {
   // Transpile packages that may have issues with App Router
   transpilePackages: ['react-hot-toast', 'react-fast-marquee'],
 };
+  
 
 export default nextConfig;
