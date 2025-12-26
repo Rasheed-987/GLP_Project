@@ -9,6 +9,7 @@ import clientApi from "../../../../lib/clientApi";
 import toast from "react-hot-toast";
 import DeleteConfirmationModal from "../../../../components/DeleteConfirmationModal";
 import LoadingScreen from "../../../../components/LoadingScreen";
+import { useNews } from "../../../../hooks/useDashboard";
 
 interface NewsItem {
     id: string;
@@ -39,7 +40,10 @@ export default function NewsPage() {
     const params = useParams();
     const lang = params.lang as Locale;
     const [dict, setDict] = useState<any>(null);
-    const [news, setNews] = useState<NewsItem[]>([]);
+
+    // React Query Hook
+    const { data: news = [], isLoading: newsLoading, refetch: fetchNews } = useNews(lang);
+
     const [currentPage, setCurrentPage] = useState(1);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingNews, setEditingNews] = useState<NewsItem | null>(null);
@@ -48,35 +52,17 @@ export default function NewsPage() {
     const [selectedStatusEn, setSelectedStatusEn] = useState<"active" | "inactive">("active");
     const [selectedStatusAr, setSelectedStatusAr] = useState<"active" | "inactive">("active");
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [pageLoading, setPageLoading] = useState(true);
     const [actionId, setActionId] = useState<string | null>(null);
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
     const itemsPerPage = 10;
 
-    const fetchNews = async () => {
-        try {
-            const response = await clientApi.get("/api/news");
-            setNews(response.data);
-        } catch {
-            toast.error("Failed to fetch news");
-        }
-    };
-
     useEffect(() => {
-        const initData = async () => {
-            await Promise.all([
-                getDictionary(lang).then(setDict),
-                fetchNews()
-            ]);
-            setPageLoading(false);
-        };
-        initData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        getDictionary(lang).then(setDict);
     }, [lang]);
 
-    if (pageLoading || !dict) return <LoadingScreen />;
+    if (newsLoading || !dict) return <LoadingScreen />;
 
     const totalPages = Math.ceil(news.length / itemsPerPage);
     const currentNews = news.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -142,6 +128,7 @@ export default function NewsPage() {
                     </p>
                 </div>
                 <button
+                    disabled={isSubmitting}
                     onClick={() => {
                         setEditingNews(null);
                         setSelectedStatusEn("active");
@@ -150,7 +137,7 @@ export default function NewsPage() {
                         setStatusDropdownOpenEn(false);
                         setStatusDropdownOpenAr(false);
                     }}
-                    className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-gradient text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all group"
+                    className="cursor-pointer flex items-center justify-center gap-2 px-6 py-3 bg-brand-gradient text-white rounded-xl text-sm font-bold shadow-lg shadow-brand-blue/20 hover:opacity-90 transition-all group disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     <Plus className="w-4 h-4 transition-transform group-hover:rotate-90" />
                     {dict.dashboard.news.addBtn}
@@ -171,7 +158,7 @@ export default function NewsPage() {
                             </tr>
                         </thead>
                         <tbody className="divide-y divide-border-stroke">
-                            {currentNews.map((item) => (
+                            {currentNews.map((item: NewsItem) => (
                                 <tr key={item.id} className="group hover:bg-[#F7FAF9]/50 transition-colors">
                                     <td className="px-6 py-4">
                                         <div className="space-y-1">
@@ -186,8 +173,8 @@ export default function NewsPage() {
                                     <td className="px-6 py-4">
                                         <button
                                             onClick={() => toggleStatus(item.id, item.status)}
-                                            disabled={isSubmitting && actionId === item.id}
-                                            className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wider transition-all disabled:opacity-50
+                                            disabled={isSubmitting}
+                                            className={`cursor-pointer inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12px] font-bold uppercase tracking-wider transition-all disabled:opacity-50 disabled:cursor-not-allowed
                                                 ${item.status[lang] === "active"
                                                     ? "bg-[#E6F4F1] text-[#019977] hover:bg-[#019977] hover:text-white"
                                                     : "bg-red-50 text-red-600 hover:bg-red-600 hover:text-white"}`}
@@ -223,14 +210,15 @@ export default function NewsPage() {
                                                     setStatusDropdownOpenEn(false);
                                                     setStatusDropdownOpenAr(false);
                                                 }}
-                                                className="p-2 text-[#00000066] hover:text-brand-blue hover:bg-brand-blue/5 rounded-lg transition-all"
+                                                disabled={isSubmitting}
+                                                className="cursor-pointer p-2 text-[#00000066] hover:text-brand-blue hover:bg-brand-blue/5 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                                             >
                                                 <Edit2 className="w-4 h-4" />
                                             </button>
                                             <button
                                                 onClick={() => handleDeleteClick(item.id)}
-                                                disabled={isSubmitting && actionId === item.id}
-                                                className="p-2 text-[#00000066] hover:text-red-600 hover:bg-red-50 rounded-lg transition-all disabled:opacity-50"
+                                                disabled={isSubmitting}
+                                                className="cursor-pointer p-2 text-[#00000066] hover:text-red-600 hover:bg-red-50 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                                             >
                                                 <Trash2 className="w-4 h-4" />
                                             </button>
@@ -251,7 +239,7 @@ export default function NewsPage() {
                         <button
                             disabled={currentPage === 1}
                             onClick={() => handlePageChange(currentPage - 1)}
-                            className="p-2 border border-border-stroke rounded-lg disabled:opacity-30 hover:bg-white transition-all"
+                            className="cursor-pointer p-2 border border-border-stroke rounded-lg disabled:opacity-30 hover:bg-white transition-all"
                         >
                             <ChevronLeft className="w-4 h-4" />
                         </button>
@@ -259,7 +247,7 @@ export default function NewsPage() {
                             <button
                                 key={page}
                                 onClick={() => handlePageChange(page)}
-                                className={`w-8 h-8 rounded-lg text-xs font-bold transition-all
+                                className={`cursor-pointer w-8 h-8 rounded-lg text-xs font-bold transition-all
                                     ${currentPage === page
                                         ? "bg-brand-gradient text-white shadow-md shadow-brand-blue/20"
                                         : "hover:bg-white text-[#00000066] border border-transparent hover:border-border-stroke"}`}
@@ -270,7 +258,7 @@ export default function NewsPage() {
                         <button
                             disabled={currentPage === totalPages}
                             onClick={() => handlePageChange(currentPage + 1)}
-                            className="p-2 border border-border-stroke rounded-lg disabled:opacity-30 hover:bg-white transition-all"
+                            className="cursor-pointer p-2 border border-border-stroke rounded-lg disabled:opacity-30 hover:bg-white transition-all"
                         >
                             <ChevronRight className="w-4 h-4" />
                         </button>
@@ -287,7 +275,7 @@ export default function NewsPage() {
                                 <h3 className="text-xl font-bold text-black">{editingNews ? dict.dashboard.news.editBtn : dict.dashboard.news.addBtn}</h3>
                                 <p className="text-[#00000099] text-xs mt-1">{dict.dashboard.news.subtitle}</p>
                             </div>
-                            <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-black/5 rounded-full text-[#00000066] transition-colors">
+                            <button onClick={() => setIsModalOpen(false)} className="cursor-pointer p-2 hover:bg-black/5 rounded-full text-[#00000066] transition-colors">
                                 <Plus className="w-6 h-6 rotate-45" />
                             </button>
                         </div>
@@ -401,7 +389,7 @@ export default function NewsPage() {
                                                 setStatusDropdownOpenEn(!statusDropdownOpenEn);
                                                 setStatusDropdownOpenAr(false);
                                             }}
-                                            className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                                            className="cursor-pointer w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
                                         >
                                             <span className="capitalize">{selectedStatusEn}</span>
                                             <ChevronDown className={`w-4 h-4 text-[#00000066] transition-transform duration-200 ${statusDropdownOpenEn ? "rotate-180" : ""}`} />
@@ -415,7 +403,7 @@ export default function NewsPage() {
                                                         setSelectedStatusEn("active");
                                                         setStatusDropdownOpenEn(false);
                                                     }}
-                                                    className={`w-full px-4 py-3 text-left text-sm hover:bg-brand-blue/5 transition-colors flex items-center gap-2
+                                                    className={`cursor-pointer w-full px-4 py-3 text-left text-sm hover:bg-brand-blue/5 transition-colors flex items-center gap-2
                                                         ${selectedStatusEn === "active" ? "bg-brand-blue/5 text-brand-blue font-bold" : "text-[#00000099]"}`}
                                                 >
                                                     <div className="w-2 h-2 rounded-full bg-[#019977]" />
@@ -427,7 +415,7 @@ export default function NewsPage() {
                                                         setSelectedStatusEn("inactive");
                                                         setStatusDropdownOpenEn(false);
                                                     }}
-                                                    className={`w-full px-4 py-3 text-left text-sm hover:bg-red-50 transition-colors flex items-center gap-2
+                                                    className={`cursor-pointer w-full px-4 py-3 text-left text-sm hover:bg-red-50 transition-colors flex items-center gap-2
                                                         ${selectedStatusEn === "inactive" ? "bg-red-50 text-red-600 font-bold" : "text-[#00000099]"}`}
                                                 >
                                                     <div className="w-2 h-2 rounded-full bg-red-600" />
@@ -447,7 +435,7 @@ export default function NewsPage() {
                                                 setStatusDropdownOpenAr(!statusDropdownOpenAr);
                                                 setStatusDropdownOpenEn(false);
                                             }}
-                                            className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                                            className="cursor-pointer w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] flex items-center justify-between text-sm text-black focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
                                         >
                                             <span className="capitalize">{selectedStatusAr === "active" ? "نشط" : "غير نشط"}</span>
                                             <ChevronDown className={`w-4 h-4 text-[#00000066] transition-transform duration-200 ${statusDropdownOpenAr ? "rotate-180" : ""}`} />
@@ -461,7 +449,7 @@ export default function NewsPage() {
                                                         setSelectedStatusAr("active");
                                                         setStatusDropdownOpenAr(false);
                                                     }}
-                                                    className={`w-full px-4 py-3 text-right text-sm hover:bg-brand-blue/5 transition-colors flex items-center justify-start gap-2 flex-row-reverse
+                                                    className={`cursor-pointer w-full px-4 py-3 text-right text-sm hover:bg-brand-blue/5 transition-colors flex items-center justify-start gap-2 flex-row-reverse
                                                         ${selectedStatusAr === "active" ? "bg-brand-blue/5 text-brand-blue font-bold" : "text-[#00000099]"}`}
                                                 >
                                                     <div className="w-2 h-2 rounded-full bg-[#019977]" />
@@ -473,7 +461,7 @@ export default function NewsPage() {
                                                         setSelectedStatusAr("inactive");
                                                         setStatusDropdownOpenAr(false);
                                                     }}
-                                                    className={`w-full px-4 py-3 text-right text-sm hover:bg-red-50 transition-colors flex items-center justify-start gap-2 flex-row-reverse
+                                                    className={`cursor-pointer w-full px-4 py-3 text-right text-sm hover:bg-red-50 transition-colors flex items-center justify-start gap-2 flex-row-reverse
                                                         ${selectedStatusAr === "inactive" ? "bg-red-50 text-red-600 font-bold" : "text-[#00000099]"}`}
                                                 >
                                                     <div className="w-2 h-2 rounded-full bg-red-600" />

@@ -19,6 +19,8 @@ const UserSchema = new mongoose.Schema({
         required: [true, 'Please provide a password'],
         select: false,
     },
+    resetPasswordOTP: String,
+    resetPasswordOTPExpires: Date,
 }, {
     timestamps: true,
 });
