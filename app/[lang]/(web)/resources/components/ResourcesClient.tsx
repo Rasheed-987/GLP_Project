@@ -2,7 +2,9 @@
 "use client";
 
 import React, { useMemo, useState } from "react";
-import Marquee from "react-fast-marquee";
+import dynamic from "next/dynamic";
+
+const Marquee = dynamic(() => import("react-fast-marquee"), { ssr: false });
 import VideoTile from "./VideoTile";
 import ArticlesInsightsSection from "./ArticlesInsightsSection";
 import AlumniImpactShowcase, {

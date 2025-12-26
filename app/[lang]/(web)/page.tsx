@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Carousel from "./components/Carousel";
 import ContactSection from "./components/ContactSection";
-import Marquee from "react-fast-marquee";
+import PartnersMarquee from "./components/PartnersMarquee";
 import InteractiveProgramCard from "./components/InteractiveProgramCard";
 import NominationForm from "./components/NominationForm";
 import Container from "../../../app/components/Container";
@@ -370,7 +370,7 @@ export default async function HomePage({
                 <p className="text-[13px] text-[#4B5563]/70 mb-8">
                   {dict.home.partners.subTitle}
                 </p>
-                <Marquee speed={50} gradient={true} gradientColor="#E9F1EE" gradientWidth={60} pauseOnHover={true}>
+                <PartnersMarquee>
                   <div className="flex items-center gap-4 mx-2">
                     <div className="px-6 py-2.5 rounded-full bg-[#006A8E] flex items-center justify-center">
                       <span className="text-[10px] font-bold text-white tracking-widest uppercase">Logo</span>
@@ -388,7 +388,7 @@ export default async function HomePage({
                       <span className="text-[10px] font-bold text-white tracking-widest uppercase">Logo</span>
                     </div>
                   </div>
-                </Marquee>
+                </PartnersMarquee>
               </div>
             </div>
 
