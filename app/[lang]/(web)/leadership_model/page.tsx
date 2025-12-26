@@ -7,6 +7,7 @@ import type { Locale } from "../../../../lib/i18n/config";
 import AccordionSection from "../components/AccordionSection";
 import ConnectorElbow from "../components/ConnectorElbow";
 import GLMContent from "./GLMContent";
+import { getImageBlur } from "../../../../lib/image";
 
 import earth from "./earth.png";
 import sp1 from "../../../../public/images/sp1.png";
@@ -255,7 +256,15 @@ const Item = ({ color, item }: { color: string; item: GLMItem }) => (
       style={{ borderColor: color }}
     >
       {item.icon ? (
-        <Image src={item.icon} alt={item.title} width={24} height={24} className="object-contain" />
+        <Image
+          src={item.icon}
+          alt={item.title}
+          width={24}
+          height={24}
+          className="object-contain"
+          placeholder={(item as any).blurDataURL ? "blur" : undefined}
+          blurDataURL={(item as any).blurDataURL}
+        />
       ) : null}
     </div>
 
@@ -278,6 +287,15 @@ export default async function GLMPage({
   const { lang } = await params;
   const dict = await getDictionary(lang);
 
+  const earthBlur = await getImageBlur("/app/[lang]/(web)/leadership_model/earth.png");
+
+  // Generate blurs for all ICONS
+  const iconBlurs = {
+    leadershipSpirit: await Promise.all(ICONS.leadershipSpirit.map((img: any) => getImageBlur(img.src))),
+    futureOutlook: await Promise.all(ICONS.futureOutlook.map((img: any) => getImageBlur(img.src))),
+    achievementsImpact: await Promise.all(ICONS.achievementsImpact.map((img: any) => getImageBlur(img.src))),
+  };
+
   // ✅ get glm from en/ar files
   const glmText = safeGLM((dict as any)?.glm);
 
@@ -289,6 +307,7 @@ export default async function GLMPage({
       items: glmText.leadershipSpirit.items.map((it, i) => ({
         ...it,
         icon: ICONS.leadershipSpirit[i],
+        blurDataURL: iconBlurs.leadershipSpirit[i],
       })),
     },
     futureOutlook: {
@@ -296,6 +315,7 @@ export default async function GLMPage({
       items: glmText.futureOutlook.items.map((it, i) => ({
         ...it,
         icon: ICONS.futureOutlook[i],
+        blurDataURL: iconBlurs.futureOutlook[i],
       })),
     },
     achievementsImpact: {
@@ -303,6 +323,7 @@ export default async function GLMPage({
       items: glmText.achievementsImpact.items.map((it, i) => ({
         ...it,
         icon: ICONS.achievementsImpact[i],
+        blurDataURL: iconBlurs.achievementsImpact[i],
       })),
     },
   };
@@ -370,6 +391,7 @@ export default async function GLMPage({
             futureContent={futureContent}
             achievementsContent={achievementsContent}
             lang={lang}
+            earthBlur={earthBlur}
           />
         </Container>
       </section>

@@ -30,7 +30,7 @@ function ArrowUpRightIcon() {
   );
 }
 
-function ActionCircle({ href = "#", className = "" }: { href?: string; className?: string }) {
+export function ActionCircle({ href = "#", className = "" }: { href?: string; className?: string }) {
   return (
     <Link href={href} aria-label="Open article" className={className}>
       <div className="w-11 h-11 rounded-full bg-black text-white grid place-items-center hover:opacity-90 transition">
@@ -72,27 +72,27 @@ function FeaturedCard({ a }: { a: Article }) {
   );
 }
 
-function SmallCard({ a }: { a: Article }) {
+export function SmallCard({ a }: { a: Article }) {
   const href = a.href || (a.id ? `/article/${a.id}` : (a.slug ? `/article/${a.slug}` : "#"));
 
   return (
-    <div className="w-full">
+    <div className="w-full flex flex-col h-full group">
       {/* IMAGE */}
-      <div className="relative overflow-hidden rounded-[22px] aspect-[16/9]">
+      <div className="relative overflow-hidden rounded-[22px] aspect-video shrink-0 shadow-sm transition-transform duration-300 group-hover:scale-[1.02]">
         <Image src={a.image} alt={a.title} fill className="object-cover" />
       </div>
 
       {/* TEXT */}
-      <div className="pt-4 text-left">
-        {a.date ? <p className="text-[11px] text-slate-500 font-semibold">{a.date}</p> : null}
+      <div className="pt-4 text-left flex flex-col flex-1">
+        {a.date ? <p className="text-[11px] text-slate-500 font-semibold mb-1">{a.date}</p> : null}
 
-        <h4 className="mt-1 text-[14px] md:text-[15px] font-extrabold text-slate-900 leading-snug line-clamp-2">
+        <h4 className="text-[14px] md:text-[15px] font-extrabold text-slate-900 leading-snug line-clamp-2 h-[2.8em]">
           {a.title}
         </h4>
 
         {/* excerpt + action circle aligned to the right (like screenshot) */}
-        <div className="mt-3 flex items-start justify-between gap-4">
-          <p className="text-[12px] text-[#00000099] leading-[1.55] line-clamp-3 flex-1 font-medium">
+        <div className="mt-auto pt-3 flex items-start justify-between gap-4">
+          <p className="text-[12px] text-[#00000099] leading-[1.55] line-clamp-3 flex-1 font-medium h-[4.65em]">
             {a.excerpt ?? ""}
           </p>
 

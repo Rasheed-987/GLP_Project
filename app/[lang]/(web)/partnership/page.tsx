@@ -7,6 +7,7 @@ import Button from '../components/Button';
 import TagPill from '../components/TagPill';
 import Carousel from '../components/Carousel';
 import ContactSection from '../components/ContactSection';
+import { getImageBlur } from '../../../../lib/image';
 
 export default async function PartnershipPage({
     params,
@@ -16,17 +17,25 @@ export default async function PartnershipPage({
     const { lang } = await params;
     const dict = await getDictionary(lang);
 
+    const heroBlur = await getImageBlur("/images/partnership_herobg.webp");
+    const aboutBlur = await getImageBlur("/images/partenrship_about.png");
+    const arrowBlur = await getImageBlur("/images/glp_arrow.png");
+    const modelBlur = await getImageBlur("/images/model_bg.webp");
+    const contactBlur = await getImageBlur("/images/contactbackground.png");
+
     return (
         <>
             <section>
                 <Container className="w-full mt-20 md:mt-0 px-4 ">
                     <Image
-                        src="/images/partnership_herobg.png"
+                        src="/images/partnership_herobg.webp"
                         alt="Partnership"
                         width={1920}
                         height={600}
                         className="w-full h-[200px] rounded-xl md:h-auto object-cover"
                         priority
+                        placeholder={heroBlur ? "blur" : undefined}
+                        blurDataURL={heroBlur}
                     />
                 </Container>
             </section>
@@ -104,6 +113,8 @@ export default async function PartnershipPage({
                                     alt="Partnership About"
                                     fill
                                     className="object-cover"
+                                    placeholder={aboutBlur ? "blur" : undefined}
+                                    blurDataURL={aboutBlur}
                                 />
                             </div>
                         </div>
@@ -130,6 +141,8 @@ export default async function PartnershipPage({
                                     alt="GLP Arrow"
                                     fill
                                     className="object-contain object-left-top"
+                                    placeholder={arrowBlur ? "blur" : undefined}
+                                    blurDataURL={arrowBlur}
                                 />
                             </div>
                         </div>
@@ -162,12 +175,14 @@ export default async function PartnershipPage({
             {/* What We Offer Section */}
             <section className="relative py-8 md:py-12 overflow-hidden md:mx-4 bg-white md:bg-transparent">
                 {/* Desktop Background - Hidden on Mobile */}
-                <div className="hidden md:block absolute inset-0 z-0 overflow-hidden rounded-[1.5rem]">
+                <div className="hidden md:block absolute inset-0 z-0 h-[650px] overflow-hidden rounded-[1.5rem]">
                     <Image
-                        src="/images/model_bg.png"
+                        src="/images/model_bg.webp"
                         alt="Background"
                         fill
                         className="object-fill"
+                        placeholder={modelBlur ? "blur" : undefined}
+                        blurDataURL={modelBlur}
                     />
                 </div>
 
@@ -196,10 +211,12 @@ export default async function PartnershipPage({
                             {/* Mobile Image and Overlaid Description Block - Hidden on Desktop */}
                             <div className="md:hidden relative w-full h-[500px] mb-12 rounded-[1rem] overflow-hidden">
                                 <Image
-                                    src="/images/model_bg.png"
+                                    src="/images/model_bg.webp"
                                     alt="Innovation"
                                     fill
                                     className="object-cover"
+                                    placeholder={modelBlur ? "blur" : undefined}
+                                    blurDataURL={modelBlur}
                                 />
                                 <div className="absolute bottom-0 left-0 right-0 p-3 pt-20 bg-gradient-to-t from-black/80 via-black/40 to-transparent">
                                     <p className="text-white text-[13px] leading-[1.3] max-w-xs">
@@ -270,6 +287,7 @@ export default async function PartnershipPage({
                     description={dict.partnership.contact.description}
                     button={dict.partnership.contact.button1}
                     button2={dict.partnership.contact.button2}
+                    blurDataURL={contactBlur}
                 />
             ) : (
                 <ContactSection
@@ -278,6 +296,7 @@ export default async function PartnershipPage({
                     titleLine2={dict.partnership.contact.titleLine2}
                     description={dict.partnership.contact.description}
                     button={dict.partnership.contact.button}
+                    blurDataURL={contactBlur}
                 />
             )}
 

@@ -23,7 +23,7 @@ export default function VideoTile({ card }: { card: VideoCard }) {
             {...wrapProps}
             className="relative block overflow-hidden rounded-[30px] bg-slate-100 shadow-sm transition-transform hover:scale-[1.01]"
         >
-            <div className="relative aspect-[16/9]">
+            <div className="relative aspect-video">
                 <Image src={card.image} alt={card.title} fill className="object-cover" />
 
                 {/* bottom black gradient */}
@@ -44,7 +44,7 @@ export default function VideoTile({ card }: { card: VideoCard }) {
 
                 {/* title */}
                 <div className="absolute left-8 bottom-8 right-14">
-                    <p className="text-white text-left text-[13px] md:text-[20px] lg:text-[25px] mr-12 font-bold leading-snug drop-shadow whitespace-pre-line">
+                    <p className="text-white text-left text-[13px] md:text-[18px] lg:text-[20px] mr-12 font-bold leading-snug drop-shadow whitespace-pre-line">
                         {card.title}
                     </p>
                 </div>

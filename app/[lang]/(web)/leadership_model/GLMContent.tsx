@@ -11,6 +11,7 @@ type Props = {
   futureContent: React.ReactNode;
   achievementsContent: React.ReactNode;
   lang: string;
+  earthBlur?: string;
 };
 
 const MobileLine = ({
@@ -104,7 +105,6 @@ const MobileGlobeConnector = ({ isRtl }: { isRtl: boolean }) => {
     </div>
   );
 };
-
 export default function GLMContent({
   glm,
   earth,
@@ -112,6 +112,7 @@ export default function GLMContent({
   futureContent,
   achievementsContent,
   lang,
+  earthBlur,
 }: Props) {
   const isRtl = lang === "ar";
   const RED = "#E11D48";
@@ -219,7 +220,15 @@ export default function GLMContent({
       <div className={`w-full lg:w-auto flex ${isRtl ? 'justify-start pr-4' : 'justify-start pl-4'} lg:px-0 lg:justify-start lg:absolute ${isRtl ? 'lg:-right-[200px]' : 'lg:-left-[200px]'} lg:top-0`}>
         <div className="relative w-[320px] md:w-[380px] lg:w-[400px] aspect-square overflow-visible" ref={globeRef}>
           <div className="absolute inset-0 rounded-full overflow-hidden bg-white shadow-lg">
-            <Image src={earth} alt="Globe" fill className="object-cover animate-spin-slow" priority />
+            <Image
+              src={earth}
+              alt="Globe"
+              fill
+              className="object-cover animate-spin-slow"
+              priority
+              placeholder={earthBlur ? "blur" : undefined}
+              blurDataURL={earthBlur}
+            />
           </div>
           <div className="absolute -inset-5 rounded-full border-2 border-[#EDEDED] shadow-inner" />
           

@@ -109,7 +109,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
             {!open && (
               <button
                 onClick={() => setOpen(true)}
-                className="group inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 bg-white md:px-3 text-sm font-bold text-black hover:border-transparent transition-all duration-300 gap-2 hover:gap-0"
+                className="group inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 bg-white md:px-3 text-sm font-bold text-black transition-all duration-300 gap-2 "
                 aria-label="Open menu"
               >
                 <svg

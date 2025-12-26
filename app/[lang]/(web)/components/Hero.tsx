@@ -11,6 +11,7 @@ type HeroProps = {
   };
   description: string;
   backgroundImage: string;
+  blurDataURL?: string;
   buttons: {
     primary: {
       text: string;
@@ -23,7 +24,7 @@ type HeroProps = {
   };
 };
 
-export default function Hero({ title, description, backgroundImage, buttons }: HeroProps) {
+export default function Hero({ title, description, backgroundImage, blurDataURL, buttons }: HeroProps) {
   return (
     <div className="flex flex-col md:block relative w-full md:rounded-[32px] md:overflow-hidden md:h-[600px] lg:h-[700px]">
       {/* 1. Header & Description (Order 1 on mobile) */}
@@ -68,6 +69,8 @@ export default function Hero({ title, description, backgroundImage, buttons }: H
           fill
           className="object-cover rounded-[32px] md:rounded-none"
           priority
+          placeholder={blurDataURL ? "blur" : undefined}
+          blurDataURL={blurDataURL}
         />
         {/* Desktop Overlay */}
         <div className="hidden md:block absolute inset-0 bg-black/20" />

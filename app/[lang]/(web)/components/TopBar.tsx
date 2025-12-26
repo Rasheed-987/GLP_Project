@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { getDictionary } from "../../../../lib/i18n/dictionaries";
 import type { Locale } from "../../../../lib/i18n/config";
-import Marquee from "react-fast-marquee";
+
 
 type TopBarProps = {
   locale: Locale;
@@ -87,8 +87,7 @@ export default function TopBar({ locale, dict }: TopBarProps) {
         <div className="w-6 h-6 hidden md:block flex-shrink-0"></div>
 
         {/* Center Scrolling Group */}
-        <div className="flex-1 overflow-hidden min-w-0 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">
-          <Marquee speed={40} gradient={false} pauseOnHover={true}>
+        <div className="flex-1 flex justify-center overflow-hidden min-w-0">
             <div className="flex items-center gap-4 sm:gap-8 px-4">
               <span className="text-xs md:text-sm font-medium whitespace-nowrap">
                 {news.content}
@@ -107,7 +106,6 @@ export default function TopBar({ locale, dict }: TopBarProps) {
                 </a>
               )}
             </div>
-          </Marquee>
         </div>
 
         {/* Close button pushed to right */}

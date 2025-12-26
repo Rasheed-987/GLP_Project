@@ -66,11 +66,11 @@ export default async function ResourcesPage({
             <TagPill label={t.hero.pill} />
 
             <h1 className="mt-4 text-slate-900 leading-[1.05]">
-              <span className="block text-[40px] md:text-[60px] lg:text-[77px] font-medium">
+              <span className="block text-[32px] md:text-[48px] lg:text-[56px] font-medium">
                 {hasSplitLines ? (
                   <>
                     {t.hero.titleLine1Prefix ?? ""}
-                    <span className="font-extrabold">{t.hero.titleLine1Bold ?? ""}</span>
+                    <span className="font-bold">{t.hero.titleLine1Bold ?? ""}</span>
                     {t.hero.titleLine1Suffix ?? ""}
                   </>
                 ) : (
@@ -78,11 +78,11 @@ export default async function ResourcesPage({
                 )}
               </span>
 
-              <span className="block text-[40px] md:text-[60px] lg:text-[77px] font-medium">
+              <span className="block text-[32px] md:text-[48px] lg:text-[56px] font-medium">
                 {hasSplitLines ? (
                   <>
                     {t.hero.titleLine2Prefix ?? ""}
-                    <span className="font-extrabold">{t.hero.titleLine2Bold ?? ""}</span>
+                    <span className="font-bold">{t.hero.titleLine2Bold ?? ""}</span>
                     {t.hero.titleLine2Suffix ?? ""}
                   </>
                 ) : (
@@ -91,7 +91,7 @@ export default async function ResourcesPage({
               </span>
             </h1>
 
-            <p className="mt-8 max-w-[620px] text-[13px] md:text-[16px] leading-[1.55] text-slate-600 mb-12">
+            <p className="mt-8 max-w-[620px] text-[13px] md:text-[15px] leading-[1.55] text-slate-600 mb-12 text-center">
               {t.hero.description}
             </p>
 
@@ -114,19 +114,13 @@ export default async function ResourcesPage({
         <Container className="px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16">
             <div>
-              <h2 className="text-[30px] font-extrabold text-slate-900">{t.faq.title}</h2>
+              <h2 className="text-[24px] md:text-[28px] font-extrabold text-slate-900">{t.faq.title}</h2>
             </div>
 
             <div className="min-w-0">
               {t.faq.groups.map((g: any, gi: number) => (
                 <div key={gi} className={gi === 0 ? "" : "mt-14"}>
-                  <div className="flex items-center justify-between">
-                    <p className="text-[12px] font-extrabold tracking-[0.16em] text-teal-800">
-                      {g.label}
-                    </p>
-                    <div className="w-3 h-[2px] bg-slate-900/80 rounded" />
-                  </div>
-
+                 
                   <div className="mt-4 border-t border-black/10">
                     {g.items.map((it: any, idx: number) => (
                       <details
