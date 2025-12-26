@@ -17,6 +17,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/negotiator": "^0.6.4",
     "@types/node": "^20",
+    "@types/nodemailer": "^7.0.4",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "autoprefixer": "^10.4.16",
@@ -42,8 +43,5 @@
     "sharp": "^0.34.5",
     "tailwindcss": "^4",
     "typescript": "^5"
-  },
-  "devDependencies": {
-    "@types/nodemailer": "^7.0.4"
   }
 }
