@@ -6,6 +6,7 @@ import Link from "next/link";
 import TagPill from "../../components/TagPill";
 import { notFound } from "next/navigation";
 import { SmallCard, Article } from "../../resources/components/ArticlesInsightsSection";
+import { getBaseUrl } from "../../../../../lib/getBaseUrl";
 
 export default async function ArticleDetailsPage({
   params,
@@ -18,7 +19,7 @@ export default async function ArticleDetailsPage({
   let article;
 
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const baseUrl = await getBaseUrl();
     const res = await fetch(`${baseUrl}/api/articles/${id}?lang=${lang}`, { cache: 'no-store' });
     if (res.ok) {
       article = await res.json();

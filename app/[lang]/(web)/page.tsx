@@ -11,6 +11,7 @@ import InteractiveProgramCard from "./components/InteractiveProgramCard";
 import NominationForm from "./components/NominationForm";
 import Container from "../../../app/components/Container";
 import { getImageBlur } from "../../../lib/image";
+import { getBaseUrl } from "../../../lib/getBaseUrl";
 
 export default async function HomePage({
   params,
@@ -25,7 +26,7 @@ export default async function HomePage({
 
   let testimonials = [];
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const baseUrl = await getBaseUrl();
     const testimonialRes = await fetch(`${baseUrl}/api/testimonials?lang=${lang}`, { cache: 'no-store' });
     if (testimonialRes.ok) {
       const data = await testimonialRes.json();

@@ -5,6 +5,7 @@ import Container from "../../../components/Container";
 import ContactSection from "../components/ContactSection";
 import TagPill from "../components/TagPill";
 import ResourcesClient from "./components/ResourcesClient";
+import { getBaseUrl } from "../../../../lib/getBaseUrl";
 
 export default async function ResourcesPage({
   params,
@@ -16,7 +17,7 @@ export default async function ResourcesPage({
 
   let articles = [];
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const baseUrl = await getBaseUrl();
     const res = await fetch(`${baseUrl}/api/articles?lang=${lang}`, { cache: 'no-store' });
     if (res.ok) {
       const data = await res.json();
