@@ -7,31 +7,19 @@ import Providers from './providers'
 
 const frutiger = localFont({
   src: [
-    {
-      path: '../fonts/FrutigerLTArabic45Light.ttf',
-      weight: '300',
-      style: 'normal',
-    },
-    {
-      path: '../fonts/FrutigerLTArabic55Roman.ttf',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../fonts/FrutigerLTArabic65Bold.ttf',
-      weight: '700',
-      style: 'normal',
-    },
-    {
-      path: '../fonts/frutigerltarabic75black.ttf',
-      weight: '900',
-      style: 'normal',
-    },
+    { path: '../fonts/FrutigerLTArabic45Light.ttf', weight: '300' },
+    { path: '../fonts/FrutigerLTArabic55Roman.ttf', weight: '400' },
+    { path: '../fonts/FrutigerLTArabic65Bold.ttf', weight: '700' },
+    { path: '../fonts/frutigerltarabic75black.ttf', weight: '900' },
   ],
   variable: '--font-frutiger-arabic',
 })
 
-export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>
+}) {
   const { lang } = await params
   const locale = lang as Locale
   const dict = await getDictionary(locale)
@@ -52,15 +40,15 @@ export default async function LangLayout({
   const { lang } = await params
   const locale = lang as Locale
   const dir = locale === 'ar' ? 'rtl' : 'ltr'
-  
+
   return (
-    <html lang={locale} dir={dir}>
-      <body className={`${frutiger.variable} font-sans antialiased`}>
-        <ToasterProvider />
-        <Providers>
-          {children}
-        </Providers>
-      </body>
-    </html>
+    <div
+      lang={locale}
+      dir={dir}
+      className={`${frutiger.variable} font-sans antialiased`}
+    >
+      <ToasterProvider />
+      <Providers>{children}</Providers>
+    </div>
   )
 }

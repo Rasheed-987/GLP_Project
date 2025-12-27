@@ -1,16 +1,54 @@
-import type { Metadata } from 'next'
+import '../globals.css'
+import type { Locale } from "../../lib/i18n/config"
+import { getDictionary } from "../../lib/i18n/dictionaries"
+import localFont from 'next/font/local'
+import ToasterProvider from '../components/ToasterProvider'
+import Providers from './providers'
 
-export const metadata: Metadata = {
-  title: 'GLP',
-  description: 'Global Leadership Program',
+const frutiger = localFont({
+  src: [
+    { path: '../fonts/FrutigerLTArabic45Light.ttf', weight: '300' },
+    { path: '../fonts/FrutigerLTArabic55Roman.ttf', weight: '400' },
+    { path: '../fonts/FrutigerLTArabic65Bold.ttf', weight: '700' },
+    { path: '../fonts/frutigerltarabic75black.ttf', weight: '900' },
+  ],
+  variable: '--font-frutiger-arabic',
+})
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ lang: string }>
+}) {
+  const { lang } = await params
+  const locale = lang as Locale
+  const dict = await getDictionary(locale)
+
+  return {
+    title: dict.metadata.title,
+    description: dict.metadata.description,
+  }
 }
 
-// This layout is required by Next.js but kept minimal
-// The actual root layout with html/body is in app/[lang]/layout.tsx
-export default function RootLayout({
+export default async function LangLayout({
   children,
+  params,
 }: {
   children: React.ReactNode
+  params: Promise<{ lang: string }>
 }) {
-  return children
+  const { lang } = await params
+  const locale = lang as Locale
+  const dir = locale === 'ar' ? 'rtl' : 'ltr'
+
+  return (
+    <div
+      lang={locale}
+      dir={dir}
+      className={`${frutiger.variable} font-sans antialiased`}
+    >
+      <ToasterProvider />
+      <Providers>{children}</Providers>
+    </div>
+  )
 }
