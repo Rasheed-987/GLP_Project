@@ -5,7 +5,7 @@ export default {
     partnership: 'Partnership',
     partnerWithUs: 'Partner with us',
     leadershipModel: 'Leadership Model',
-    programmes: 'programmes',
+    programmes: 'Programmes',
     alumni: 'Alumni',
     approach: 'Approach',
     resources: 'Resources',

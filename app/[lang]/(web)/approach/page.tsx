@@ -21,8 +21,8 @@ export default async function ApproachPage({
     const learningBlur = await getImageBlur("/images/LearningMethodology.webp");
     const aboutBlur = await getImageBlur("/images/approach_about.webp");
     const alumniBlur = await getImageBlur("/images/alumni.webp");
-    const alumniBgBlur = await getImageBlur("/images/bg_1.png");
-    const contactBlur = await getImageBlur("/images/contactbackground.png");
+    const alumniBgBlur = await getImageBlur("/images/bg_1.webp");
+    const contactBlur = await getImageBlur("/images/contactbackground.webp");
 
     return (
         <>

@@ -22,7 +22,7 @@ export default function ContactSection({
     description,
     button,
     button2,
-    backgroundImage = '/images/contactbackground.png',
+    backgroundImage = '/images/contactbackground.webp',
     blurDataURL
 }: ContactSectionProps) {
     return (
