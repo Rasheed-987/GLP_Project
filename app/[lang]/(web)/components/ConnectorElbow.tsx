@@ -31,7 +31,7 @@ export default function ConnectorElbow({
         d={`M ${dotX + 5} ${endY} L ${endX} ${endY}`}
         fill="none"
         stroke={color}
-        strokeWidth="2"
+        strokeWidth="18"
         strokeLinecap="round"
         strokeLinejoin="round"
         vectorEffect="non-scaling-stroke"

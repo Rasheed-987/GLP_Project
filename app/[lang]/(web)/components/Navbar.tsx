@@ -134,15 +134,23 @@ export default function Navbar({ locale, dict }: NavbarProps) {
               </div>
             )}
             {open && (
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                className="group inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 bg-white text-zinc-900 hover:bg-black/5 hover:border-transparent transition-all duration-300 md:px-4 gap-2 cursor-pointer"
-                aria-label="Close menu"
-              >
-                <span aria-hidden className="font-normal text-xl md:text-sm transition-all duration-300 group-hover:opacity-0 group-hover:scale-0 overflow-hidden">✕</span>
-                <span className="hidden md:inline text-sm font-bold transition-all duration-300 group-hover:scale-105">{dict.nav.close}</span>
-              </button>
+              <div className="relative group/close">
+                {/* Ghost Element for Layout Stability */}
+                <div aria-hidden="true" className="invisible inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 md:px-4 gap-2">
+                  <span className="font-normal text-xl md:text-sm">✕</span>
+                  <span className="hidden md:inline text-sm font-bold">{dict.nav.close}</span>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  className="cursor-pointer absolute right-0 top-0 group inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 bg-white text-zinc-900 hover:border-transparent transition-all duration-300 md:px-4 gap-2 group-hover/close:gap-0"
+                  aria-label="Close menu"
+                >
+                  <span aria-hidden className="font-normal text-xl md:text-sm transition-all duration-300 group-hover/close:opacity-0 group-hover/close:scale-0 group-hover/close:w-0 overflow-hidden">✕</span>
+                  <span className="hidden md:inline text-sm font-bold transition-all duration-300 group-hover/close:scale-105">{dict.nav.close}</span>
+                </button>
+              </div>
             )}
           </div>
         </div>

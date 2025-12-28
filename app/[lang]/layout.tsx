@@ -42,13 +42,15 @@ export default async function LangLayout({
   const dir = locale === 'ar' ? 'rtl' : 'ltr'
 
   return (
-    <div
+    <html
       lang={locale}
       dir={dir}
       className={`${frutiger.variable} font-sans antialiased`}
     >
-      <ToasterProvider />
-      <Providers>{children}</Providers>
-    </div>
+      <body>
+        <ToasterProvider />
+        <Providers>{children}</Providers>
+      </body>
+    </html>
   )
 }
