@@ -172,12 +172,12 @@ export default function DashboardPage() {
                                 recentArticles.map((article: any, i: number) => (
                                     <div key={i} className="group p-4 rounded-2xl bg-[#F7FAF9] border border-transparent hover:border-brand-blue/20 hover:bg-white hover:shadow-lg hover:shadow-brand-blue/5 transition-all cursor-pointer">
                                         <h4 className="font-bold text-black group-hover:text-brand-blue transition-colors mb-2">
-                                            {lang === 'ar' ? article.title.ar : article.title.en}
+                                            {typeof article.title === 'string' ? article.title : (lang === 'ar' ? article.title?.ar : article.title?.en)}
                                         </h4>
                                         <div className="flex items-center gap-4 text-[10px] font-bold text-[#00000066] uppercase tracking-wider">
                                             <div className="flex items-center gap-1.5">
                                                 <Calendar className="w-3 h-3" />
-                                                {lang === 'ar' ? article.date.ar : article.date.en}
+                                                {typeof article.date === 'string' ? article.date : (lang === 'ar' ? article.date?.ar : article.date?.en)}
                                             </div>
                                             <div className="flex items-center gap-1.5">
                                                 <Clock className="w-3 h-3" />
@@ -214,14 +214,14 @@ export default function DashboardPage() {
                                     <div key={i} className="p-4 rounded-2xl border border-border-stroke space-y-3 relative overflow-hidden group hover:border-brand-blue/20 transition-all">
                                         <span className="absolute top-0 right-0 w-16 h-16 bg-brand-green/5 rounded-bl-[40px]"></span>
                                         <h4 className="font-bold text-black text-sm line-clamp-1 pr-4">
-                                            {lang === 'ar' ? news.topic.ar : news.topic.en}
+                                            {typeof news.topic === 'string' ? news.topic : (lang === 'ar' ? news.topic?.ar : news.topic?.en)}
                                         </h4>
                                         <div className="flex items-center justify-between">
                                             <p className="text-[10px] font-medium text-[#00000066]">
-                                                {lang === 'ar' ? news.expiryDate.ar : news.expiryDate.en}
+                                                {typeof news.expiryDate === 'string' ? news.expiryDate : (lang === 'ar' ? news.expiryDate?.ar : news.expiryDate?.en)}
                                             </p>
                                             <span className="px-2 py-0.5 bg-[#E6F4F1] text-[#019977] text-[8px] font-bold uppercase rounded-full">
-                                                {lang === 'ar' ? news.status.ar : news.status.en}
+                                                {typeof news.status === 'string' ? news.status : (lang === 'ar' ? news.status?.ar : news.status?.en)}
                                             </span>
                                         </div>
                                     </div>
@@ -255,12 +255,12 @@ export default function DashboardPage() {
                                                 <User className="w-5 h-5" />
                                             </div>
                                             <div>
-                                                <p className="text-sm font-bold text-black">{lang === 'ar' ? t.name.ar : t.name.en}</p>
-                                                <p className="text-[10px] text-[#00000066] font-medium">{lang === 'ar' ? t.profession.ar : t.profession.en}</p>
+                                                <p className="text-sm font-bold text-black">{typeof t.name === 'string' ? t.name : (lang === 'ar' ? t.name?.ar : t.name?.en)}</p>
+                                                <p className="text-[10px] text-[#00000066] font-medium">{typeof t.profession === 'string' ? t.profession : (lang === 'ar' ? t.profession?.ar : t.profession?.en)}</p>
                                             </div>
                                         </div>
                                         <p className="text-xs italic leading-relaxed text-[#00000099] line-clamp-3">
-                                            &quot;{lang === 'ar' ? t.description.ar : t.description.en}&quot;
+                                            &quot;{typeof t.description === 'string' ? t.description : (lang === 'ar' ? t.description?.ar : t.description?.en)}&quot;
                                         </p>
                                     </div>
                                 ))

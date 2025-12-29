@@ -77,12 +77,31 @@ export default function ArticlesPage() {
     const [deletingId, setDeletingId] = useState<string | null>(null);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
+    const [expandedSectionId, setExpandedSectionId] = useState<string | null>(null);
+
     const fileInputRef = useRef<HTMLInputElement>(null);
     const itemsPerPage = 8;
 
     useEffect(() => {
         getDictionary(lang).then(setDict);
     }, [lang]);
+
+    // Initialize sections and expanded state when modal opens
+    useEffect(() => {
+        if (isModalOpen) {
+            if (editingArticle) {
+                setSections(editingArticle.sections);
+                if (editingArticle.sections.length > 0) {
+                    setExpandedSectionId(editingArticle.sections[0].id);
+                }
+            } else {
+                // For new articles, start with one empty expanded section
+                const firstId = Date.now().toString();
+                setSections([{ id: firstId, heading: { en: "", ar: "" }, content: { en: "", ar: "" } }]);
+                setExpandedSectionId(firstId);
+            }
+        }
+    }, [isModalOpen, editingArticle]);
 
     if (articlesLoading || !dict) return <LoadingScreen />;
 
@@ -91,6 +110,12 @@ export default function ArticlesPage() {
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
+            // Check file size (2MB)
+            if (file.size > 2 * 1024 * 1024) {
+                toast.error("Featured image must be smaller than 2MB");
+                if (fileInputRef.current) fileInputRef.current.value = "";
+                return;
+            }
             setImageFile(file);
             const reader = new FileReader();
             reader.onloadend = () => setImagePreview(reader.result as string);
@@ -99,7 +124,9 @@ export default function ArticlesPage() {
     };
 
     const addSection = () => {
-        setSections([...sections, { id: Date.now().toString(), heading: { en: "", ar: "" }, content: { en: "", ar: "" } }]);
+        const newId = Date.now().toString();
+        setSections([...sections, { id: newId, heading: { en: "", ar: "" }, content: { en: "", ar: "" } }]);
+        setExpandedSectionId(newId); // Expand the new section
     };
 
     const removeSection = (id: string) => {
@@ -311,17 +338,80 @@ export default function ArticlesPage() {
 
                         <form className="flex-1 overflow-y-auto no-scrollbar p-8 space-y-10" onSubmit={async (e) => {
                             e.preventDefault();
-                            const formData = new FormData(e.currentTarget);
+                            if (isSubmitting) return;
                             setIsSubmitting(true);
+                            const formData = new FormData(e.currentTarget);
+
                             try {
+                                const titleEn = (formData.get('titleEn') as string || "").trim();
+                                const titleAr = (formData.get('titleAr') as string || "").trim();
+                                const subtitleEn = (formData.get('subtitleEn') as string || "").trim();
+                                const subtitleAr = (formData.get('subtitleAr') as string || "").trim();
+
+                                // Basic Empty Checks
+                                if (!titleEn || !titleAr || !subtitleEn || !subtitleAr || !dateEn || !dateAr) {
+                                    toast.error("Please fill in all required fields");
+                                    setIsSubmitting(false);
+                                    return;
+                                }
+
+                                // Length Validations
+                                if (titleEn.length < 3 || titleEn.length > 100 || titleAr.length < 3 || titleAr.length > 100) {
+                                    toast.error("Title must be between 3 and 100 characters");
+                                    setIsSubmitting(false);
+                                    return;
+                                }
+                                if (subtitleEn.length < 10 || subtitleEn.length > 250 || subtitleAr.length < 10 || subtitleAr.length > 250) {
+                                    toast.error("Subtitle must be between 10 and 250 characters");
+                                    setIsSubmitting(false);
+                                    return;
+                                }
+
+                                // Media Checks (for new articles)
+                                if (!editingArticle && !imageFile) {
+                                    toast.error("Featured image is required");
+                                    setIsSubmitting(false);
+                                    return;
+                                }
+
+                                // Sections Validation
+                                if (sections.length === 0) {
+                                    toast.error("At least one content section is required");
+                                    setIsSubmitting(false);
+                                    return;
+                                }
+
+                                const validatedSections = sections.map((s, idx) => {
+                                    const hEn = (s.heading.en || "").trim();
+                                    const hAr = (s.heading.ar || "").trim();
+                                    const cEn = (s.content.en || "").trim();
+                                    const cAr = (s.content.ar || "").trim();
+
+                                    if (!cEn || !cAr) {
+                                        throw new Error(`Section ${idx + 1} content is required in both languages`);
+                                    }
+                                    if (cEn.length < 20 || cEn.length > 5000 || cAr.length < 20 || cAr.length > 5000) {
+                                        throw new Error(`Section ${idx + 1} content must be between 20 and 5000 characters`);
+                                    }
+                                    if ((hEn && (hEn.length < 3 || hEn.length > 100)) || (hAr && (hAr.length < 3 || hAr.length > 100))) {
+                                        throw new Error(`Section ${idx + 1} heading must be between 3 and 100 characters`);
+                                    }
+
+                                    return {
+                                        ...s,
+                                        heading: { en: hEn, ar: hAr },
+                                        content: { en: cEn, ar: cAr }
+                                    };
+                                });
+
                                 const formDataSubmit = new FormData();
-                                formDataSubmit.append('titleEn', formData.get('titleEn') as string);
-                                formDataSubmit.append('titleAr', formData.get('titleAr') as string);
-                                formDataSubmit.append('subtitleEn', formData.get('subtitleEn') as string);
-                                formDataSubmit.append('subtitleAr', formData.get('subtitleAr') as string);
+                                formDataSubmit.append('titleEn', titleEn);
+                                formDataSubmit.append('titleAr', titleAr);
+                                formDataSubmit.append('subtitleEn', subtitleEn);
+                                formDataSubmit.append('subtitleAr', subtitleAr);
                                 formDataSubmit.append('dateEn', dateEn);
                                 formDataSubmit.append('dateAr', dateAr);
-                                formDataSubmit.append('sections', JSON.stringify(sections));
+                                formDataSubmit.append('sections', JSON.stringify(validatedSections));
                                 formDataSubmit.append('statusEn', selectedStatusEn);
                                 formDataSubmit.append('statusAr', selectedStatusAr);
 
@@ -345,7 +435,6 @@ export default function ArticlesPage() {
                                 setIsModalOpen(false);
                                 fetchArticles();
                             } catch (err: any) {
-                                console.error(err);
                                 toast.error(err.message || "Failed to save article");
                             } finally {
                                 setIsSubmitting(false);
@@ -420,21 +509,21 @@ export default function ArticlesPage() {
                                         <div className="space-y-4">
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Title (ENG)</label>
-                                                <input type="text" name="titleEn" placeholder="Article Headline..." defaultValue={editingArticle?.title.en} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-bold" />
+                                                <input type="text" name="titleEn" placeholder="Article Headline..." defaultValue={editingArticle?.title.en} minLength={3} maxLength={100} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-bold" required />
                                             </div>
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Subtitle (ENG)</label>
-                                                <textarea rows={2} name="subtitleEn" placeholder="Brief summary..." defaultValue={editingArticle?.subtitle.en} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" />
+                                                <textarea rows={2} name="subtitleEn" placeholder="Brief summary..." defaultValue={editingArticle?.subtitle.en} minLength={10} maxLength={250} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" required />
                                             </div>
                                         </div>
                                         <div className="space-y-4">
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">العنوان (AR)</label>
-                                                <input type="text" dir="rtl" name="titleAr" placeholder="عنوان المقال..." defaultValue={editingArticle?.title.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-bold" />
+                                                <input type="text" dir="rtl" name="titleAr" placeholder="عنوان المقال..." defaultValue={editingArticle?.title.ar} minLength={3} maxLength={100} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-bold" required />
                                             </div>
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">عنوان فرعي (AR)</label>
-                                                <textarea rows={2} dir="rtl" name="subtitleAr" placeholder="ملخص قصير..." defaultValue={editingArticle?.subtitle.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" />
+                                                <textarea rows={2} dir="rtl" name="subtitleAr" placeholder="ملخص قصير..." defaultValue={editingArticle?.subtitle.ar} minLength={10} maxLength={250} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" required />
                                             </div>
                                         </div>
                                     </div>
@@ -450,16 +539,20 @@ export default function ArticlesPage() {
                                             {imagePreview ? (
                                                 <>
                                                     <Image src={imagePreview} alt="Preview" width={800} height={400} className="w-full h-full object-cover" />
-                                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-3">
                                                         <button type="button" onClick={() => fileInputRef.current?.click()} className="cursor-pointer bg-white text-black px-6 py-2.5 rounded-full text-sm font-bold flex items-center gap-2">
                                                             <ImageIcon className="w-4 h-4" /> Change Image
                                                         </button>
+                                                        <span className="text-white/80 text-[10px] font-bold uppercase tracking-widest">Max 2MB</span>
                                                     </div>
                                                 </>
                                             ) : (
                                                 <button type="button" onClick={() => fileInputRef.current?.click()} className="cursor-pointer flex flex-col items-center gap-3 text-[#00000033]">
                                                     <ImageIcon className="w-12 h-12" />
-                                                    <span className="text-sm font-bold">Click to upload featured image (21:9 Aspect Recommended)</span>
+                                                    <div className="flex flex-col items-center gap-1">
+                                                        <span className="text-sm font-bold">Click to upload featured image</span>
+                                                        <span className="text-[10px] font-bold uppercase tracking-widest">(21:9 Aspect Recommended • Max 2MB)</span>
+                                                    </div>
                                                 </button>
                                             )}
                                         </div>
@@ -478,49 +571,114 @@ export default function ArticlesPage() {
                                         </button>
                                     </div>
 
-                                    <div className="space-y-12">
-                                        {sections.map((section, index) => (
-                                            <div key={section.id} className="relative p-8 rounded-3xl bg-[#F7FAF9] border border-border-stroke space-y-8 animate-in slide-in-from-top-4 duration-300">
-                                                <button type="button" onClick={() => removeSection(section.id)} className="cursor-pointer absolute top-4 right-4 p-2 bg-red-50 text-red-600 rounded-full hover:bg-red-600 hover:text-white transition-all">
-                                                    <X className="w-4 h-4" />
-                                                </button>
-
-                                                <span className="inline-block px-4 py-1.5 bg-brand-blue/10 text-brand-blue rounded-full text-[10px] font-bold uppercase tracking-wider">
-                                                    Section {index + 1}
-                                                </span>
-
-                                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                                    <div className="space-y-6">
-                                                        <div>
-                                                            <label className="flex items-center gap-2 text-[10px] font-bold text-[#00000066] uppercase tracking-wider mb-2">
-                                                                <Type className="w-3 h-3" /> Section Heading (ENG)
-                                                            </label>
-                                                            <input type="text" placeholder="Enter heading..." value={section.heading.en} onChange={(e) => updateSection(section.id, 'heading', 'en', e.target.value)} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-white focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-bold text-brand-blue" />
+                                    <div className="space-y-4">
+                                        {sections.map((section, index) => {
+                                            const isExpanded = expandedSectionId === section.id;
+                                            return (
+                                                <div key={section.id} className={`relative rounded-3xl border transition-all duration-300 ${isExpanded ? "bg-[#F7FAF9] border-brand-blue shadow-sm" : "bg-white border-border-stroke hover:border-brand-blue/30"}`}>
+                                                    {/* Accordion Header */}
+                                                    <div
+                                                        onClick={() => setExpandedSectionId(isExpanded ? null : section.id)}
+                                                        className="flex items-center justify-between p-6 cursor-pointer select-none"
+                                                    >
+                                                        <div className="flex items-center gap-4">
+                                                            <span className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-colors ${isExpanded ? "bg-brand-blue text-white" : "bg-brand-blue/10 text-brand-blue"}`}>
+                                                                {index + 1}
+                                                            </span>
+                                                            <div className="space-y-0.5">
+                                                                <h5 className={`text-sm font-bold transition-colors ${isExpanded ? "text-brand-blue" : "text-black"}`}>
+                                                                    {section.heading.en || (lang === 'ar' ? (section.heading.ar || "قسم جديد") : "Untitled Section")}
+                                                                </h5>
+                                                                <p className="text-[11px] text-[#00000066] uppercase tracking-widest font-bold">Content Section</p>
+                                                            </div>
                                                         </div>
-                                                        <div>
-                                                            <label className="flex items-center gap-2 text-[10px] font-bold text-[#00000066] uppercase tracking-wider mb-2">
-                                                                <AlignLeft className="w-3 h-3" /> Section Content (ENG)
-                                                            </label>
-                                                            <textarea rows={6} placeholder="Enter article paragraphs..." value={section.content.en} onChange={(e) => updateSection(section.id, 'content', 'en', e.target.value)} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-white focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none leading-relaxed" />
-                                                        </div>
-                                                    </div>
-                                                    <div className="space-y-6">
-                                                        <div>
-                                                            <label className="flex items-center justify-end gap-2 text-[10px] font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">
-                                                                عنوان القسم (AR) <Type className="w-3 h-3" />
-                                                            </label>
-                                                            <input type="text" dir="rtl" placeholder="أدخل العنوان..." value={section.heading.ar} onChange={(e) => updateSection(section.id, 'heading', 'ar', e.target.value)} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-white focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-bold text-brand-blue" />
-                                                        </div>
-                                                        <div>
-                                                            <label className="flex items-center justify-end gap-2 text-[10px] font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">
-                                                                محتوى القسم (AR) <AlignLeft className="w-3 h-3" />
-                                                            </label>
-                                                            <textarea rows={6} dir="rtl" placeholder="أدخل فقرات المقال..." value={section.content.ar} onChange={(e) => updateSection(section.id, 'content', 'ar', e.target.value)} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-white focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none leading-relaxed" />
+                                                        <div className="flex items-center gap-2">
+                                                            <button
+                                                                type="button"
+                                                                onClick={(e) => { e.stopPropagation(); removeSection(section.id); }}
+                                                                className="p-2 text-[#00000033] hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                                                                title="Delete Section"
+                                                            >
+                                                                <Trash2 className="w-4 h-4" />
+                                                            </button>
+                                                            <ChevronDown className={`w-5 h-5 text-[#00000033] transition-transform duration-300 ${isExpanded ? "rotate-180" : ""}`} />
                                                         </div>
                                                     </div>
+
+                                                    {/* Accordion Content */}
+                                                    {isExpanded && (
+                                                        <div className="p-8 pt-0 space-y-8 animate-in slide-in-from-top-4 duration-300 border-t border-brand-blue/5 mt-2">
+                                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-6">
+                                                                <div className="space-y-6">
+                                                                    <div>
+                                                                        <label className="flex items-center gap-2 text-[10px] font-bold text-[#00000066] uppercase tracking-wider mb-2">
+                                                                            <Type className="w-3 h-3" /> Section Heading (ENG)
+                                                                        </label>
+                                                                        <input
+                                                                            type="text"
+                                                                            placeholder="Enter heading..."
+                                                                            value={section.heading.en}
+                                                                            minLength={3}
+                                                                            maxLength={100}
+                                                                            onChange={(e) => updateSection(section.id, 'heading', 'en', e.target.value)}
+                                                                            className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-white focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-bold text-brand-blue"
+                                                                        />
+                                                                    </div>
+                                                                    <div>
+                                                                        <label className="flex items-center gap-2 text-[10px] font-bold text-[#00000066] uppercase tracking-wider mb-2">
+                                                                            <AlignLeft className="w-3 h-3" /> Section Content (ENG)
+                                                                        </label>
+                                                                        <textarea
+                                                                            rows={6}
+                                                                            placeholder="Enter article paragraphs..."
+                                                                            value={section.content.en}
+                                                                            minLength={20}
+                                                                            maxLength={5000}
+                                                                            onChange={(e) => updateSection(section.id, 'content', 'en', e.target.value)}
+                                                                            className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-white focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none leading-relaxed"
+                                                                            required
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                                <div className="space-y-6">
+                                                                    <div>
+                                                                        <label className="flex items-center justify-end gap-2 text-[10px] font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">
+                                                                            عنوان القسم (AR) <Type className="w-3 h-3" />
+                                                                        </label>
+                                                                        <input
+                                                                            type="text"
+                                                                            dir="rtl"
+                                                                            placeholder="أدخل العنوان..."
+                                                                            value={section.heading.ar}
+                                                                            minLength={3}
+                                                                            maxLength={100}
+                                                                            onChange={(e) => updateSection(section.id, 'heading', 'ar', e.target.value)}
+                                                                            className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-white focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all font-bold text-brand-blue"
+                                                                        />
+                                                                    </div>
+                                                                    <div>
+                                                                        <label className="flex items-center justify-end gap-2 text-[10px] font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">
+                                                                            محتوى القسم (AR) <AlignLeft className="w-3 h-3" />
+                                                                        </label>
+                                                                        <textarea
+                                                                            rows={6}
+                                                                            dir="rtl"
+                                                                            placeholder="أدخل فقرات المقال..."
+                                                                            value={section.content.ar}
+                                                                            minLength={20}
+                                                                            maxLength={5000}
+                                                                            onChange={(e) => updateSection(section.id, 'content', 'ar', e.target.value)}
+                                                                            className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-white focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none leading-relaxed"
+                                                                            required
+                                                                        />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )}
                                                 </div>
-                                            </div>
-                                        ))}
+                                            );
+                                        })}
                                     </div>
 
                                     <button type="button" onClick={addSection} className="w-full py-6 border-2 border-dashed border-border-stroke bg-white rounded-3xl text-sm font-bold text-[#00000033] hover:border-brand-blue/30 hover:text-brand-blue transition-all flex items-center justify-center gap-2 group cursor-pointer">

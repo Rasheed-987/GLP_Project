@@ -10,6 +10,7 @@ import toast from "react-hot-toast";
 import DeleteConfirmationModal from "../../../../components/DeleteConfirmationModal";
 import LoadingScreen from "../../../../components/LoadingScreen";
 import { useNews } from "../../../../hooks/useDashboard";
+import CustomDatePicker from "../../../../components/CustomDatePicker";
 
 interface NewsItem {
     id: string;
@@ -123,7 +124,7 @@ export default function NewsPage() {
                     <h1 className="text-2xl font-bold text-black tracking-tight flex items-center gap-2">
                         {dict.dashboard.sidebar.news}
                     </h1>
-                    <p className="text-[#00000099] text-sm mt-1">
+                    <p className="text-[#00000099] text-base">
                         {dict.dashboard.news.subtitle}
                     </p>
                 </div>
@@ -273,7 +274,7 @@ export default function NewsPage() {
                         <div className="p-8 border-b border-border-stroke flex items-center justify-between bg-[#F7FAF9] shrink-0">
                             <div>
                                 <h3 className="text-xl font-bold text-black">{editingNews ? dict.dashboard.news.editBtn : dict.dashboard.news.addBtn}</h3>
-                                <p className="text-[#00000099] text-xs mt-1">{dict.dashboard.news.subtitle}</p>
+                                <p className="text-[#00000099] text-sm ">{dict.dashboard.news.subtitle}</p>
                             </div>
                             <button onClick={() => setIsModalOpen(false)} className="cursor-pointer p-2 hover:bg-black/5 rounded-full text-[#00000066] transition-colors">
                                 <Plus className="w-6 h-6 rotate-45" />
@@ -283,29 +284,79 @@ export default function NewsPage() {
                         <form className="flex-1 overflow-y-auto no-scrollbar p-8 space-y-6" onSubmit={async (e) => {
                             e.preventDefault();
                             if (isSubmitting) return;
-                            setIsSubmitting(true);
+
                             const formData = new FormData(e.currentTarget);
+
+                            // Validate all fields are filled
+                            const topicEn = formData.get('topicEn')?.toString().trim();
+                            const topicAr = formData.get('topicAr')?.toString().trim();
+                            const contentEn = formData.get('contentEn')?.toString().trim();
+                            const contentAr = formData.get('contentAr')?.toString().trim();
+                            const expiryEn = formData.get('expiryEn')?.toString().trim();
+                            const expiryAr = formData.get('expiryAr')?.toString().trim();
+                            const applyUrlEn = formData.get('applyUrlEn')?.toString().trim();
+                            const applyUrlAr = formData.get('applyUrlAr')?.toString().trim();
+
+                            // Check if any field is empty
+                            if (!topicEn || !topicAr || !contentEn || !contentAr || !expiryEn || !expiryAr || !applyUrlEn || !applyUrlAr) {
+                                toast.error("Please fill in all fields");
+                                return;
+                            }
+
+                            // Validate length constraints
+                            if (topicEn.length < 5 || topicEn.length > 150) {
+                                toast.error("English topic must be between 5 and 150 characters");
+                                return;
+                            }
+                            if (topicAr.length < 5 || topicAr.length > 150) {
+                                toast.error("Arabic topic must be between 5 and 150 characters");
+                                return;
+                            }
+                            if (contentEn.length < 20 || contentEn.length > 2000) {
+                                toast.error("English content must be between 20 and 2000 characters");
+                                return;
+                            }
+                            if (contentAr.length < 20 || contentAr.length > 2000) {
+                                toast.error("Arabic content must be between 20 and 2000 characters");
+                                return;
+                            }
+
+                            // Format Arabic date if provided
+                            let formattedExpiryAr = expiryAr;
+                            if (expiryAr) {
+                                const date = new Date(expiryAr);
+                                if (!isNaN(date.getTime())) {
+                                    formattedExpiryAr = new Intl.DateTimeFormat('ar-AE', {
+                                        year: 'numeric',
+                                        month: '2-digit',
+                                        day: '2-digit',
+                                        calendar: 'gregory'
+                                    }).format(date);
+                                }
+                            }
+
+                            setIsSubmitting(true);
 
                             const payload = {
                                 topic: {
-                                    en: formData.get('topicEn'),
-                                    ar: formData.get('topicAr')
+                                    en: topicEn,
+                                    ar: topicAr
                                 },
                                 content: {
-                                    en: formData.get('contentEn'),
-                                    ar: formData.get('contentAr')
+                                    en: contentEn,
+                                    ar: contentAr
                                 },
                                 status: {
                                     en: selectedStatusEn,
                                     ar: selectedStatusAr
                                 },
                                 expiryDate: {
-                                    en: formData.get('expiryEn'),
-                                    ar: formData.get('expiryAr')
+                                    en: expiryEn,
+                                    ar: formattedExpiryAr
                                 },
                                 applyNowUrl: {
-                                    en: formData.get('applyUrlEn'),
-                                    ar: formData.get('applyUrlAr')
+                                    en: applyUrlEn,
+                                    ar: applyUrlAr
                                 }
                             };
 
@@ -335,6 +386,8 @@ export default function NewsPage() {
                                             name="topicEn"
                                             placeholder="Enter English topic..."
                                             defaultValue={editingNews?.topic.en}
+                                            minLength={5}
+                                            maxLength={150}
                                             className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
                                             required
                                         />
@@ -347,6 +400,8 @@ export default function NewsPage() {
                                             name="topicAr"
                                             placeholder="أدخل الموضوع بالعربية..."
                                             defaultValue={editingNews?.topic.ar}
+                                            minLength={5}
+                                            maxLength={150}
                                             className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
                                             required
                                         />
@@ -362,6 +417,8 @@ export default function NewsPage() {
                                             name="contentEn"
                                             placeholder="Enter English content..."
                                             defaultValue={editingNews?.content.en}
+                                            minLength={20}
+                                            maxLength={2000}
                                             className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none"
                                             required
                                         />
@@ -374,6 +431,8 @@ export default function NewsPage() {
                                             name="contentAr"
                                             placeholder="أدخل المحتوى بالعربية..."
                                             defaultValue={editingNews?.content.ar}
+                                            minLength={20}
+                                            maxLength={2000}
                                             className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none"
                                             required
                                         />
@@ -471,27 +530,20 @@ export default function NewsPage() {
                                         )}
                                     </div>
                                     <div className="space-y-4">
-                                        <div>
-                                            <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">{dict.dashboard.news.form.expiryEn}</label>
-                                            <input
-                                                type="date"
-                                                name="expiryEn"
-                                                defaultValue={editingNews?.expiryDate.en}
-                                                className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
-                                                required
-                                            />
-                                        </div>
-                                        <div>
-                                            <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">{dict.dashboard.news.form.expiryAr}</label>
-                                            <input
-                                                type="date"
-                                                dir="rtl"
-                                                name="expiryAr"
-                                                defaultValue={editingNews?.expiryDate.ar}
-                                                className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
-                                                required
-                                            />
-                                        </div>
+                                        <CustomDatePicker
+                                            name="expiryEn"
+                                            label={dict.dashboard.news.form.expiryEn}
+                                            lang="en"
+                                            defaultValue={editingNews?.expiryDate.en}
+                                            required
+                                        />
+                                        <CustomDatePicker
+                                            name="expiryAr"
+                                            label={dict.dashboard.news.form.expiryAr}
+                                            lang="ar"
+                                            defaultValue={editingNews?.expiryDate.ar}
+                                            required
+                                        />
                                     </div>
                                     <div className="space-y-4">
                                         <div>
@@ -502,6 +554,7 @@ export default function NewsPage() {
                                                 placeholder="https://example.com/apply"
                                                 defaultValue={editingNews?.applyNowUrl?.en}
                                                 className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                                                required
                                             />
                                         </div>
                                         <div>
@@ -513,6 +566,7 @@ export default function NewsPage() {
                                                 placeholder="https://example.com/apply"
                                                 defaultValue={editingNews?.applyNowUrl?.ar}
                                                 className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all"
+                                                required
                                             />
                                         </div>
                                     </div>
