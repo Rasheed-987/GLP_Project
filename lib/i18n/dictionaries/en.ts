@@ -177,22 +177,24 @@ export default {
     videoCards: [
       {
         title: "Strategic partnership between Egypt and UAE\nin government modernization",
-        image: "/images/casestudymbl1.png",
+        image: "/images/casestudymbl1.webp",
         href: "../",
       },
       {
         title: "Session with Professor James Robinson",
-        image: "/images/casestudymbl2.png",
-        href: "",
+        image: "/images/casestudy2.webp",
+        mobileImage: "/images/casestudymbl1.webp",
       },
       {
         title: "UAEGLP session with Mr. Masood Ahmed from\nIMF",
-        image: "/images/casestudymbl1.png",
+        image: "/images/casestudy2.webp",
+        mobileImage: "/images/casestudymbl2.webp",
         href: "#",
       },
       {
         title: "Roadshow by UAEGLP Alumni",
-        image: "/images/casestudymbl2.png",
+        image: "/images/casestudy2.webp",
+        mobileImage: "/images/casestudymbl3.webp",
         href: "#",
       },
     ],
