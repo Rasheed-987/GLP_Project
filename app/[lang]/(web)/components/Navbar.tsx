@@ -51,22 +51,21 @@ export default function Navbar({ locale, dict }: NavbarProps) {
   ];
   const [open, setOpen] = useState(false);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const menuImages = ["/images/menuimg1.png", "/images/menuimg2.png", "/images/menuimg3.png"];
+  const menuImages = ["/images/menuimg1.webp", "/images/menuimg2.webp", "/images/menuimg3.webp"];
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left; // x position within the element
+    const width = rect.width;
+    const sectionWidth = width / menuImages.length;
+    const index = Math.floor(x / sectionWidth);
 
-
-  useEffect(() => {
-    let interval: NodeJS.Timeout;
-    if (isHovered) {
-      interval = setInterval(() => {
-        setActiveImageIndex((prev) => (prev + 1) % menuImages.length);
-      }, 1000);
+    // Ensure index is within bounds
+    const safeIndex = Math.max(0, Math.min(index, menuImages.length - 1));
+    if (safeIndex !== activeImageIndex) {
+      setActiveImageIndex(safeIndex);
     }
-    return () => {
-      if (interval) clearInterval(interval);
-    };
-  }, [isHovered, menuImages.length]);
+  };
 
   useEffect(() => {
     if (open) {
@@ -200,8 +199,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
             <div className="flex flex-col justify-between p-6 border-r border-border-stroke h-full">
               <div
                 className="relative w-full max-w-[320px] h-[350px] rounded-[24px] overflow-hidden mb-4 cursor-pointer"
-                onMouseEnter={() => setIsHovered(true)}
-                onMouseLeave={() => setIsHovered(false)}
+                onMouseMove={handleMouseMove}
               >
                 {menuImages.map((src, i) => (
                   <Image

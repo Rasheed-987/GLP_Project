@@ -120,7 +120,7 @@ export default {
         "quote": "من خلال برنامج القادة الاستراتيجيين، طورت الرؤية الاستراتيجية لإطلاق أول منطقة محايدة كربونياً في دبي، والتي أصبحت نموذجاً للتنمية الحضرية المستدامة في المنطقة.",
         "name": "أحمد الزعابي",
         "role": "رئيس مبادرات الاستدامة",
-        "logoImage": "/images/casestudymbl1.png",
+        "logoImage": "/images/casestudymbl1.webp",
         "stats": [
           { "value": "100%", "label": "منطقة محايدة كربونياً" },
           { "value": "25M", "label": "مليون درهم استثمارات" },
@@ -869,8 +869,8 @@ export default {
           "أول حي محايد للكربون في دبي",
         excerpt:
           "من خلال برنامج القادة الاستراتيجية، اكتسبتُ الرؤية التي مكنتني من إطلاق أول حي خال من الانبعاثات الكربونية في دبي. وقد أصبح هذا ال...",
-        image: "/images/casestudy2.png",
-        mobileImage: "/images/casestudymbl1.png",
+        image: "/images/casestudy2.webp",
+        mobileImage: "/images/casestudymbl1.webp",
         author: "فريق البرنامج",
         stats: [
           { value: "100%", label: "حي محايد كربونياً" },
@@ -918,8 +918,8 @@ export default {
         title: "منصة التحول الرقمي",
         excerpt:
           "إعادة تصميم المنظومة الرقمية لبرنامج القادة الحكوميين بهدف توحيد البرامج القيادية وتبسيط تجربة المشاركين...",
-        image: "/images/casestudy2.png",
-        mobileImage: "/images/casestudymbl2.png",
+        image: "/images/casestudy2.webp",
+        mobileImage: "/images/casestudymbl2.webp",
         author: "فريق البرنامج",
         stats: [
           { value: "40%", label: "تسريع عملية الانضمام" },
