@@ -93,7 +93,7 @@ export default function TopBar({ locale, dict }: TopBarProps) {
     >
       <div className="bg-brand-gradient text-white rounded-full h-10 px-2 sm:px-6 flex items-center justify-between gap-2 md:gap-3 overflow-hidden">
         {/* Left spacer (keeps center perfect on desktop) */}
-        <div className="w-6 h-6 hidden md:block flex-shrink-0" />
+        <div className="w-6 h-6 hidden md:block shrink-0" />
 
         {/* Center Content */}
         <div className="flex-1 flex justify-center min-w-0">
@@ -106,7 +106,7 @@ export default function TopBar({ locale, dict }: TopBarProps) {
             /* Real API Content */
             <div className="flex items-center gap-4 sm:gap-8 px-4">
               <span className="text-xs md:text-sm font-medium whitespace-nowrap">
-                {news.content}
+                {news?.content}
               </span>
 
               {timeLeft && (
@@ -115,7 +115,7 @@ export default function TopBar({ locale, dict }: TopBarProps) {
                 </span>
               )}
 
-              {news.applyNowUrl && (
+              {news?.applyNowUrl && (
                 <a
                   href={news.applyNowUrl}
                   className="inline-flex items-center justify-center h-6 md:h-7 rounded-full bg-white text-black hover:bg-white/90 transition-colors px-4 text-[10px] md:text-xs font-semibold leading-none whitespace-nowrap"
@@ -130,7 +130,7 @@ export default function TopBar({ locale, dict }: TopBarProps) {
         {/* Close Button */}
         <button
           onClick={() => setIsVisible(false)}
-          className="inline-flex items-center justify-center w-6 h-6 md:w-7 md:h-7 hover:bg-white/10 rounded-full transition-colors flex-shrink-0 cursor-pointer"
+          className="inline-flex items-center justify-center w-6 h-6 md:w-7 md:h-7 hover:bg-white/10 rounded-full transition-colors shrink-0 cursor-pointer"
           aria-label="Close announcement"
         >
           <svg
