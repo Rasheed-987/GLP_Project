@@ -46,65 +46,87 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
 export async function PUT(req: Request, { params }: { params: Promise<{ id: string }> }) {
     try {
         const { id } = await params;
-        const formData = await req.formData();
-
-        const title = {
-            en: formData.get('titleEn') as string,
-            ar: formData.get('titleAr') as string
-        };
-        const subtitle = {
-            en: formData.get('subtitleEn') as string,
-            ar: formData.get('subtitleAr') as string
-        };
-        const date = {
-            en: formData.get('dateEn') as string,
-            ar: formData.get('dateAr') as string
-        };
-        const sections = JSON.parse(formData.get('sections') as string);
-        const status = {
-            en: formData.get('statusEn') as string,
-            ar: formData.get('statusAr') as string
-        };
-
-        const imageFile = formData.get('mainImage') as File | string | null;
-        let mainImage = "";
-
-        if (imageFile && typeof imageFile !== 'string') {
-            const bytes = await imageFile.arrayBuffer();
-            const buffer = Buffer.from(bytes);
-
-            const uploadDir = join(process.cwd(), 'public', 'uploads', 'articles');
-            await mkdir(uploadDir, { recursive: true });
-
-            const fileName = `${Date.now()}-${imageFile.name}`;
-            const path = join(uploadDir, fileName);
-            await writeFile(path, buffer);
-            mainImage = `/uploads/articles/${fileName}`;
-        } else if (typeof imageFile === 'string') {
-            mainImage = imageFile;
-        }
-
-        const updateData: any = {
-            title,
-            subtitle,
-            date,
-            sections,
-            status,
-        };
-
-        if (mainImage) {
-            updateData.mainImage = mainImage;
-        }
-
         await dbConnect();
+
+        // Get existing article for partial updates
+        const existingArticle = await Article.findById(id);
+        if (!existingArticle) {
+            return NextResponse.json({ error: 'Article not found' }, { status: 404 });
+        }
+
+        const contentType = req.headers.get('content-type') || '';
+        let updateData: any = {};
+
+        if (contentType.includes('application/json')) {
+            const body = await req.json();
+            updateData = { ...body };
+        } else if (contentType.includes('multipart/form-data')) {
+            const formData = await req.formData();
+
+            // Extract bilingual fields
+            const title = {
+                en: formData.get('titleEn') as string || existingArticle.title.en,
+                ar: formData.get('titleAr') as string || existingArticle.title.ar
+            };
+            const subtitle = {
+                en: formData.get('subtitleEn') as string || existingArticle.subtitle.en,
+                ar: formData.get('subtitleAr') as string || existingArticle.subtitle.ar
+            };
+            const date = {
+                en: formData.get('dateEn') as string || existingArticle.date.en,
+                ar: formData.get('dateAr') as string || existingArticle.date.ar
+            };
+            const status = {
+                en: formData.get('statusEn') as string || existingArticle.status.en,
+                ar: formData.get('statusAr') as string || existingArticle.status.ar
+            };
+
+            const sectionsRaw = formData.get('sections');
+            const sections = sectionsRaw ? JSON.parse(sectionsRaw as string) : existingArticle.sections;
+
+            // Handle image file upload
+            const imageFile = formData.get('mainImage') as File | string | null;
+            let mainImage = existingArticle.mainImage;
+
+            if (imageFile && typeof imageFile !== 'string') {
+                const bytes = await imageFile.arrayBuffer();
+                const buffer = Buffer.from(bytes);
+
+                const uploadDir = join(process.cwd(), 'public', 'uploads', 'articles');
+                await mkdir(uploadDir, { recursive: true });
+
+                const fileName = `${Date.now()}-${imageFile.name}`;
+                const path = join(uploadDir, fileName);
+                await writeFile(path, buffer);
+
+                // Delete OLD image if it was a local upload
+                if (existingArticle.mainImage && existingArticle.mainImage.startsWith('/uploads/articles/')) {
+                    const oldPath = join(process.cwd(), 'public', existingArticle.mainImage);
+                    try { await unlink(oldPath); } catch (e) { }
+                }
+
+                mainImage = `/uploads/articles/${fileName}`;
+            } else if (typeof imageFile === 'string' && imageFile) {
+                mainImage = imageFile;
+            }
+
+            updateData = {
+                title,
+                subtitle,
+                date,
+                sections,
+                status,
+                mainImage
+            };
+        } else {
+            return NextResponse.json({ error: 'Unsupported Content-Type' }, { status: 400 });
+        }
+
         const article = await Article.findByIdAndUpdate(id, updateData, {
             new: true,
             runValidators: true,
         });
 
-        if (!article) {
-            return NextResponse.json({ error: 'Article not found' }, { status: 404 });
-        }
         return NextResponse.json(article);
     } catch (error: any) {
         console.error('Error updating article:', error);

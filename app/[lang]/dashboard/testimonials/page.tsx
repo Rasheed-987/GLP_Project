@@ -159,6 +159,12 @@ export default function TestimonialsPage() {
     const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
+            // Check file size (2MB)
+            if (file.size > 2 * 1024 * 1024) {
+                toast.error("Company logo must be smaller than 2MB");
+                if (fileInputRef.current) fileInputRef.current.value = "";
+                return;
+            }
             setLogoFile(file);
             const reader = new FileReader();
             reader.onloadend = () => {
@@ -171,6 +177,12 @@ export default function TestimonialsPage() {
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
+            // Check file size (2MB)
+            if (file.size > 2 * 1024 * 1024) {
+                toast.error("Participant photo must be smaller than 2MB");
+                if (imageInputRef.current) imageInputRef.current.value = "";
+                return;
+            }
             setImageFile(file);
             const reader = new FileReader();
             reader.onloadend = () => {
@@ -361,52 +373,104 @@ export default function TestimonialsPage() {
                             const form = e.currentTarget;
                             const htmlFormData = new FormData(form);
 
-                            // Build achievements array
-                            const achievements = [0, 1, 2].map(idx => ({
-                                value: {
-                                    en: htmlFormData.get(`achievement_val_en_${idx}`),
-                                    ar: htmlFormData.get(`achievement_val_ar_${idx}`)
-                                },
-                                label: {
-                                    en: htmlFormData.get(`achievement_lbl_en_${idx}`),
-                                    ar: htmlFormData.get(`achievement_lbl_ar_${idx}`)
-                                }
-                            }));
-
-                            // Build FormData for API
-                            const apiFormData = new FormData();
-                            apiFormData.append('nameEn', htmlFormData.get('nameEn') as string);
-                            apiFormData.append('nameAr', htmlFormData.get('nameAr') as string);
-                            apiFormData.append('professionEn', htmlFormData.get('professionEn') as string);
-                            apiFormData.append('professionAr', htmlFormData.get('professionAr') as string);
-                            apiFormData.append('descriptionEn', htmlFormData.get('descEn') as string);
-                            apiFormData.append('descriptionAr', htmlFormData.get('descAr') as string);
-                            apiFormData.append('graduateDateEn', htmlFormData.get('dateEn') as string);
-                            apiFormData.append('graduateDateAr', htmlFormData.get('dateAr') as string);
-                            apiFormData.append('statusEn', selectedStatusEn);
-                            apiFormData.append('statusAr', selectedStatusAr);
-                            apiFormData.append('achievements', JSON.stringify(achievements));
-
-                            // Handle image uploads
-                            if (logoFile) {
-                                // New logo file uploaded
-                                apiFormData.append('companyLogo', logoFile);
-                            } else if (editingTestimonial?.companyLogo) {
-                                // Keep existing logo path
-                                apiFormData.append('companyLogo', editingTestimonial.companyLogo);
-                            }
-                            // If no logoFile and no existing logo, don't append anything
-
-                            if (imageFile) {
-                                // New image file uploaded
-                                apiFormData.append('image', imageFile);
-                            } else if (editingTestimonial?.image) {
-                                // Keep existing image path
-                                apiFormData.append('image', editingTestimonial.image);
-                            }
-                            // If no imageFile and no existing image, don't append anything
-
                             try {
+                                const nameEn = (htmlFormData.get('nameEn') as string || "").trim();
+                                const nameAr = (htmlFormData.get('nameAr') as string || "").trim();
+                                const professionEn = (htmlFormData.get('professionEn') as string || "").trim();
+                                const professionAr = (htmlFormData.get('professionAr') as string || "").trim();
+                                const descEn = (htmlFormData.get('descEn') as string || "").trim();
+                                const descAr = (htmlFormData.get('descAr') as string || "").trim();
+                                const dateEn = (htmlFormData.get('dateEn') as string || "").trim();
+                                const dateAr = (htmlFormData.get('dateAr') as string || "").trim();
+
+                                // Basic Empty Checks
+                                if (!nameEn || !nameAr || !professionEn || !professionAr || !descEn || !descAr || !dateEn || !dateAr) {
+                                    toast.error("Please fill in all required fields");
+                                    setIsLoading(false);
+                                    return;
+                                }
+
+                                // Length Validations
+                                if (nameEn.length < 3 || nameEn.length > 50 || nameAr.length < 3 || nameAr.length > 50) {
+                                    toast.error("Name must be between 3 and 50 characters");
+                                    setIsLoading(false);
+                                    return;
+                                }
+                                if (professionEn.length < 5 || professionEn.length > 100 || professionAr.length < 5 || professionAr.length > 100) {
+                                    toast.error("Profession must be between 5 and 100 characters");
+                                    setIsLoading(false);
+                                    return;
+                                }
+                                if (descEn.length < 20 || descEn.length > 2000 || descAr.length < 20 || descAr.length > 2000) {
+                                    toast.error("Description must be between 20 and 2000 characters");
+                                    setIsLoading(false);
+                                    return;
+                                }
+                                if (dateEn.length < 3 || dateEn.length > 30 || dateAr.length < 3 || dateAr.length > 30) {
+                                    toast.error("Graduate date must be between 3 and 30 characters");
+                                    setIsLoading(false);
+                                    return;
+                                }
+
+                                // Media Checks (for new testimonials)
+                                if (!editingTestimonial && !imageFile) {
+                                    toast.error("Participant photo is required");
+                                    setIsLoading(false);
+                                    return;
+                                }
+                                if (!editingTestimonial && !logoFile) {
+                                    toast.error("Company logo is required");
+                                    setIsLoading(false);
+                                    return;
+                                }
+
+                                // Achievement Validations
+                                const achievements = [0, 1, 2].map(idx => {
+                                    const vEn = (htmlFormData.get(`achievement_val_en_${idx}`) as string || "").trim();
+                                    const vAr = (htmlFormData.get(`achievement_val_ar_${idx}`) as string || "").trim();
+                                    const lEn = (htmlFormData.get(`achievement_lbl_en_${idx}`) as string || "").trim();
+                                    const lAr = (htmlFormData.get(`achievement_lbl_ar_${idx}`) as string || "").trim();
+
+                                    if (!vEn || !vAr || !lEn || !lAr) {
+                                        throw new Error(`Achievement ${idx + 1} is missing fields`);
+                                    }
+                                    if (vEn.length < 2 || vEn.length > 100 || vAr.length < 2 || vAr.length > 100 ||
+                                        lEn.length < 2 || lEn.length > 100 || lAr.length < 2 || lAr.length > 100) {
+                                        throw new Error(`Achievement ${idx + 1} fields must be 2-100 characters`);
+                                    }
+
+                                    return {
+                                        value: { en: vEn, ar: vAr },
+                                        label: { en: lEn, ar: lAr }
+                                    };
+                                });
+
+                                // Build FormData for API
+                                const apiFormData = new FormData();
+                                apiFormData.append('nameEn', nameEn);
+                                apiFormData.append('nameAr', nameAr);
+                                apiFormData.append('professionEn', professionEn);
+                                apiFormData.append('professionAr', professionAr);
+                                apiFormData.append('descriptionEn', descEn);
+                                apiFormData.append('descriptionAr', descAr);
+                                apiFormData.append('graduateDateEn', dateEn);
+                                apiFormData.append('graduateDateAr', dateAr);
+                                apiFormData.append('statusEn', selectedStatusEn);
+                                apiFormData.append('statusAr', selectedStatusAr);
+                                apiFormData.append('achievements', JSON.stringify(achievements));
+
+                                if (logoFile) {
+                                    apiFormData.append('companyLogo', logoFile);
+                                } else if (editingTestimonial?.companyLogo) {
+                                    apiFormData.append('companyLogo', editingTestimonial.companyLogo);
+                                }
+
+                                if (imageFile) {
+                                    apiFormData.append('image', imageFile);
+                                } else if (editingTestimonial?.image) {
+                                    apiFormData.append('image', editingTestimonial.image);
+                                }
+
                                 if (editingTestimonial) {
                                     await clientApi.put(`/api/testimonials/${editingTestimonial.id}`, apiFormData);
                                     toast.success("Testimonial updated successfully");
@@ -416,8 +480,8 @@ export default function TestimonialsPage() {
                                 }
                                 setIsModalOpen(false);
                                 fetchTestimonials();
-                            } catch {
-                                toast.error("Failed to save testimonial");
+                            } catch (err: any) {
+                                toast.error(err.message || "Failed to save testimonial");
                             } finally {
                                 setIsLoading(false);
                             }
@@ -434,25 +498,25 @@ export default function TestimonialsPage() {
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Participant Name (ENG)</label>
                                                 <div className="relative">
                                                     <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#00000066]" />
-                                                    <input type="text" name="nameEn" placeholder="Full Name..." defaultValue={editingTestimonial?.name.en} className="w-full pl-11 pr-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" required />
+                                                    <input type="text" name="nameEn" placeholder="Full Name..." defaultValue={editingTestimonial?.name.en} minLength={3} maxLength={50} className="w-full pl-11 pr-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" required />
                                                 </div>
                                             </div>
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Job Profession / Subtitle (ENG)</label>
                                                 <div className="relative">
                                                     <Briefcase className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#00000066]" />
-                                                    <input type="text" name="professionEn" placeholder="e.g. Senior Consultant..." defaultValue={editingTestimonial?.profession.en} className="w-full pl-11 pr-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" required />
+                                                    <input type="text" name="professionEn" placeholder="e.g. Senior Consultant..." defaultValue={editingTestimonial?.profession.en} minLength={5} maxLength={100} className="w-full pl-11 pr-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" required />
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="space-y-4">
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">اسم المشارك (AR)</label>
-                                                <input type="text" dir="rtl" name="nameAr" placeholder="الاسم الكامل..." defaultValue={editingTestimonial?.name.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" required />
+                                                <input type="text" dir="rtl" name="nameAr" placeholder="الاسم الكامل..." defaultValue={editingTestimonial?.name.ar} minLength={3} maxLength={50} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" required />
                                             </div>
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">المهنة / المسمى الوظيفي (AR)</label>
-                                                <input type="text" dir="rtl" name="professionAr" placeholder="مثال: استشاري أول..." defaultValue={editingTestimonial?.profession.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" required />
+                                                <input type="text" dir="rtl" name="professionAr" placeholder="مثال: استشاري أول..." defaultValue={editingTestimonial?.profession.ar} minLength={5} maxLength={100} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all" required />
                                             </div>
                                         </div>
                                     </div>
@@ -546,7 +610,7 @@ export default function TestimonialsPage() {
                                             {/* Graduate Date (EN) */}
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Graduate Date (ENG)</label>
-                                                <input type="text" name="dateEn" placeholder="e.g. Oct 2023" defaultValue={editingTestimonial?.graduateDate.en} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all text-sm" required />
+                                                <input type="text" name="dateEn" placeholder="e.g. Oct 2023" defaultValue={editingTestimonial?.graduateDate.en} minLength={3} maxLength={30} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all text-sm" required />
                                             </div>
                                             {/* Status (EN) */}
                                             <div className="relative">
@@ -572,7 +636,7 @@ export default function TestimonialsPage() {
                                             {/* Graduate Date (AR) */}
                                             <div>
                                                 <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">تاريخ التخرج (AR)</label>
-                                                <input type="text" dir="rtl" name="dateAr" placeholder="مثال: أكتوبر 2023" defaultValue={editingTestimonial?.graduateDate.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all text-sm" required />
+                                                <input type="text" dir="rtl" name="dateAr" placeholder="مثال: أكتوبر 2023" defaultValue={editingTestimonial?.graduateDate.ar} minLength={3} maxLength={30} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all text-sm" required />
                                             </div>
                                             {/* Status (AR) */}
                                             <div className="relative">
@@ -607,11 +671,11 @@ export default function TestimonialsPage() {
                                     <div className="space-y-6">
                                         <div>
                                             <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2">Description / Experience (ENG)</label>
-                                            <textarea rows={4} name="descEn" placeholder="What did they say about the program?" defaultValue={editingTestimonial?.description.en} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" required />
+                                            <textarea rows={4} name="descEn" placeholder="What did they say about the program?" defaultValue={editingTestimonial?.description.en} minLength={20} maxLength={2000} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" required />
                                         </div>
                                         <div>
                                             <label className="block text-xs font-bold text-[#00000066] uppercase tracking-wider mb-2 text-right">الوصف / التجربة (AR)</label>
-                                            <textarea rows={4} dir="rtl" name="descAr" placeholder="ماذا قالوا عن البرنامج؟" defaultValue={editingTestimonial?.description.ar} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" required />
+                                            <textarea rows={4} dir="rtl" name="descAr" placeholder="ماذا قالوا عن البرنامج؟" defaultValue={editingTestimonial?.description.ar} minLength={20} maxLength={2000} className="w-full px-4 py-3 rounded-xl border border-border-stroke bg-[#F7FAF9] focus:outline-none focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue transition-all resize-none" required />
                                         </div>
                                     </div>
                                 </div>
@@ -630,12 +694,12 @@ export default function TestimonialsPage() {
                                                 </div>
                                                 <div className="space-y-4">
                                                     <div className="grid grid-cols-2 gap-2">
-                                                        <input type="text" name={`achievement_val_en_${idx}`} placeholder="Val (EN)" defaultValue={editingTestimonial?.achievements[idx]?.value.en} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white focus:ring-1 focus:ring-brand-blue" required />
-                                                        <input type="text" dir="rtl" name={`achievement_val_ar_${idx}`} placeholder="القيمة (AR)" defaultValue={editingTestimonial?.achievements[idx]?.value.ar} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white focus:ring-1 focus:ring-brand-blue" required />
+                                                        <input type="text" name={`achievement_val_en_${idx}`} placeholder="Val (EN)" defaultValue={editingTestimonial?.achievements[idx]?.value.en} minLength={2} maxLength={100} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white focus:ring-1 focus:ring-brand-blue" required />
+                                                        <input type="text" dir="rtl" name={`achievement_val_ar_${idx}`} placeholder="القيمة (AR)" defaultValue={editingTestimonial?.achievements[idx]?.value.ar} minLength={2} maxLength={100} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white focus:ring-1 focus:ring-brand-blue" required />
                                                     </div>
                                                     <div className="space-y-2">
-                                                        <input type="text" name={`achievement_lbl_en_${idx}`} placeholder="Label (EN)" defaultValue={editingTestimonial?.achievements[idx]?.label.en} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white focus:ring-1 focus:ring-brand-blue" required />
-                                                        <input type="text" dir="rtl" name={`achievement_lbl_ar_${idx}`} placeholder="التسمية (AR)" defaultValue={editingTestimonial?.achievements[idx]?.label.ar} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white focus:ring-1 focus:ring-brand-blue" required />
+                                                        <input type="text" name={`achievement_lbl_en_${idx}`} placeholder="Label (EN)" defaultValue={editingTestimonial?.achievements[idx]?.label.en} minLength={2} maxLength={100} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white focus:ring-1 focus:ring-brand-blue" required />
+                                                        <input type="text" dir="rtl" name={`achievement_lbl_ar_${idx}`} placeholder="التسمية (AR)" defaultValue={editingTestimonial?.achievements[idx]?.label.ar} minLength={2} maxLength={100} className="w-full px-3 py-2 text-xs rounded-lg border border-border-stroke bg-white focus:ring-1 focus:ring-brand-blue" required />
                                                     </div>
                                                 </div>
                                             </div>
