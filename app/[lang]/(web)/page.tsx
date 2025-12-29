@@ -94,13 +94,13 @@ export default async function HomePage({
       </div>
       <div className="py-12 bg-white sm:py-16">
         <div className="mx-auto  px-6 lg:px-8">
-          <div className="grid grid-cols-2 gap-x-8 gap-y-10 text-center sm:grid-cols-3 lg:grid-cols-6">
+          <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
             {dict.home.features.map((feature) => (
-              <div key={feature.text} className="flex flex-col flex-start">
-                <div className="mb-4 flex h-12 w-12 ">
-                  <Image src={feature.icon} alt="" width={45} height={35} />
+              <div key={feature.text} className="flex flex-col items-center sm:items-start">
+                <div className="mb-3 flex h-11 w-11 items-center justify-center shrink-0">
+                  <Image src={feature.icon} alt="" width={44} height={44} className="object-contain" />
                 </div>
-                <p className="text-sm 2xl:text-base text-start text-gray-600">{feature.text}</p>
+                <p className="text-sm 2xl:text-base text-[#00000099] text-center sm:text-start">{feature.text}</p>
               </div>
             ))}
           </div>
