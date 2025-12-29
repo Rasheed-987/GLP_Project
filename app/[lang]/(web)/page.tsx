@@ -30,7 +30,9 @@ export default async function HomePage({
     const testimonialRes = await fetch(`${baseUrl}/api/testimonials?lang=${lang}`, { cache: 'no-store' });
     if (testimonialRes.ok) {
       const data = await testimonialRes.json();
+      console.log(data);
       testimonials = data.map((t: any) => ({
+
         tag: t.graduateDate,
         quote: t.description,
         author: t.name,
@@ -125,9 +127,9 @@ export default async function HomePage({
               </div>
               <h2 className="mt-4 text-[24px] md:text-[28px] leading-tight font-normal">
                 <span className="bg-brand-gradient bg-clip-text text-transparent inline-block">
-                  <span className="font-bold">{dict.home.about.title.part1}</span>
+                  <span className="font-extrabold">{dict.home.about.title.part1}</span>
                   {dict.home.about.title.part2}
-                  <span className="font-bold">{dict.home.about.title.part3}</span>
+                  <span className="font-extrabold">{dict.home.about.title.part3}</span>
                   {dict.home.about.title.part4}
                 </span>
               </h2>
