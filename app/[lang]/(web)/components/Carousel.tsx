@@ -47,7 +47,7 @@ export default function Carousel({ items, lang }: CarouselProps) {
           {items.map((item, index) => (
             <div key={index} className="flex-[0_0_85%] lg:flex-[0_0_92%] min-w-0 flex flex-col lg:flex-row gap-6 pl-4 lg:pl-10">
               {/* Left Image Side */}
-              <div className="lg:w-4/12 relative aspect-square lg:aspect-auto lg:h-[600px] rounded-[32px] overflow-hidden">
+              <div className="lg:w-4/12 2xl:w-3/12 relative aspect-square lg:aspect-auto lg:h-[500px] rounded-[20px] overflow-hidden">
                 <Image
                   src={item.image}
                   alt={item.author}
@@ -62,7 +62,7 @@ export default function Carousel({ items, lang }: CarouselProps) {
               </div>
 
               {/* Right Content Side */}
-              <div className="lg:w-8/12 bg-[#E6EFEA] rounded-[32px] p-8 md:p-12 lg:p-14 flex flex-col justify-between relative flex-1 lg:h-[600px] overflow-hidden">
+              <div className="lg:w-8/12 bg-[#E6EFEA] rounded-[20px] p-8 md:p-12 lg:p-10 flex flex-col justify-between relative flex-1 lg:h-[500px] overflow-hidden">
                 <div>
                   <div className="mb-4">
                     <Image
@@ -73,29 +73,39 @@ export default function Carousel({ items, lang }: CarouselProps) {
                       className="w-3 h-auto"
                     />
                   </div>
-                  <p className="text-xl md:text-2xl leading-tight gradient-text font-medium mb-8">
-                    {item.quote}
-                  </p>
+                  <div className="relative group/quote mb-4">
+                    <p className="text-xl md:text-2xl leading-tight gradient-text font-medium line-clamp-4 cursor-default">
+                      {item.quote}
+                    </p>
+                    {/* Hover Popup */}
+                    <div className="absolute top-0 left-0 w-full opacity-0 pointer-events-none group-hover/quote:opacity-100 group-hover/quote:pointer-events-auto transition-opacity duration-300 z-50 bg-[#E6EFEA] rounded-xl p-2 -m-2 shadow-xl ring-1 ring-black/5">
+                      <p className="text-xl md:text-2xl leading-tight gradient-text font-medium">
+                        {item.quote}
+                      </p>
+                    </div>
+                  </div>
+                </div>
 
-                  <div className="flex justify-between items-end">
+                <div>
+                  <div className="flex justify-between items-end mb-4">
                     <div>
-                     <div className="mb-3">
-                                       <Image
-                                         src="/images/bar.png"
-                                         alt="bar"
-                                         width={80}
-                                         height={4}
-                                         className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
-                                       />
-                                     </div>
+                      <div className="mb-3">
+                        <Image
+                          src="/images/bar.png"
+                          alt="bar"
+                          width={80}
+                          height={4}
+                          className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
+                        />
+                      </div>
                       <h4 className="text-xs font-bold text-brand-blue uppercase tracking-tight">
                         {item.author}
                       </h4>
-                      <p className="text-xs text-[#00000099] font-medium uppercase  mt-1">
+                      <p className="text-xs text-[#00000099] font-bold uppercase mt-1">
                         {item.role}
                       </p>
                     </div>
-                    <div className="relative w-28 h-14">
+                    <div className="relative w-40 h-20">
                       <Image
                         src={item.logo}
                         alt="Logo"
@@ -104,9 +114,8 @@ export default function Carousel({ items, lang }: CarouselProps) {
                       />
                     </div>
                   </div>
-                </div>
 
-                <div className="mt-8 pt-8 border-t border-[#0000001A]">
+                  <div className="pt-6 border-t border-[#0000001A]">
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8">
                     {item.stats.map((stat, sIndex) => (
                       <div key={sIndex} className="flex items-center lg:block ">
@@ -122,7 +131,8 @@ export default function Carousel({ items, lang }: CarouselProps) {
                 </div>
               </div>
             </div>
-          ))}
+          </div>
+        ))}
         </div>
       </div>
 

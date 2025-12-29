@@ -32,7 +32,7 @@ export default function LocaleSwitcher({
   return (
     <div className={`relative group/locale ${className ?? ''}`}>
       {/* Ghost Element for Layout Stability */}
-      <div aria-hidden="true" className="invisible flex items-center gap-2 h-9 px-3 border border-transparent">
+      <div aria-hidden="true" className="invisible flex items-center gap-2 h-9 px-3 justify-center border border-transparent">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="flex-shrink-0"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="1.5" /><path d="M2.5 12H21.5" stroke="currentColor" strokeWidth="1.5" /><path d="M12 2C14.5 5 16 8.5 16 12C16 15.5 14.5 19 12 22C9.5 19 8 15.5 8 12C8 8.5 9.5 5 12 2Z" stroke="currentColor" strokeWidth="1.5" /></svg>
         <span className="text-xs font-bold whitespace-nowrap">{currentLocale === 'en' ? 'AR' : 'EN'}</span>
       </div>
@@ -41,7 +41,7 @@ export default function LocaleSwitcher({
         href={toggleLocale()}
         className={`
           absolute right-0 top-0
-          flex items-center gap-2 h-9 rounded-full bg-white
+          flex items-center gap-2 h-9 justify-center rounded-full bg-white
           transition-all duration-300 ease-out box-border
           group-hover/locale:gap-0
           ${isMenuOpen
@@ -80,7 +80,7 @@ export default function LocaleSwitcher({
         </svg>
 
         {/* Locale Text */}
-        <span className="text-xs font-bold text-black whitespace-nowrap transition-all duration-300 group-hover/locale:scale-105">
+        <span className="text-xs xl:pt-[1px] 2xl:pt-[2.5px] font-bold text-black whitespace-nowrap transition-all duration-300 group-hover/locale:scale-105">
           {currentLocale === 'en' ? 'AR' : 'EN'}
         </span>
       </Link>

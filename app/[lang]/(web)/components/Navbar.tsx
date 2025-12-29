@@ -92,31 +92,31 @@ export default function Navbar({ locale, dict }: NavbarProps) {
           top: open ? 0 : 'var(--topbar-height, 52px)'
         }}
       >
-        <div className="flex h-16 md:h-20 items-center justify-between px-4 md:px-6">
+        <div className="flex h-14 md:h-14 items-center justify-between px-4 md:px-6">
           {/* Left: logo and locale switcher */}
           <div className="flex items-center gap-2 md:gap-3">
             <Link href={`/${locale}`} aria-label="UGLP home" className="flex items-center">
-              <Image src="/images/logo.png" alt="UGLP logo" width={40} height={40} className="rounded-sm md:w-8 md:h-8" />
+              <Image src="/images/logo.png" alt="UGLP logo" width={48} height={48} className="rounded-sm md:w-10 md:h-10" />
             </Link>
             <LocaleSwitcher currentLocale={locale} isMenuOpen={open} className={open ? "flex" : "flex"} />
           </div>
 
           {/* Right: actions */}
           <div className="flex items-center gap-2 md:gap-3">
-            <button className="cursor-pointer inline-flex items-center h-10 md:h-9 rounded-full bg-brand-gradient text-white px-4 md:px-6 text-sm font-medium shadow-sm hover:opacity-90 transition-opacity" onClick={() => router.push(`/${locale}/sign-in`)}>
+            <button className="cursor-pointer inline-flex items-center h-10 md:h-10 rounded-full bg-brand-gradient text-white px-5 md:px-6 text-sm font-medium shadow-sm hover:opacity-90 transition-opacity" onClick={() => router.push(`/${locale}/sign-in`)}>
               {dict.nav.login}
             </button>
             {!open && (
               <div className="relative group/menu">
                 {/* Ghost Element for Layout Stability */}
-                <div aria-hidden="true" className="invisible inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 md:px-3 gap-2">
+                <div aria-hidden="true" className="invisible inline-flex items-center justify-center h-10 w-10 md:h-10 md:w-auto rounded-full border border-black/10 md:px-4 gap-2">
                   <svg width="18" height="14" viewBox="0 0 18 14" fill="none" className="md:w-[14px] md:h-[10px]"><path d="M0 1H18M0 7H18M0 13H18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
                   <span className="hidden md:inline">{dict.nav.menu}</span>
                 </div>
 
                 <button
                   onClick={() => setOpen(true)}
-                  className="cursor-pointer absolute right-0 top-0 group inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 bg-white md:px-3 text-sm font-bold text-black hover:border-transparent transition-all duration-300 gap-2 group-hover/menu:gap-0"
+                  className="cursor-pointer absolute right-0 top-0 group inline-flex items-center justify-center h-10 w-10 md:h-10 md:w-auto rounded-full border border-black/10 bg-white md:px-4 text-sm font-bold text-black hover:border-transparent transition-all duration-300 gap-2 group-hover/menu:gap-0"
                   aria-label="Open menu"
                 >
                   <svg
@@ -136,7 +136,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
             {open && (
               <div className="relative group/close">
                 {/* Ghost Element for Layout Stability */}
-                <div aria-hidden="true" className="invisible inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 md:px-4 gap-2">
+                <div aria-hidden="true" className="invisible inline-flex items-center justify-center h-10 w-10 md:h-10 md:w-auto rounded-full border border-black/10 md:px-5 gap-2">
                   <span className="font-normal text-xl md:text-sm">✕</span>
                   <span className="hidden md:inline text-sm font-bold">{dict.nav.close}</span>
                 </div>
@@ -144,7 +144,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
                 <button
                   type="button"
                   onClick={() => setOpen(false)}
-                  className="cursor-pointer absolute right-0 top-0 group inline-flex items-center justify-center h-10 w-10 md:h-9 md:w-auto rounded-full border border-black/10 bg-white text-zinc-900 hover:border-transparent transition-all duration-300 md:px-4 gap-2 group-hover/close:gap-0"
+                  className="cursor-pointer absolute right-0 top-0 group inline-flex items-center justify-center h-10 w-10 md:h-10 md:w-auto rounded-full border border-black/10 bg-white text-zinc-900 hover:border-transparent transition-all duration-300 md:px-5 gap-2 group-hover/close:gap-0"
                   aria-label="Close menu"
                 >
                   <span aria-hidden className="font-normal text-xl md:text-sm transition-all duration-300 group-hover/close:opacity-0 group-hover/close:scale-0 group-hover/close:w-0 overflow-hidden">✕</span>

@@ -94,11 +94,11 @@ export default async function HomePage({
         <div className="mx-auto  px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-x-8 gap-y-10 text-center sm:grid-cols-3 lg:grid-cols-6">
             {dict.home.features.map((feature) => (
-              <div key={feature.text} className="flex flex-col items-center">
+              <div key={feature.text} className="flex flex-col flex-start">
                 <div className="mb-4 flex h-12 w-12 ">
                   <Image src={feature.icon} alt="" width={45} height={35} />
                 </div>
-                <p className="text-sm text-gray-600">{feature.text}</p>
+                <p className="text-sm 2xl:text-base text-start text-gray-600">{feature.text}</p>
               </div>
             ))}
           </div>
@@ -110,7 +110,7 @@ export default async function HomePage({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             <div>
               <div className="flex flex-col items-start gap-2 mb-2">
-                <p className="text-xs font-bold tracking-widest bg-brand-gradient bg-clip-text text-transparent uppercase leading-none">
+                <p className="text-xs 2xl:text-base font-bold tracking-widest bg-brand-gradient bg-clip-text text-transparent uppercase leading-none">
                   {dict.home.about.pill}
                 </p>
                 <div className="mb-3">
@@ -166,9 +166,9 @@ export default async function HomePage({
       <section className="bg-white pb-32">
         <div className="mx-auto px-4 sm:px-6 lg:px-8 ">
           <div className="bg-[#E6EFEA] rounded-[32px] px-6 py-12 md:p-16 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
-            {/* Mobile: Quote text first */}
-            <div className="w-full lg:hidden flex flex-col justify-center order-1">
-              <div className="mb-3">
+            {/* Content: Quote and Author */}
+            <div className="w-full lg:w-7/12 flex flex-col justify-center order-1 lg:order-2">
+              <div className="mb-2">
                 <Image
                   src={lang === "ar" ? "/images/arabicqoute.png" : "/images/englishqoute.png"}
                   alt="quote"
@@ -183,6 +183,19 @@ export default async function HomePage({
                   <span className="font-bold">{dict.home.quote.highlight}</span>
                 </span>
               </p>
+
+              <div className="mb-3">
+                <Image
+                  src="/images/bar.png"
+                  alt="bar"
+                  width={80}
+                  height={4}
+                  className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
+                />
+              </div>
+              <p className="text-xs md:text-sm font-bold tracking-widest text-[#006A8E] uppercase">
+                {dict.home.quote.author}
+              </p>
             </div>
 
             {/* Image */}
@@ -192,64 +205,10 @@ export default async function HomePage({
                 alt="H.H. Sheikh Mohammed Bin Rashid Al Maktoum"
                 width={500}
                 height={600}
-                className="object-contain drop-shadow-xl"
+                className="object-contain"
                 placeholder={shiekhBlur ? "blur" : undefined}
                 blurDataURL={shiekhBlur}
               />
-            </div>
-
-            {/* Desktop: Quote text and author */}
-            <div className="w-full lg:w-7/12 flex flex-col justify-center order-3 lg:order-2">
-              {/* Desktop only */}
-              <div className="hidden lg:block">
-                <div className="mb-2">
-                  <Image
-                    src={lang === "ar" ? "/images/arabicqoute.png" : "/images/englishqoute.png"}
-                    alt="quote"
-                    width={8}
-                    height={8}
-                    className="w-3 h-auto"
-                  />
-                </div>
-                <p className="text-[24px] md:text-[30px] leading-tight font-normal mb-8">
-                  <span className="bg-brand-gradient bg-clip-text text-transparent inline-block">
-                    {dict.home.quote.text}
-                    <span className="font-bold">{dict.home.quote.highlight}</span>
-                  </span>
-                </p>
-              </div>
-
-              {/* Mobile: Author at bottom */}
-              <div className="w-full lg:hidden">
-                <div className="mb-3">
-                  <Image
-                    src="/images/bar.png"
-                    alt="bar"
-                    width={80}
-                    height={4}
-                    className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
-                  />
-                </div>
-                <p className="text-xs md:text-sm font-bold tracking-widest text-[#006A8E] uppercase">
-                  {dict.home.quote.author}
-                </p>
-              </div>
-
-              {/* Desktop: Author */}
-              <div className="hidden lg:block">
-                <div className="mb-3">
-                  <Image
-                    src="/images/bar.png"
-                    alt="bar"
-                    width={80}
-                    height={4}
-                    className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
-                  />
-                </div>
-                <p className="text-xs md:text-sm font-bold tracking-widest text-[#006A8E] uppercase">
-                  {dict.home.quote.author}
-                </p>
-              </div>
             </div>
           </div>
         </div>
