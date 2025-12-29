@@ -250,17 +250,14 @@ function safeGLM(dictGlm: Partial<GLMDict> | undefined): GLMDict {
 
 const Item = ({ color, item }: { color: string; item: GLMItem }) => (
   <div className="flex gap-4">
-    <div
-      className="shrink-0 w-11 h-11 md:w-12 md:h-12 rounded-full border-[1.5px] flex items-center justify-center bg-white shadow-sm"
-      style={{ borderColor: color }}
-    >
+    <div className="shrink-0 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center">
       {item.icon ? (
         <Image
           src={item.icon}
           alt={item.title}
-          width={24}
-          height={24}
-          className="object-contain"
+          width={48}
+          height={48}
+          className="object-contain w-full h-full"
         />
       ) : null}
     </div>
