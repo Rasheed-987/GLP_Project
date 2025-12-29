@@ -22,10 +22,10 @@ const MobileLine = ({
   type: "full" | "start" | "none";
   isRtl?: boolean;
 }) => {
-  if (type === "none") return <div className="w-[2px] h-full bg-transparent" />;
+  if (type === "none") return <div className="w-[3px] h-full bg-transparent" />;
 
   return (
-    <div className="w-[2px] relative flex flex-col items-center h-full">
+    <div className="w-[3px] relative flex flex-col items-center h-full">
       {/* Continuous vertical line */}
       <div
         className="w-full"
@@ -35,15 +35,16 @@ const MobileLine = ({
         }}
       />
 
+{/* for mobile */}
       {/* Horizontal bend connecting into the header underline */}
       {type === "start" && (
         <div
-          className="absolute h-[2px]"
+          className="absolute h-[3px]"
           style={{
             width: color === "#059669" ? "68px" : "36px", // Increased by 4px for horizontal shift
             backgroundColor: color,
             [isRtl ? "right" : "left"]: "1px",
-            top: "44px", // Align vertical end
+            top: "44.5px", // Align vertical end
             transform: "translateY(-50%)", // Center vertically on the 22px point
           }}
         />
@@ -112,19 +113,19 @@ const MobileGlobeConnector = ({ isRtl }: { isRtl: boolean }) => {
       <div className={`relative h-full w-[60px] shrink-0 -mt-[4px]`}>
         {/* Green Line - Outer (Aligned with -20px on globe) */}
         <div
-          className="absolute w-[2px] h-full bg-[#059669]"
+          className="absolute w-[3px] h-full bg-[#059669]"
           style={{ [isRtl ? "right" : "left"]: "-4px" }}
         />
 
         {/* Black Line - Middle */}
         <div
-          className="absolute w-[2px] h-full bg-[#111827]"
+          className="absolute w-[3px] h-full bg-[#111827]"
           style={{ [isRtl ? "right" : "left"]: "28px" }}
         />
 
         {/* Red Line - Inner */}
         <div
-          className="absolute w-[2px] h-full bg-[#E11D48]"
+          className="absolute w-[3px] h-full bg-[#E11D48]"
           style={{ [isRtl ? "right" : "left"]: "52px" }}
         />
       </div>
@@ -182,9 +183,10 @@ export default function GLMContent({
 
       const x1 = dRect.left + dRect.width / 2 - cRect.left;
       const y1 = dRect.top + dRect.height / 2 - cRect.top;
+// responsible for position of line
 
       const x2 = isRtl ? hRect.right - cRect.left : hRect.left - cRect.left;
-      const y2 = hRect.top + hRect.height - 1 - cRect.top;
+      const y2 = hRect.top + hRect.height -1.5 - cRect.top;
 
       // Elbow point: For red line, bend opposite direction (235° instead of 135°)
       let elbowX;
@@ -194,8 +196,11 @@ export default function GLMContent({
         elbowX = isRtl ? x2 + 50 : x2 - 50; // Normal 135° angle
       }
 
-      // M start -> L elbow -> L end
-      return `M ${x1} ${y1} L ${elbowX} ${y2} L ${x2} ${y2}`;
+      // Offset to extend the horizontal line past the elbow for smoother connection
+      const elbowOffset = isRtl ? -3 : 3;
+
+      // M start -> L elbow -> L end (with slight extension past elbow)
+      return `M ${x1} ${y1} L ${elbowX + elbowOffset} ${y2} L ${x2} ${y2}`;
     };
 
     setPaths({
@@ -249,13 +254,15 @@ export default function GLMContent({
         className="absolute inset-0 w-full h-full pointer-events-none hidden lg:block"
         style={{ zIndex: 11 }}
       >
-        <path d={paths.leadership} stroke={RED} strokeWidth="2" fill="none" />
-        <path d={paths.future} stroke={BLACK} strokeWidth="2" fill="none" />
+        <path d={paths.leadership} stroke={RED} strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        <path d={paths.future} stroke={BLACK} strokeWidth="3" fill="none" strokeLinecap="round" strokeLinejoin="round" />
         <path
           d={paths.achievements}
           stroke={GREEN}
-          strokeWidth="2"
+          strokeWidth="3"
           fill="none"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
 
@@ -265,7 +272,7 @@ export default function GLMContent({
           isRtl ? "justify-start pr-4" : "justify-start pl-4"
         } lg:px-0 lg:justify-start lg:absolute ${
           isRtl ? "lg:-right-[200px]" : "lg:-left-[200px]"
-        } lg:top-0`}
+        } lg:top-[20px]`}
       >
         <div
           className="relative w-[320px] md:w-[380px] lg:w-[400px] aspect-square overflow-visible"
@@ -314,7 +321,7 @@ export default function GLMContent({
           <div className="lg:hidden">
             {/* Green - Outer (Top Section) - X_page=-4, X_rel=-20, Y=126 */}
             <div
-              className="absolute w-[2px] bg-[#059669] z-10"
+              className="absolute w-[3px] bg-[#059669] z-10"
               style={{
                 top: "126px",
                 bottom: "-4px",
@@ -332,7 +339,7 @@ export default function GLMContent({
 
             {/* Black - Middle - X_page=28, X_rel=12, Y=264 */}
             <div
-              className="absolute w-[2px] bg-[#111827] z-10"
+              className="absolute w-[3px] bg-[#111827] z-10"
               style={{
                 top: "264px",
                 bottom: "-4px",
@@ -350,7 +357,7 @@ export default function GLMContent({
 
             {/* Red - Inner (Bottom Section) - X_page=52, X_rel=36, Y=291 */}
             <div
-              className="absolute w-[2px] bg-[#E11D48] z-10"
+              className="absolute w-[3px] bg-[#E11D48] z-10"
               style={{
                 top: "291px",
                 bottom: "-4px",

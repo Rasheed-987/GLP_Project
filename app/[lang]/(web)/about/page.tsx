@@ -279,7 +279,7 @@ export default async function AboutPage({
         description={dict.about.cta.description}
         button={dict.about.cta.button1}
         button2={dict.about.cta.button2}
-        backgroundImage="/images/contactbg.png"
+        backgroundImage="/images/contactbg.webp "
         blurDataURL={contactBlur}
       />
 

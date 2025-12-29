@@ -1,7 +1,7 @@
 "use client";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import Button from "./Button";
 
 type HeroProps = {
   title: {
@@ -26,14 +26,14 @@ type HeroProps = {
 
 export default function Hero({ title, description, backgroundImage, blurDataURL, buttons }: HeroProps) {
   return (
-    <div className="flex flex-col md:block relative w-full md:rounded-[32px] md:overflow-hidden md:h-[600px] lg:h-[700px]">
+    <div className="flex flex-col md:block relative w-full md:rounded-[32px] md:overflow-hidden md:h-[600px] lg:h-[700px] 2xl:h-[800px]">
       {/* 1. Header & Description (Order 1 on mobile) */}
       <div className="order-1 md:absolute md:inset-0 md:z-20 flex items-end pointer-events-none">
         <div className="w-full max-w-2xl md:px-12 py-6 md:pb-14 pointer-events-auto">
-          <h1 className="text-[32px] mt-10 md:mt-6 md:mt-0 md:text-5xl lg:text-[56px] font-normal leading-[1.2] text-zinc-900 md:text-white tracking-wide">
+          <h1 className="text-[32px] mt-10 md:mt-6 md:text-5xl lg:text-[56px] font-normal leading-[1.2] text-zinc-900 md:text-white tracking-wide">
             {title.prefix}
-            <span className="font-bold block md:inline">{title.highlight}</span>
-            {title.suffix}
+            <span className="font-extrabold">{title.highlight}</span>
+            <span className="block mt-2">{title.suffix}</span>
           </h1>
           <p className="mt-4 text-zinc-600 md:text-white/90 text-base md:text-lg leading-relaxed max-w-lg tracking-wide">
             {description}
