@@ -80,13 +80,13 @@ export default function Navbar({ locale, dict }: NavbarProps) {
 
   return (
     <div
-      className={`w-full transition-colors duration-200 ${open ? 'fixed left-1/2 -translate-x-1/2 w-full max-w-[1800px] bg-white z-50 overflow-y-auto' : 'relative z-40 w-full bg-transparent'}`}
+      className={`w-full transition-colors duration-200 ${open ? 'fixed left-1/2 -translate-x-1/2 w-full max-w-[2000px] bg-white z-50 overflow-y-auto' : 'relative z-40 w-full bg-transparent'}`}
       style={{
         top: open ? 'var(--topbar-height, 52px)' : 'auto',
         height: open ? 'calc(100vh - var(--topbar-height, 52px))' : 'auto'
       }}
     >
-      <header className={`w-full ${open ? 'fixed left-1/2 -translate-x-1/2 w-full max-w-[1800px] z-60 bg-white' : 'z-60'}`}
+      <header className={`w-full ${open ? 'fixed left-1/2 -translate-x-1/2 w-full max-w-[2000px] z-60 bg-white' : 'z-60'}`}
         style={{
           top: open ? 0 : 'var(--topbar-height, 52px)'
         }}
@@ -198,7 +198,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
             {/* Left Image Section */}
             <div className="flex flex-col justify-between p-6 border-r border-border-stroke h-full">
               <div
-                className="relative w-full max-w-[320px] h-[350px] rounded-[24px] overflow-hidden mb-4 cursor-pointer"
+                className="relative w-full max-w-[320px] 2xl:max-w-[420px] h-[350px] 2xl:h-[450px] rounded-[24px] overflow-hidden mb-4 cursor-pointer"
                 onMouseMove={handleMouseMove}
               >
                 {menuImages.map((src, i) => (
