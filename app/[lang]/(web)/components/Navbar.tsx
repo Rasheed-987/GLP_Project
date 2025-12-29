@@ -196,7 +196,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
           {/* DESKTOP MENU (hidden md:grid) */}
           <div className="hidden md:grid z-50 grid-cols-3 flex-1">
             {/* Left Image Section */}
-            <div className="flex flex-col justify-between p-6 border-r border-border-stroke h-full">
+            <div className="flex flex-col justify-between p-6 border-e border-border-stroke h-full">
               <div
                 className="relative w-full max-w-[320px] 2xl:max-w-[420px] h-[350px] 2xl:h-[450px] rounded-[24px] overflow-hidden mb-4 cursor-pointer"
                 onMouseMove={handleMouseMove}

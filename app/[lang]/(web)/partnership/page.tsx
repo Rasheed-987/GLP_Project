@@ -175,7 +175,7 @@ export default async function PartnershipPage({
             {/* What We Offer Section */}
             <section className="relative py-8 md:py-12 overflow-hidden md:mx-4 bg-white md:bg-transparent">
                 {/* Desktop Background - Hidden on Mobile */}
-                <div className="hidden md:block absolute inset-0 z-0 h-[650px] overflow-hidden rounded-[1.5rem]">
+                <div className="hidden md:block absolute inset-0 z-0 h-[650px] 2xl:h-[800px] overflow-hidden rounded-[1.5rem]">
                     <Image
                         src="/images/model_bg.webp"
                         alt="Background"

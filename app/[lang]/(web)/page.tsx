@@ -169,35 +169,39 @@ export default async function HomePage({
         <div className="mx-auto px-4 sm:px-6 lg:px-8 ">
           <div className="bg-[#E6EFEA] rounded-[32px] px-6 py-12 md:p-16 flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
             {/* Content: Quote and Author */}
-            <div className="w-full lg:w-7/12 flex flex-col justify-center order-1 lg:order-2">
-              <div className="mb-2">
-                <Image
-                  src={lang === "ar" ? "/images/arabicqoute.png" : "/images/englishqoute.png"}
-                  alt="quote"
-                  width={8}
-                  height={8}
-                  className="w-3 h-auto"
-                />
+            <div className="w-full lg:w-7/12 flex flex-col lg:self-stretch justify-between order-1 lg:order-2">
+              <div className="flex flex-col flex-1 justify-start py-12 lg:py-0">
+                <div className="mb-3">
+                  <Image
+                    src={lang === "ar" ? "/images/arabicqoute.png" : "/images/englishqoute.png"}
+                    alt="quote"
+                    width={8}
+                    height={8}
+                    className="w-3 h-auto"
+                  />
+                </div>
+                <p className="text-[24px] md:text-[30px] leading-tight font-normal mb-8">
+                  <span className="bg-brand-gradient bg-clip-text text-transparent inline-block">
+                    {dict.home.quote.text}
+                    <span className="font-extrabold">{dict.home.quote.highlight}</span>
+                  </span>
+                </p>
               </div>
-              <p className="text-[24px] md:text-[30px] leading-tight font-normal mb-8">
-                <span className="bg-brand-gradient bg-clip-text text-transparent inline-block">
-                  {dict.home.quote.text}
-                  <span className="font-bold">{dict.home.quote.highlight}</span>
-                </span>
-              </p>
 
-              <div className="mb-3">
-                <Image
-                  src="/images/bar.png"
-                  alt="bar"
-                  width={80}
-                  height={4}
-                  className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
-                />
+              <div className="flex flex-col items-start mb-4 lg:mb-0">
+                <div className="mb-3">
+                  <Image
+                    src="/images/bar.png"
+                    alt="bar"
+                    width={80}
+                    height={4}
+                    className={`w-20 h-auto ${lang === "ar" ? "scale-x-[-1]" : ""}`}
+                  />
+                </div>
+                <p className="text-xs md:text-sm font-bold tracking-widest text-[#006A8E] uppercase text-center">
+                  {dict.home.quote.author}
+                </p>
               </div>
-              <p className="text-xs md:text-sm font-bold tracking-widest text-[#006A8E] uppercase">
-                {dict.home.quote.author}
-              </p>
             </div>
 
             {/* Image */}
