@@ -103,7 +103,7 @@ export default function Navbar({ locale, dict }: NavbarProps) {
 
           {/* Right: actions */}
           <div className="flex items-center gap-2 md:gap-3">
-            <button className="cursor-pointer inline-flex items-center h-10 md:h-10 rounded-full bg-brand-gradient text-white px-5 md:px-6 text-sm font-medium shadow-sm hover:opacity-90 transition-opacity" onClick={() => router.push(`/${locale}/sign-in`)}>
+            <button className="cursor-pointer inline-flex items-center h-10 md:h-10 rounded-full bg-brand-gradient text-white px-5 md:px-6 text-sm font-medium shadow-sm" onClick={() => router.push(`/${locale}/sign-in`)}>
               {dict.nav.login}
             </button>
             {!open && (

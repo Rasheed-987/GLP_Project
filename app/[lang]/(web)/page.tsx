@@ -65,10 +65,10 @@ export default async function HomePage({
           <div className="grid grid-cols-2 gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-6">
             {dict.home.features.map((feature) => (
               <div key={feature.text} className="flex flex-col items-start">
-                <div className="mb-3 flex h-11 w-11 items-center justify-center shrink-0">
+                <div className="mb-3 flex h-11 w-11 items-center md:items-start justify-center md:justify-start shrink-0">
                   <Image src={feature.icon} alt="" width={44} height={44} className="object-contain" />
                 </div>
-                <p className="text-sm 2xl:text-base text-[#00000099] text-start md:text-center">{feature.text}</p>
+                <p className="text-sm 2xl:text-base text-[#00000099] text-start md:text-start">{feature.text}</p>
               </div>
             ))}
           </div>
@@ -211,10 +211,10 @@ export default async function HomePage({
       </section>
 
       {/* Alumni Stories CTA Section: Link to view all alumni stories */}
-      <section className="bg-white pb-32 min-w-full md:w-fit">
-        <div className="flex justify-center min-w-full md:w-fit px-7">
-          <Link href={`/${lang}/alumni`} className="min-w-full md:w-fit">
-            <Button className="bg-brand-green! min-w-full md:w-fit">{dict.home.alumni.graduatesStories}</Button>
+      <section className="bg-white pb-32 w-full">
+        <div className="flex justify-center w-full px-7">
+          <Link href={`/${lang}/alumni`} className="w-full md:w-fit">
+            <Button className="w-full md:w-fit">{dict.home.alumni.graduatesStories}</Button>
           </Link>
         </div>
       </section>

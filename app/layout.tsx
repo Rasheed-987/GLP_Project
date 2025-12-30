@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'GLP',
-  description: 'Global Leadership Program',
+  title: 'UAEGLP',
+  description: 'UAE Global Leadership Program',
 }
 
 // Minimal root layout: just returns children

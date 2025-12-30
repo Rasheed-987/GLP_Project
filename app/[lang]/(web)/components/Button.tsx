@@ -10,10 +10,10 @@ export default function Button({ children, className = '', disabled, loading, ..
     return (
         <button
             disabled={disabled || loading}
-            className={`px-8 cursor-pointer py-3.5 rounded-full text-sm font-bold transition-all flex items-center justify-center gap-2
+            className={`px-8 cursor-pointer py-3.5 whitespace-nowrap rounded-full text-sm font-bold transition-all flex items-center justify-center gap-2
                 ${disabled || loading
                     ? 'bg-[#B6CDC1] text-black cursor-not-allowed'
-                    : 'bg-gradient-to-r from-[#045A86] to-[#019977] hover:from-[#019977] hover:to-[#045A86] text-white '
+                    : 'bg-brand-gradient text-white'
                 } ${className}`}
             {...props}
         >

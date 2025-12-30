@@ -46,7 +46,7 @@ export default function SignInPage() {
 
             toast.success(response.data.message || "Logged in successfully!");
 
-            router.push(`/${lang}/dashboard/home`);
+            router.push(`/${lang}/dashboard`);
         } catch (error: any) {
             toast.error(error.message);
         } finally {

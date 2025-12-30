@@ -4,7 +4,9 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Button from "../../components/Button";
 import cod from "../../../../../public/images/cod.png";
+
 
 type Stat = { value: string; label: string };
 
@@ -320,13 +322,13 @@ export default function AlumniImpactShowcase({
         </div>
 
         <div className="mt-10 flex justify-center">
-          <button
+          <Button
             type="button"
             onClick={onSeeMore}
-            className="rounded-full bg-[#1F6D73] text-white px-6 py-2.5 text-[12px] font-bold shadow-sm transition hover:brightness-95"
+            className="px-6 py-2.5 text-[16px]"
           >
             {seeMoreText}
-          </button>
+          </Button>
         </div>
       </div>
     </section>
