@@ -101,17 +101,17 @@ export default async function ContactPage({
                                         <input
                                             type="text"
                                             placeholder={dict.contactPage.form.name}
-                                            className="w-full px-4 py-2 rounded-full border border-gray-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#038174]/20 transition-all font-medium text-[14px]"
+                                            className="w-full px-4 py-2 rounded-full border border-gray-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#038174]/20 transition-all font-medium text-[14px] text-start"
                                         />
                                         <input
                                             type="email"
                                             placeholder={dict.contactPage.form.email}
-                                            className="w-full px-4 py-2 rounded-full border border-gray-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#038174]/20 transition-all font-medium text-[14px]"
+                                            className="w-full px-4 py-2 rounded-full border border-gray-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#038174]/20 transition-all font-medium text-[14px] text-start"
                                         />
                                         <input
                                             type="tel"
                                             placeholder={dict.contactPage.form.phone}
-                                            className="w-full px-4 py-2 rounded-full border border-gray-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#038174]/20 transition-all font-medium text-[14px]"
+                                            className="w-full px-4 py-2 rounded-full border border-gray-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#038174]/20 transition-all font-medium text-[14px] text-start"
                                         />
                                         <Dropdown
                                             options={dict.contactPage.form.interests}
@@ -120,7 +120,7 @@ export default async function ContactPage({
                                         <textarea
                                             placeholder={dict.contactPage.form.message}
                                             rows={4}
-                                            className="w-full px-4 py-2 rounded-[1.5rem] border border-gray-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#038174]/20 transition-all resize-none font-medium text-[14px]"
+                                            className="w-full px-4 py-2 rounded-[1.5rem] border border-gray-200 text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-[#038174]/20 transition-all resize-none font-medium text-[14px] text-start"
                                         />
                                     </div>
                                     <Button className="w-full py-2  mt-4">

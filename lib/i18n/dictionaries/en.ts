@@ -1008,11 +1008,10 @@ export default {
       message: "Message",
       submit: "Submit",
       interests: [
-        "General Inquiry",
-        "Programme Information",
-        "Partnership Opportunities",
+        "Programme Info",
         "Alumni Support",
-        "Media & Press"
+        "Partnership Inquiry",
+        "Other"
       ]
     }
   },
