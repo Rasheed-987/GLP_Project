@@ -40,7 +40,7 @@ export default async function AboutPage({
       </section>
 
       {/* Hero Image Section */}
-      <section className="px-4 pb-10">
+      <section className="px-4 sm:pb-6 md:pb-2" >
         <div className="relative w-full aspect-video md:aspect-21/9 rounded-[20px] overflow-hidden">
           <Image
             src="/images/about.webp"
@@ -55,7 +55,7 @@ export default async function AboutPage({
       </section>
 
       {/* Features Section */}
-      <section className="pb-12 bg-white ">
+      <section className="pb-20 md:mt-1 mt-12  bg-white ">
         <div className="mx-auto px-6 lg:px-8">
           <div className="grid grid-cols-2 gap-x-8 gap-y-10 text-start sm:grid-cols-3 lg:grid-cols-5">
             {dict.about.features.map((feature: { icon: string; text: string }) => (
@@ -70,7 +70,7 @@ export default async function AboutPage({
         </div>
       </section>
       {/* Role Section */}
-      <section className="relative pt-8 md:py-12 overflow-hidden md:mx-4 bg-white md:bg-transparent">
+      <section className="relative pt-8 md:py-2 overflow-hidden md:mx-4 bg-white md:bg-transparent">
         {/* Desktop Container */}
         <div className="hidden md:block absolute inset-0 z-0 bg-[#F9FBFC] rounded-[1.5rem] overflow-hidden border border-gray-100/50">
           <div className="relative w-full h-full flex items-center justify-center">
@@ -146,9 +146,9 @@ export default async function AboutPage({
                   {dict.about.role.items.map((item: any, idx: number) => (
                     <div
                       key={idx}
-                      className="bg-white border border-gray-100 rounded-2xl p-6 md:p-4 flex flex-col justify-between group h-full min-h-[140px] md:min-h-[110px] transition-all hover:shadow-lg"
+                      className="bg-white border md:border-transparent border-black/20 rounded-2xl p-6 md:p-4 flex flex-col justify-between group h-full min-h-[140px] md:min-h-[110px] transition-all hover:shadow-lg"
                     >
-                      <div className="w-12 h-12 md:w-10 md:h-10 bg-[#E6F0F5] rounded-lg flex items-center justify-center transition-transform duration-1500 ease-in-out group-hover:rotate-360">
+                      <div className="w-12 h-12 md:w-10 md:h-10 bg-[#E6EFEA] rounded-lg flex items-center justify-center transition-transform duration-1500 ease-in-out group-hover:rotate-360">
                         <Image
                           src={item.icon}
                           alt=""
@@ -177,7 +177,7 @@ export default async function AboutPage({
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-y-12 lg:gap-8 mb-10 md:mb-16">
             {dict.about.stats.items.map((stat: any, idx: number) => (
               <div key={idx} className="flex flex-col items-center text-center">
-                <span className="text-[30px] md:text-[64px] font-bold gradient-text leading-none mb-4">
+                <span className="text-[30px] md:text-[64px] font-bold gradient-text leading-none mb-4" dir="ltr">
                   {stat.value}
                 </span>
                 <p className="text-[#00000099] text-sm md:text-base font-medium">

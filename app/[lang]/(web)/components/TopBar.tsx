@@ -91,7 +91,7 @@ export default function TopBar({ locale, dict }: TopBarProps) {
     <div
       role="region"
       aria-label="announcement"
-      className="w-full pt-2 px-2 md:px-0"
+      className="w-full pt-2 px-3 md:px-0"
     >
       <div className="bg-brand-gradient text-white rounded-full h-10 px-2 sm:px-6 flex items-center justify-between gap-2 md:gap-3 overflow-hidden">
         {/* Left spacer (keeps center perfect on desktop) */}

@@ -29,10 +29,10 @@ export default async function ApproachPage({
             {/* hero section */}
             <section className="py-20">
                 <Container className="px-4">
-                    <div className="flex flex-wrap lg:flex-nowrap gap-4 md:gap-8 lg:gap-16 items-center">
+                    <div className="flex flex-wrap lg:flex-nowrap gap-4 md:gap-8 lg:gap-16  items-start">
 
                         {/* Left Column: Text Content */}
-                        <div className="w-full lg:w-4/12 flex flex-col items-start order-1">
+                        <div className="w-full lg:w-4/12 flex flex-col items-start order-">
                             {/* Pill */}
                             <TagPill label={dict.approach.hero.pill} className="mb-2" />
 
@@ -59,7 +59,7 @@ export default async function ApproachPage({
 
                         {/* Right Column: Image */}
                         <div className="w-full lg:w-8/12 order-2">
-                            <div className="relative aspect-[4/3] w-full rounded-2xl overflow-hidden">
+                            <div className="relative aspect-[4/3] 2xl:aspect-auto 2xl:h-[600px] w-full rounded-2xl overflow-hidden">
                                 <Image
                                     src="/images/approach_hero.webp"
                                     alt="UAE Government Leaders Program Approach"
@@ -246,7 +246,7 @@ export default async function ApproachPage({
                                     ];
                                     return (
                                         <li key={idx} className="flex items-center gap-3">
-                                            <div className="shrink-0 w-4 h-4 relative">
+                                            <div className="shrink-0 w-4 2xl:w-6 2xl:h-6 h-4 relative">
                                                 <Image
                                                     src={`/images/${icons[idx]}`}
                                                     alt=""
@@ -310,11 +310,11 @@ export default async function ApproachPage({
                             </div>
 
                             {/* Title with Gradient */}
-                            <h2 className="text-[1.1rem] md:text-[1.35rem] leading-[1.2] md:leading-[1.1]    bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent">
+                            <h2 className="text-[1.1rem] md:text-[1.35rem] leading-[1.2] md:leading-[1.1]      bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent">
                                 <span className="font-normal">{dict.approach.aboutUAELGM.title.text1}</span>
-                                <span className="font-extrabold">{dict.approach.aboutUAELGM.title.highlight1}</span>
+                                <span className="font-extrabold text-[1.1rem] 2xl:text-[1.45rem]">{dict.approach.aboutUAELGM.title.highlight1}</span>
                                 <span className="font-normal">{dict.approach.aboutUAELGM.title.text2}</span>
-                                <span className="font-extrabold">{dict.approach.aboutUAELGM.title.highlight2}</span>
+                                <span className="font-extrabold text-[1.1rem] 2xl:text-[1.45rem] ">{dict.approach.aboutUAELGM.title.highlight2}</span>
                                 <span className="font-normal">{dict.approach.aboutUAELGM.title.text3}</span>
                             </h2>
                         </div>
