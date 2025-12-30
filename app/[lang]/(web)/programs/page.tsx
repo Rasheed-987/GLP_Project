@@ -58,6 +58,7 @@ export default async function ProgramsPage({
                                 item={item}
                                 reversed={index % 2 === 0} // Index 0 (First): Image Left. Index 1 (Second): Image Right.
                                 blurDataURL={programBlurs[index]}
+                                lang={lang}
                             />
                         </div>
                     );

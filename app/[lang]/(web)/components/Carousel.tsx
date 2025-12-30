@@ -22,9 +22,10 @@ interface CarouselItem {
 interface CarouselProps {
   items: CarouselItem[];
   lang: string;
+  graduateLabel?: string;
 }
 
-export default function Carousel({ items, lang }: CarouselProps) {
+export default function Carousel({ items, lang, graduateLabel }: CarouselProps) {
   const [emblaRef, emblaApi] = useEmblaCarousel({
     loop: true,
     direction: lang === "ar" ? "rtl" : "ltr",
@@ -47,22 +48,25 @@ export default function Carousel({ items, lang }: CarouselProps) {
           {items.map((item, index) => (
             <div key={index} className="flex-[0_0_85%] lg:flex-[0_0_92%] min-w-0 flex flex-col lg:flex-row gap-6 pl-4 lg:pl-10">
               {/* Left Image Side */}
-              <div className="lg:w-4/12 2xl:w-3/12 relative aspect-square lg:aspect-auto lg:h-[500px] rounded-[20px] overflow-hidden">
+              <div className="lg:w-4/12 2xl:w-3/12 relative aspect-3/4 md:aspect-square lg:aspect-auto lg:h-[500px] rounded-[20px] overflow-hidden">
                 <Image
                   src={item.image}
                   alt={item.author}
                   fill
                   className="object-cover"
                 />
-                <div className="absolute top-8 left-8">
-                  <span className="px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/30 text-xs font-bold text-white uppercase tracking-wider">
-                    {item.tag}
+                <div className="absolute top-8 start-8">
+                  <span className="px-4 py-2 rounded-full bg-[#E6EEF3]  border-2 border-[#045A8633] text-xs font-bold text-brand-blue uppercase tracking-wider">
+                    {lang === "ar" 
+                      ? `${graduateLabel || ''} ${item.tag}`
+                      : `${item.tag} ${graduateLabel || ''}`
+                    }
                   </span>
                 </div>
               </div>
 
               {/* Right Content Side */}
-              <div className="lg:w-8/12 bg-[#E6EFEA] rounded-[20px] p-8 md:p-12 lg:p-10 flex flex-col justify-between relative flex-1 lg:h-[500px] overflow-hidden">
+              <div className="lg:w-8/12 bg-[#E6EFEA] rounded-[20px] p-5 md:p-12 lg:p-10 flex flex-col justify-between relative flex-1 min-h-[500px] md:min-h-0 lg:h-[500px] overflow-hidden">
                 <div>
                   <div className="mb-4">
                     <Image
@@ -110,7 +114,7 @@ export default function Carousel({ items, lang }: CarouselProps) {
                         src={item.logo}
                         alt="Logo"
                         fill
-                        className="object-contain object-right"
+                        className="object-contain object-end"
                       />
                     </div>
                   </div>
@@ -118,11 +122,11 @@ export default function Carousel({ items, lang }: CarouselProps) {
                   <div className="pt-6 border-t border-[#0000001A]">
                   <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-8">
                     {item.stats.map((stat, sIndex) => (
-                      <div key={sIndex} className="flex items-center lg:block ">
-                        <div className="text-4xl md:text-5xl font-bold text-center gradient-text mb-0 lg:mb-2 w-28 lg:w-auto shrink-0">
+                      <div key={sIndex} className="flex justify-start items-center lg:block ">
+                        <div className="text-4xl md:text-5xl font-bold  md:text-center gradient-text mb-0 lg:mb-2 w-28 lg:w-auto shrink-0">
                           {stat.value}
                         </div>
-                        <div className="text-xs text-[#00000099] text-right md:text-center text-nowrap uppercase font-medium leading-tight">
+                        <div className="text-xs text-[#00000099] text-end md:text-center text-nowrap uppercase font-medium leading-tight">
                           {stat.label}
                         </div>
                       </div>
@@ -139,7 +143,7 @@ export default function Carousel({ items, lang }: CarouselProps) {
       {/* Navigation Arrows */}
       <button
         onClick={scrollPrev}
-        className="absolute left-0 lg:left-8 rtl:left-auto rtl:right-0 rtl:lg:right-8 top-[20.6rem] md:top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-white shadow-xl flex items-center justify-center text-brand-green transition-all transform hover:scale-110 active:scale-95 border border-gray-100"
+        className="absolute start-2 lg:start-8 top-[27rem] md:top-1/2 -translate-y-1/2 z-40 md:w-10 md:h-10 w-11 h-11 rounded-full bg-white shadow-xl flex items-center justify-center text-brand-green transition-all transform hover:scale-110 active:scale-95 border border-gray-100"
         aria-label="Previous slide"
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5 rtl:rotate-180">
@@ -148,7 +152,7 @@ export default function Carousel({ items, lang }: CarouselProps) {
       </button>
       <button
         onClick={scrollNext}
-        className="absolute right-0 lg:right-8 rtl:right-auto rtl:left-0 rtl:lg:left-8 top-[20.6rem] md:top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-white shadow-xl flex items-center justify-center text-brand-green transition-all transform hover:scale-110 active:scale-95 border border-gray-100"
+        className="absolute end-2 lg:end-8 top-[27rem] md:top-1/2 -translate-y-1/2 z-40 w-11 md:w-10 h-11 md:h-10 rounded-full bg-white shadow-xl flex items-center justify-center text-brand-green transition-all transform hover:scale-110 active:scale-95 border border-gray-100"
         aria-label="Next slide"
       >
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-5 h-5 rtl:rotate-180">

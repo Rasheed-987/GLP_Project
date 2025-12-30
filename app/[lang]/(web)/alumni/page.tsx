@@ -5,7 +5,7 @@ import Container from "../../../../app/components/Container";
 import { getDictionary } from "../../../../lib/i18n/dictionaries";
 import Button from '../components/Button';
 import TagPill from '../components/TagPill';
-import Carousel from '../components/Carousel';
+import DynamicCarousel from '../components/DynamicCarousel';
 import ContactSection from '../components/ContactSection';
 
 export default async function AlumniPage({
@@ -156,7 +156,7 @@ export default async function AlumniPage({
             </section>
 
             <section className="bg-white md:pb-32 mb-10 pt-5">
-                <Carousel items={dict.home.alumni.items} lang={lang} />
+                <DynamicCarousel lang={lang} graduateLabel={dict.home.alumni.graduateLabel} />
                 <div className="flex justify-center mt-12">
                     <Button>
                         {dict.home.alumni.graduatesStories}
