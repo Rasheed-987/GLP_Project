@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import LocaleSwitcher from "../../../../app/components/LocaleSwitcher";
 import type { Locale } from "../../../../lib/i18n/config";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 type NavbarProps = {
   locale: Locale;
@@ -33,6 +33,7 @@ type NavbarProps = {
 export default function Navbar({ locale, dict }: NavbarProps) {
 
   const router = useRouter();
+  const pathname = usePathname();
 
   const leftMenu = [
     { href: `/${locale}`, label: dict.nav.home },
@@ -161,16 +162,19 @@ export default function Navbar({ locale, dict }: NavbarProps) {
           {/* MOBILE MENU (md:hidden) */}
           <div className="flex-1 overflow-y-auto md:hidden px-4 py-6">
             <div className="flex flex-col">
-              {[...leftMenu, ...rightMenu].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="w-full border-b border-black/10 py-4 text-sm font-bold text-black uppercase hover:text-brand-green transition-colors"
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {[...leftMenu, ...rightMenu].map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className={`w-full border-b border-black/10 py-4 text-sm font-bold uppercase transition-colors ${isActive ? 'gradient-text' : 'text-black hover-gradient-text'}`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Socials centered for mobile */}
@@ -222,16 +226,19 @@ export default function Navbar({ locale, dict }: NavbarProps) {
 
             <div className="p-6 flex flex-col h-full overflow-y-auto">
               <nav className="space-y-2">
-                {leftMenu.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    onClick={() => setOpen(false)}
-                    className="block border-b border-border-stroke pb-2 text-[30px] font-medium text-black hover-gradient-text transition-colors uppercase"
-                  >
-                    {item.label}
-                  </Link>
-                ))}
+                {leftMenu.map((item) => {
+                  const isActive = pathname === item.href;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      onClick={() => setOpen(false)}
+                      className={`block border-b border-border-stroke pb-2 text-[30px] font-medium transition-colors uppercase ${isActive ? 'gradient-text' : 'text-black hover-gradient-text'}`}
+                    >
+                      {item.label}
+                    </Link>
+                  );
+                })}
               </nav>
 
               <div className="mt-auto pt-6 shrink-0">
@@ -254,16 +261,19 @@ export default function Navbar({ locale, dict }: NavbarProps) {
 
             {/* Right Menu */}
             <nav className="p-6 space-y-2">
-              {rightMenu.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="block border-b border-border-stroke pb-2 text-[30px] font-medium text-black hover-gradient-text transition-colors uppercase"
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {rightMenu.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    className={`block border-b border-border-stroke pb-2 text-[30px] font-medium transition-colors uppercase ${isActive ? 'gradient-text' : 'text-black hover-gradient-text'}`}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
             </nav>
           </div>
         </div>

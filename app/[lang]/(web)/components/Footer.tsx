@@ -1,8 +1,9 @@
-
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import Container from "../../../components/Container";
 import type { Locale } from "../../../../lib/i18n/config";
+import { usePathname } from "next/navigation";
 
 type FooterProps = {
     locale: Locale;
@@ -10,6 +11,7 @@ type FooterProps = {
 };
 
 export default function Footer({ locale, dict }: FooterProps) {
+    const pathname = usePathname();
     return (
         <footer className="bg-white pt-6 pb-8">
             <Container className="px-4">
@@ -37,26 +39,26 @@ export default function Footer({ locale, dict }: FooterProps) {
                     <div className="flex gap-x-24 md:ml-24">
                         {/* Column 1 */}
                         <div className="flex flex-col gap-2">
-                            <Link href={`/${locale}/programs`} className="text-black font-semibold hover:text-brand-blue transition-colors text-[13px] md:text-[15px] ">
+                            <Link href={`/${locale}/programs`} className={`font-semibold transition-colors text-[13px] md:text-[15px] ${pathname === `/${locale}/programs` ? 'gradient-text' : 'text-black hover:text-brand-blue'}`}>
                                 {dict.nav.programmes}
                             </Link>
-                            <Link href={`/${locale}/approach`} className="text-black font-semibold hover:text-brand-blue transition-colors text-[13px] md:text-[15px]">
+                            <Link href={`/${locale}/approach`} className={`font-semibold transition-colors text-[13px] md:text-[15px] ${pathname === `/${locale}/approach` ? 'gradient-text' : 'text-black hover:text-brand-blue'}`}>
                                 {dict.nav.approach}
                             </Link>
-                            <Link href={`/${locale}/partnership`} className="text-black font-semibold hover:text-brand-blue transition-colors text-[13px] md:text-[15px]">
+                            <Link href={`/${locale}/partnership`} className={`font-semibold transition-colors text-[13px] md:text-[15px] ${pathname === `/${locale}/partnership` ? 'gradient-text' : 'text-black hover:text-brand-blue'}`}>
                                 {dict.nav.partnership}
                             </Link>
                         </div>
 
                         {/* Column 2 */}
                         <div className="flex flex-col gap-2">
-                            <Link href={`/${locale}/alumni`} className="text-black font-semibold hover:text-brand-blue transition-colors text-[13px] md:text-[15px]">
+                            <Link href={`/${locale}/alumni`} className={`font-semibold transition-colors text-[13px] md:text-[15px] ${pathname === `/${locale}/alumni` ? 'gradient-text' : 'text-black hover:text-brand-blue'}`}>
                                 {dict.nav.alumni}
                             </Link>
-                            <Link href={`/${locale}/resources`} className="text-black font-semibold hover:text-brand-blue transition-colors text-[13px] md:text-[15px]">
+                            <Link href={`/${locale}/resources`} className={`font-semibold transition-colors text-[13px] md:text-[15px] ${pathname === `/${locale}/resources` ? 'gradient-text' : 'text-black hover:text-brand-blue'}`}>
                                 {dict.nav.resources}
                             </Link>
-                            <Link href={`/${locale}/about`} className="text-black font-semibold hover:text-brand-blue transition-colors text-[13px] md:text-[15px]">
+                            <Link href={`/${locale}/about`} className={`font-semibold transition-colors text-[13px] md:text-[15px] ${pathname === `/${locale}/about` ? 'gradient-text' : 'text-black hover:text-brand-blue'}`}>
                                 {dict.nav.about || 'About'}
                             </Link>
                         </div>
