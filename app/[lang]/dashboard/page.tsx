@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
-import { Locale } from "../../../../lib/i18n/config";
-import { getDictionary } from "../../../../lib/i18n/dictionaries";
+import { Locale } from "../../../lib/i18n/config";
+import { getDictionary } from "../../../lib/i18n/dictionaries";
 import Link from "next/link";
 import {
     ArrowRight,
@@ -14,13 +14,13 @@ import {
     User,
     Loader2
 } from "lucide-react";
-import LoadingScreen from "../../../../components/LoadingScreen";
+import LoadingScreen from "../../../components/LoadingScreen";
 import {
     useDashboardStats,
     useRecentArticles,
     useRecentNews,
     useRecentTestimonials
-} from "../../../../hooks/useDashboard";
+} from "../../../hooks/useDashboard";
 
 export default function DashboardPage() {
     const params = useParams();

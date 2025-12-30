@@ -4,6 +4,8 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
+import Button from "../../components/Button";
+
 
 export type Article = {
   id?: string | number;
@@ -133,13 +135,13 @@ export default function ArticlesInsightsSection({
 
       {/* SEE MORE (solid teal like screenshot) */}
       <div className="mt-10 flex justify-center">
-        <button
+        <Button
           type="button"
           onClick={onSeeMore}
-          className="rounded-full bg-[#0B5F6A] text-white px-7 py-2.5 text-[12px] font-bold hover:bg-[#0A5560] transition"
+          className="px-7 py-2.5 text-[16px]"
         >
           {seeMoreText}
-        </button>
+        </Button>
       </div>
     </div>
   );

@@ -52,7 +52,7 @@ export default function ProgramCard({ item, reversed, blurDataURL, lang }: Progr
                     </p>
 
                     {/* Features List */}
-                    <ul className="space-y-3 mb-8 md:mb-56">
+                    <ul className="space-y-3 mb-16 2xl:mb-56">
                         {item.features.map((feature, idx) => {
                             const icons = ['target.png', 'users.png', 'globe.png', 'laptop.png'];
                             const iconName = icons[idx % icons.length];

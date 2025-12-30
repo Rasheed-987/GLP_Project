@@ -11,6 +11,7 @@ import AlumniImpactShowcase, {
   FeaturedShowcase,
   ShowcaseCard,
 } from "./AlumniImpactShowcase";
+import Button from "../../components/Button";
 
 type TabKey = "articles" | "videos" | "reports";
 
@@ -138,16 +139,12 @@ export default function ResourcesClient({
             </div>
 
             <div className="mt-10 flex justify-center">
-              <button
+              <Button
                 type="button"
-                className="rounded-full text-white px-6 py-2.5 text-[14px] font-bold shadow-sm transition hover:brightness-95"
-                style={{
-                  backgroundImage:
-                    "linear-gradient(90deg, #045A86 0%, #019977 100%)",
-                }}
+                className="px-6 py-2.5 text-[16px]"
               >
                 {seeMoreText}
-              </button>
+              </Button>
             </div>
           </>
         )}
