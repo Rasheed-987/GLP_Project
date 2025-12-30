@@ -19,7 +19,7 @@ export default async function WebLayout({
 
   return (
     <>
-      <div className="sticky top-0  mb-1 z-[100] bg-white">
+      <div className="sticky top-0  mb-1 z-[100] bg-transparent">
         <Container className="px-4 mb-1">
           <TopBar locale={locale} dict={dict} />
         </Container>

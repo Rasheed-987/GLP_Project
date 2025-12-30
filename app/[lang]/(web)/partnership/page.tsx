@@ -54,7 +54,7 @@ export default async function PartnershipPage({
 
 
                             {/* Title with Gradient */}
-                            <h2 className="text-[1.5rem] md:text-[2.5rem] leading-[1.2] lg:max-w-[500px]  max-w-[200px] md:leading-[1] tracking-[1.5] text-black ">
+                            <h2 className={`text-[1.5rem] md:text-[2.5rem] lg:max-w-[600px] max-w-[200px] text-black ${lang === 'ar' ? 'leading-[1.3] md:leading-[1.2] tracking-normal' : 'leading-[1.2] md:leading-[1] tracking-[1.5px]'}`}>
                                 <span className="font-medium">{dict.partnership.title.text1}</span>
                                 <span className="font-extrabold">{dict.partnership.title.highlight1}</span>
                             </h2>
@@ -66,7 +66,7 @@ export default async function PartnershipPage({
                                 {dict.partnership.description}
                             </p>
                             <div>
-                                <Button className="w-full md:w-[40%]">
+                                <Button className="w-full md:w-[40%] ">
                                     {dict.partnership.button}
                                 </Button>
                             </div>
@@ -77,10 +77,13 @@ export default async function PartnershipPage({
             {/* partnership about section  */}
             <section className="pb-12 md:pb-24">
                 <Container className="px-4 md:px-8">
-                    <div className="flex flex-wrap lg:flex-nowrap gap-3 md:gap-8 lg:gap-16 items-start">
+                    <div className="flex flex-wrap lg:flex-nowrap gap-3 md:gap-8 lg:gap-16 ">
                         {/* Title and Description */}
-                        <div className="w-full lg:w-6/12  order-1">
 
+                    
+                        <div className="w-full lg:w-6/12 order-1 flex flex-col">
+
+                    <div className=" md:mb-8">
                             <span className="text-brand-blue text-[11px] md:text-[14px] font-semibold uppercase tracking-[1.2] md:tracking-[1.6] mb-2 md:mb-4 block">
                                 {dict.partnership.about.label}
                             </span>
@@ -91,19 +94,20 @@ export default async function PartnershipPage({
                             </div>
 
                             {/* Title with Gradient */}
-                            <h2 className="text-[1.1rem] max-w-md md:text-[1.5rem] leading-[1.2] md:leading-[1.1] bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent mb-6 md:mb-48">
+                            <h2 className="text-[1.25rem] max-w-md md:text-[1.5rem] leading-[1.2] md:leading-[1.1] md:mb-6 bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent mb-6">
                                 <span className="font-extrabold">{dict.partnership.about.title.text1}</span>
                                 <span className="font-extrabold">{dict.partnership.about.title.highlight1}</span>
                                 <span className="font-normal">{dict.partnership.about.title.text2}</span>
                                 <span className="font-extrabold">{dict.partnership.about.title.highlight2}</span>
                                 <span className="font-normal">{dict.partnership.about.title.text3}</span>
                             </h2>
-                            <div className="w-full ">
-                                <p className="text-[#00000099] leading-[1.2] text-xs md:text-[15px] max-w-lg">
+                            </div>
+                            <div className="w-full lg:mt-auto">
+                                <p className="text-[#00000099] leading-relaxed text-[13px] md:text-[15px] max-w-lg">
                                     {dict.partnership.about.description}
                                 </p>
                             </div>
-                        </div>
+                            </div>
 
                         {/* Image - appears after content on small screens */}
                         <div className="w-full lg:w-6/12 order-2">
@@ -175,7 +179,7 @@ export default async function PartnershipPage({
             {/* What We Offer Section */}
             <section className="relative py-8 md:py-12 overflow-hidden md:mx-4 bg-white md:bg-transparent">
                 {/* Desktop Background - Hidden on Mobile */}
-                <div className="hidden md:block absolute inset-0 z-0 h-[650px] 2xl:h-[800px] overflow-hidden rounded-[1.5rem]">
+                <div className="hidden md:block absolute inset-0 z-0 h-[650px] 2xl:h-[800px] overflow-hidden rounded-[1rem]">
                     <Image
                         src="/images/model_bg.webp"
                         alt="Background"
@@ -200,7 +204,7 @@ export default async function PartnershipPage({
                             </div>
 
                             {/* Title - Teal on Mobile, White on Desktop */}
-                            <h2 className="text-[1.1rem] md:text-[1.5rem] max-w-sm leading-[1.1] bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent lg:text-white lg:bg-none font-medium mb-8">
+                            <h2 className="text-[1.1rem] md:text-[1.5rem] max-w-sm  leading-[1.1] bg-gradient-to-r from-[#045A86] to-[#019977] bg-clip-text text-transparent lg:text-white lg:bg-none font-medium mb-8">
                                 <span className="font-bold">{dict.partnership.offer.title.text1}{dict.partnership.offer.title.highlight1}</span>
                                 {dict.partnership.offer.title.text2}
                                 <span className="font-bold">{dict.partnership.offer.title.highlight2}</span>
@@ -234,7 +238,7 @@ export default async function PartnershipPage({
                         {/* Right Side: Offer Cards */}
                         <div className="w-full lg:w-4/12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-1 gap-4">
                             {dict.partnership.offer.cards.map((card, idx) => (
-                                <div key={idx} className="bg-white border border-gray-200 rounded-[1.5rem] p-6 md:p-4 flex flex-col justify-between group h-full min-h-[140px] md:min-h-[110px] transition-all hover:shadow-lg">
+                                <div key={idx} className="bg-white border border-gray-200 rounded-[1rem] p-6 md:p-4 flex flex-col justify-between group h-full min-h-[140px] md:min-h-[110px] transition-all hover:shadow-lg">
                                     <div className="w-12 h-12 md:w-10 md:h-10 bg-[#E6EFEA] rounded-lg flex items-center justify-center transition-transform duration-[1500ms] ease-in-out group-hover:rotate-[360deg]">
                                         <Image
                                             src={card.icon}

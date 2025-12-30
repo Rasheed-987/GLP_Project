@@ -266,7 +266,7 @@ const Item = ({ color, item }: { color: string; item: GLMItem }) => (
       <p className="text-[14.5px] md:text-[16px] font-bold leading-tight" style={{ color }}>
         {item.title}
       </p>
-      <p className="text-[#000000b3] text-[12.5px] md:text-[13.5px] leading-[1.6] mt-2.5 max-w-[95%]">
+      <p className="text-[#00000099] text-[12.5px] md:text-[13.5px] leading-[1.6] mt-2.5 max-w-[95%]">
         {item.description}
       </p>
     </div>
