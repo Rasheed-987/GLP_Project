@@ -346,7 +346,7 @@ export default async function ApproachPage({
                             {dict.approach.aboutUAELGM.pillars.map((pillar, idx) => (
                                 <div
                                     key={idx}
-                                    className={`bg-white p-5 text-center ${idx !== 2 ? 'border-b md:border-b-0 md:border-r border-gray-200' : ''}`}
+                                    className={`bg-white p-5 text-center ${idx !== 3 ? 'border-b md:border-b-0 md:border-r border-gray-200' : ''}`}
                                 >
                                     <h4
                                         className="font-extrabold text-base md:text-[1.1rem] bg-gradient-to-r from-[#045A86] to-[#019977]  bg-clip-text text-transparent "
@@ -383,7 +383,7 @@ export default async function ApproachPage({
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0 mx-4 overflow-hidden rounded-[1.5rem] ">
                     <Image
-                        src="/images/bg_1.png"
+                        src="/images/bg_1.webp"
                         alt=""
                         fill
                         className="object-cover"
@@ -440,7 +440,7 @@ export default async function ApproachPage({
                                 {/* Benefits List */}
                                 <ul className="space-y-4">
                                     {dict.approach.alumniNetwork.benefits.map((benefit, idx) => {
-                                        const icons = ['key.png', 'msg_chat.png', 'link.png', 'laptop.png'];
+                                        const icons = ['key.png', 'link.png', 'msg_chat.png','laptop.png'];
                                         return (
                                             <li key={idx} className="flex items-center md:items-start gap-3">
                                                 <div className="shrink-0 w-4 h-4 relative mt-0.5">

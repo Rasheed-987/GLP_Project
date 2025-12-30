@@ -22,6 +22,8 @@ interface NewsData {
   createdAt: string;
 }
 
+import Marquee from "react-fast-marquee";
+
 export default function TopBar({ locale, dict }: TopBarProps) {
   const [isVisible, setIsVisible] = useState(true);
   const [news, setNews] = useState<NewsData | null>(null);
@@ -96,33 +98,61 @@ export default function TopBar({ locale, dict }: TopBarProps) {
         <div className="w-6 h-6 hidden md:block shrink-0" />
 
         {/* Center Content */}
-        <div className="flex-1 flex justify-center min-w-0">
+        <div className="flex-1 flex justify-center min-w-0 h-full items-center">
           {!hasNews ? (
             /* Placeholder */
             <span className="text-xs md:text-sm font-medium opacity-90">
               News coming soon
             </span>
           ) : (
-            /* Real API Content */
-            <div className="flex items-center gap-4 sm:gap-8 px-4">
-              <span className="text-xs md:text-sm font-medium whitespace-nowrap">
-                {news?.content}
-              </span>
+            <div className="w-full h-full flex items-center">
+              {/* Mobile: Marquee */}
+              <div className="md:hidden w-full overflow-hidden">
+                <Marquee gradient={false} speed={40} direction={locale === 'ar' ? 'right' : 'left'}>
+                  <div className="flex items-center gap-8 pr-12">
+                    <span className="text-xs font-medium whitespace-nowrap">
+                      {news?.content}
+                    </span>
 
-              {timeLeft && (
-                <span className="text-xs md:text-sm font-bold whitespace-nowrap">
-                  {timeLeft}
+                    {timeLeft && (
+                      <span className="text-xs font-bold whitespace-nowrap">
+                        {timeLeft}
+                      </span>
+                    )}
+
+                    {news?.applyNowUrl && (
+                      <a
+                        href={news.applyNowUrl}
+                        className="inline-flex items-center justify-center h-6 rounded-full bg-white text-black px-4 text-[10px] font-semibold leading-none whitespace-nowrap"
+                      >
+                        {dict.topBar.applyNow}
+                      </a>
+                    )}
+                  </div>
+                </Marquee>
+              </div>
+
+              {/* Desktop: Static */}
+              <div className="hidden md:flex items-center justify-center gap-4 sm:gap-8 px-4 w-full">
+                <span className="text-xs md:text-sm font-medium whitespace-nowrap">
+                  {news?.content}
                 </span>
-              )}
 
-              {news?.applyNowUrl && (
-                <a
-                  href={news.applyNowUrl}
-                  className="inline-flex items-center justify-center h-6 md:h-7 rounded-full bg-white text-black hover:bg-white/90 transition-colors px-4 text-[10px] md:text-xs font-semibold leading-none whitespace-nowrap"
-                >
-                  {dict.topBar.applyNow}
-                </a>
-              )}
+                {timeLeft && (
+                  <span className="text-xs md:text-sm font-bold whitespace-nowrap">
+                    {timeLeft}
+                  </span>
+                )}
+
+                {news?.applyNowUrl && (
+                  <a
+                    href={news.applyNowUrl}
+                    className="inline-flex items-center justify-center h-6 md:h-7 rounded-full bg-white text-black hover:bg-white/90 transition-colors px-4 text-[10px] md:text-xs font-semibold leading-none whitespace-nowrap"
+                  >
+                    {dict.topBar.applyNow}
+                  </a>
+                )}
+              </div>
             </div>
           )}
         </div>

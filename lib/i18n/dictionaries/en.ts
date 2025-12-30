@@ -430,7 +430,7 @@ export default {
       pill: "CASE STUDIES",
       items: [
         {
-          tag: "2024 GRADUATE",
+          tag: "2024",
           quote: "Through the Strategic Leaders Programme, I developed the strategic vision to launch Dubai's first carbon-neutral district. This initiative now serves as a model for sustainable urban development across the region.",
           author: "AHMED AL ZAABI",
           role: "HEAD OF SUSTAINABILITY INITIATIVES",
@@ -443,7 +443,7 @@ export default {
           ]
         },
         {
-          tag: "2024 GRADUATE",
+          tag: "2024",
           quote: "The programme provided me with the tools to lead digital transformation at a national level, ensuring our services are ready for the challenges of tomorrow.",
           author: "FATIMA AL MANSOURI",
           role: "DIRECTOR OF DIGITAL STRATEGY",
@@ -456,7 +456,7 @@ export default {
           ]
         },
         {
-          tag: "2024 GRADUATE",
+          tag: "2024",
           quote: "The UAE Government Leadership Program equipped me with the tools to modernize our healthcare delivery system. We've improved patient outcomes by 40% while reducing operational costs significantly.",
           author: "DR. FATIMA AL RASHID",
           role: "Deputy Director of Healthcare Innovation",
@@ -469,7 +469,8 @@ export default {
           ]
         }
       ],
-      graduatesStories: "Read graduates' stories"
+      graduatesStories: "Read graduates' stories",
+      graduateLabel: "Graduate"
     },
     nomination: {
       title: "Know someone with the",

@@ -5,7 +5,7 @@ import Container from "../../../../app/components/Container";
 import { getDictionary } from "../../../../lib/i18n/dictionaries";
 import Button from '../components/Button';
 import TagPill from '../components/TagPill';
-import Carousel from '../components/Carousel';
+import DynamicCarousel from '../components/DynamicCarousel';
 import ContactSection from '../components/ContactSection';
 import { getImageBlur } from '../../../../lib/image';
 
@@ -272,7 +272,7 @@ export default async function PartnershipPage({
             </section>
 
             <section className="bg-white pb-32 pt-5">
-                <Carousel items={dict.home.alumni.items} lang={lang} />
+                <DynamicCarousel lang={lang} graduateLabel={dict.home.alumni.graduateLabel} />
                 <div className="flex justify-center mt-12">
                     <Button>
                         {dict.home.alumni.graduatesStories}

@@ -27,7 +27,7 @@ export default function ContactSection({
 }: ContactSectionProps) {
     return (
         <section className="px-4 pb-20 text-white">
-            <div className="relative w-full max-w-8xl mx-auto rounded-3xl overflow-hidden min-h-[350px] md:min-h-[450px] flex flex-col items-center justify-center text-center p-4 md:p-8">
+            <div className="relative w-full max-w-8xl mx-auto rounded-[24px] md:rounded-3xl overflow-hidden min-h-[450px] md:min-h-[450px] flex flex-col items-center justify-center text-center p-4 md:p-8">
                 {/* Background Image */}
                 <div className="absolute inset-0 z-0">
                     <Image
@@ -61,15 +61,15 @@ export default function ContactSection({
                     <p className="text-white/90 text-xs md:text-sm mb-8 max-w-sm mx-auto leading-relaxed">
                         {description}
                     </p>
-                    <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                    <div className="flex flex-col sm:flex-row items-center w-full justify-center gap-4">
                         <button
-                            className="inline-flex items-center justify-center px-5 py-4 rounded-full bg-white text-black/80 hover:cursor-pointer font-extrabold text-xs md:text-sm capitalize leading-none transition-transform duration-200 ease-out hover:scale-105"
+                            className="inline-flex w-full md:w-auto items-center justify-center px-5 py-4 rounded-full bg-white text-black/80 hover:cursor-pointer font-extrabold text-xs md:text-sm capitalize leading-none transition-transform duration-200 ease-out hover:scale-105"
                         >
                             {button}
                         </button>
                         {button2 && (
                             <button
-                                className="inline-flex items-center justify-center px-5 py-4 rounded-full border border-white text-white hover:cursor-pointer font-extrabold text-xs md:text-sm capitalize leading-none transition-transform duration-200 ease-out hover:scale-105"
+                                className="inline-flex w-full md:w-auto items-center justify-center px-5 py-4 rounded-full border border-white text-white hover:cursor-pointer font-extrabold text-xs md:text-sm capitalize leading-none transition-transform duration-200 ease-out hover:scale-105"
                             >
                                 {button2}
                             </button>

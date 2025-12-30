@@ -119,16 +119,14 @@ export default async function FAQPage({
                     {g.label}
                   </p>
 
-                  <div className="border-t border-gray-100">
-                    {g.items.map((it: FaqItem, idx: number) => (
-                      <FaqRow
-                        key={idx}
-                        q={it.q}
-                        a={it.a}
-                        isRTL={isRTL}
-                      />
-                    ))}
-                  </div>
+                  {g.items.map((it: FaqItem, idx: number) => (
+                    <FaqRow
+                      key={idx}
+                      q={it.q}
+                      a={it.a}
+                      isRTL={isRTL}
+                    />
+                  ))}
                 </div>
               ))}
             </div>

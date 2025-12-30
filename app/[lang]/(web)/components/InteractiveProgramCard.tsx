@@ -34,7 +34,7 @@ export default function InteractiveProgramCard({
   const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <div key={program.title} className="group relative rounded-[32px] overflow-hidden aspect-4/5 lg:aspect-3/4 bg-brand-green">
+    <div key={program.title} className="group relative rounded-[24px] md:rounded-[32px] overflow-hidden aspect-2/3 lg:aspect-3/4 bg-brand-green">
       {/* Background Pattern */}
       <Image
         src="/images/gb.webp"
@@ -68,7 +68,7 @@ export default function InteractiveProgramCard({
       />
 
       {/* Content (Pill, Title, and Description) */}
-      <div className="absolute inset-0 z-30 p-8 flex flex-col pointer-events-none">
+      <div className="absolute inset-0 z-30 p-5 md:p-8 flex flex-col pointer-events-none">
         <div className="mb-4">
           <span className="inline-block px-4 py-1.5 rounded-full border border-white/30 bg-white/10 backdrop-blur-md text-[10px] font-bold text-white uppercase tracking-wider">
             {program.tag}
@@ -93,7 +93,7 @@ export default function InteractiveProgramCard({
 
         {/* Mobile: Preview text on initial load */}
         <div
-          className={`mt-50 transition-all duration-500 transform lg:hidden ${
+          className={`mt-auto mb-8 transition-all duration-500 transform lg:hidden ${
             isExpanded ? 'opacity-0 translate-y-4 hidden' : 'opacity-100 translate-y-0'
           }`}
         >
@@ -113,10 +113,10 @@ export default function InteractiveProgramCard({
       </div>
 
       {/* Mobile: Expand/Close Link */}
-      <div className="absolute bottom-8 left-8 right-8 z-40 lg:hidden">
+      <div className="absolute bottom-6 left-6 right-8 z-40 lg:hidden">
         <button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="pointer-events-auto text-white text-sm font-bold uppercase tracking-wider hover:underline transition-all duration-300"
+          className={`pointer-events-auto text-white text-sm font-bold capitalize tracking-wider hover:underline transition-all duration-300 ${!isExpanded ? 'underline underline-offset-4' : ''}`}
         >
           {isExpanded ? dict.nav.close : dict.nav.expand}
         </button>

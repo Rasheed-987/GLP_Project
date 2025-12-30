@@ -162,7 +162,7 @@ export default function NominationForm({ dict }: NominationFormProps) {
         </div>
       </div>
 
-      <div>
+      <div className="mt-10">
         <h4 className="text-sm font-bold tracking-widest text-brand-blue mb-4">
           {dict.nomineeDetails}
         </h4>

@@ -183,28 +183,29 @@ export default function GLMContent({
 
       const x1 = dRect.left + dRect.width / 2 - cRect.left;
       const y1 = dRect.top + dRect.height / 2 - cRect.top;
-// responsible for position of line
 
       const x2 = isRtl ? hRect.right - cRect.left : hRect.left - cRect.left;
-      const y2 = hRect.top + hRect.height -1.5 - cRect.top;
+      const y2 = hRect.top + hRect.height - 1.5 - cRect.top;
 
-      // Elbow point: For red line, bend opposite direction (235° instead of 135°)
+      // Elbow point
       let elbowX;
       if (isRedLine) {
-        elbowX = isRtl ? x2 + 120 : x2 - 120; // More pronounced 235° angle offset
+        // For red line, we want the elbow to be significantly offset to create the bend-back effect
+        // Now using a dynamic offset relative to the distance to keep it clean
+        const dist = Math.abs(x2 - x1);
+        elbowX = isRtl ? x2 + (dist * 0.25) : x2 - (dist * 0.25);
+        if (isRtl) elbowX = Math.max(elbowX, x2 + 80);
+        else elbowX = Math.min(elbowX, x2 - 80);
       } else {
-        elbowX = isRtl ? x2 + 50 : x2 - 50; // Normal 135° angle
+        elbowX = isRtl ? x2 + 50 : x2 - 50;
       }
 
-      // Offset to extend the horizontal line past the elbow for smoother connection
       const elbowOffset = isRtl ? -3 : 3;
-
-      // M start -> L elbow -> L end (with slight extension past elbow)
       return `M ${x1} ${y1} L ${elbowX + elbowOffset} ${y2} L ${x2} ${y2}`;
     };
 
     setPaths({
-      leadership: getPath(dotRef1, headerRef1, true), // Red line with 235° angle
+      leadership: getPath(dotRef1, headerRef1, true),
       future: getPath(dotRef2, headerRef2),
       achievements: getPath(dotRef3, headerRef3),
     });
@@ -271,11 +272,11 @@ export default function GLMContent({
         className={`w-full lg:w-auto flex ${
           isRtl ? "justify-start pr-4" : "justify-start pl-4"
         } lg:px-0 lg:justify-start lg:absolute ${
-          isRtl ? "lg:-right-[200px]" : "lg:-left-[200px]"
+          isRtl ? "lg:-right-[180px] 2xl:-right-[220px]" : "lg:-left-[180px] 2xl:-left-[220px]"
         } lg:top-[20px]`}
       >
         <div
-          className="relative w-[320px] md:w-[380px] lg:w-[400px] aspect-square overflow-visible"
+          className="relative w-[320px] md:w-[380px] lg:w-[450px] 2xl:w-[550px] aspect-square overflow-visible"
           ref={globeRef}
         >
           <div className="absolute inset-0 rounded-full overflow-hidden bg-white shadow-lg">
@@ -295,7 +296,7 @@ export default function GLMContent({
             className="hidden lg:block absolute w-3 h-3 rounded-full bg-[#E11D48] z-20 shadow-md"
             style={{
               top: "20%",
-              [isRtl ? "left" : "right"]: "2%",
+              [isRtl ? "left" : "right"]: "4%",
               transform: `translate(${isRtl ? "-50%" : "50%"}, -50%)`,
             }}
           />
@@ -377,7 +378,7 @@ export default function GLMContent({
       </div>
 
       {/* RIGHT/LEFT: Content */}
-      <div className={`w-full ${isRtl ? "lg:mr-[400px]" : "lg:ml-[400px]"}`}>
+      <div className={`w-full ${isRtl ? "lg:mr-[450px] 2xl:mr-[550px]" : "lg:ml-[450px] 2xl:ml-[550px]"}`}>
         <MobileGlobeConnector isRtl={isRtl} />
 
         {/* Leadership spirit */}

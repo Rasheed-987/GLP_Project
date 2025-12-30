@@ -22,20 +22,21 @@ type HeroProps = {
       href: string;
     };
   };
+  lang: string;
 };
 
-export default function Hero({ title, description, backgroundImage, blurDataURL, buttons }: HeroProps) {
+export default function Hero({ title, description, backgroundImage, blurDataURL, buttons, lang }: HeroProps) {
   return (
     <div className="flex flex-col md:block relative w-full md:rounded-[32px] md:overflow-hidden md:h-[600px] lg:h-[700px] 2xl:h-[800px]">
       {/* 1. Header & Description (Order 1 on mobile) */}
       <div className="order-1 md:absolute md:inset-0 md:z-20 flex items-end pointer-events-none">
         <div className="w-full max-w-2xl md:px-12 py-6 md:pb-14 pointer-events-auto">
-          <h1 className="text-[32px] mt-10 md:mt-6 md:text-5xl lg:text-[56px] font-normal leading-[1.2] text-zinc-900 md:text-white tracking-wide">
+          <h1 className="text-[32px] mt-10 md:mt-6 md:text-5xl lg:text-[3.5rem] font-medium leading-[1] 2xl:leading-[1.2] text-zinc-900 md:text-white tracking-tight md:tracking-wider">
             {title.prefix}
-            <span className="font-extrabold">{title.highlight}</span>
-            <span className="block mt-2">{title.suffix}</span>
+            <span className={lang === 'ar' ? "font-extrabold" : "font-extrabold md:font-bold"}>{title.highlight}</span>
+            <span className="block mt-1 md:mt-2">{title.suffix}</span>
           </h1>
-          <p className="mt-4 text-zinc-600 md:text-white/90 text-base md:text-lg leading-relaxed max-w-lg tracking-wide">
+          <p className="mt-4 text-zinc-600 md:text-white/90 text-base md:text-lg  max-w-lg tracking-wide leading-[1.3]">
             {description}
           </p>
           
@@ -44,7 +45,7 @@ export default function Hero({ title, description, backgroundImage, blurDataURL,
   {/* Primary button */}
   <Link
     href={buttons.primary.href}
-    className="inline-flex items-center justify-center rounded-full bg-white px-8 py-3 text-lg font-semibold text-black  transition"
+    className="inline-flex items-center justify-center rounded-full bg-white px-8 py-2.5 text-[14px] font-semibold text-black  transition"
   >
     {buttons.primary.text}
   </Link>
@@ -52,7 +53,7 @@ export default function Hero({ title, description, backgroundImage, blurDataURL,
   {/* Secondary (transparent) button */}
   <Link
     href={buttons.secondary.href}
-    className="inline-flex items-center justify-center rounded-full border border-white px-8 py-3 text-lg font-semibold text-white hover:bg-white/10 transition"
+    className="inline-flex items-center justify-center rounded-full border border-white px-8 py-2.5 text-[14px] font-semibold text-white hover:bg-white/10 transition"
   >
     {buttons.secondary.text}
   </Link>
@@ -67,7 +68,7 @@ export default function Hero({ title, description, backgroundImage, blurDataURL,
           src={backgroundImage}
           alt={`${title.prefix}${title.highlight}${title.suffix}`}
           fill
-          className="object-cover rounded-[32px] md:rounded-none"
+          className="object-cover rounded-[20px] md:rounded-none"
           priority
           placeholder={blurDataURL ? "blur" : undefined}
           blurDataURL={blurDataURL}
